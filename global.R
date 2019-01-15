@@ -1,0 +1,15 @@
+suppressMessages({
+  library(shiny)
+  library(tidyverse)
+  library(shinycssloaders)
+  library(shinydashboard)
+  library(shinydashboardPlus)
+  library(shinyjs)
+  library(shinyWidgets)
+  library(DT)
+  library(rintrojs)
+})
+
+source("misc/armyVariables.R")
+source("modules/faction_module.R")
+faction.Df <- read_csv("misc/SamarianFrame.csv")
