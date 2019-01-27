@@ -11,24 +11,24 @@ Dragyri,Air,Tempest,75,3
 Dragyri,Air,Wail,75,3
 Dragyri,Air,Whisper,75,3
 Dragyri,Air,Disc Slave,50,4
-Dragyri,Air,Taskmaster,50,1
+Dragyri,Air,Taskmaster (Earth),50,1
 Dragyri,Air,Zephyr,50,3
-Dragyri,Air,Shard Slave,25,3
-Dragyri,Air,Sling Slave,25,3
-Dragyri,Air,Spear Slave,25,6
+Dragyri,Air,Shard Slave (Air),25,3
+Dragyri,Air,Sling Slave (Air),25,3
+Dragyri,Air,Spear Slave (Air),25,6
 Outcasts,Unaligned,Captain Flay,175,C
 C.O.R.E/Brood,Unaligned,Aren,125,C
-C.O.R.E/Brood,Unaligned,C.O.R.E Hound,*,C
+C.O.R.E/Brood,Unaligned,C.O.R.E Hound,0,C
 Outcasts,Unaligned,Jarl Ramsaur,125,C
 Brood/C.O.R.E/Dragyri/Forsaken/Kukulkani/Outcasts/Skarrd,Unaligned,Onyx,125,C
 Outcasts,Unaligned,Blades,100,C
 Forsaken/Outcasts/Skarrd,Unaligned,Gristle,100,C
 Brood/Outcasts,Unaligned,Irinya,100,C
 Outcasts,Unaligned,Phadras & Maximo,125,C
-Outcasts/Skarrd,Unaligned,Suzy Bell & Wroth,200,C
+Outcasts/Skarrd,Unaligned,Suzy Belle & Wroth,200,C
 Forsaken/Outcasts/Skarrd,Unaligned,Cesspool,75,C
 Outcasts,Unaligned,Dedlock,75,C
-Outcasts,Unaligned,John Clank Carter,75,C
+Outcasts,Unaligned,John "Clank" Carter,75,C
 Outcasts,Unaligned,Lucky,75,C
 Outcasts,Unaligned,Nathaniel & Orchid,75,C
 Outcasts,Unaligned,Old Ma,75,C
@@ -48,10 +48,10 @@ Dragyri,Earth,Fissure,75,3
 Dragyri,Earth,Pillar,75,3
 Dragyri,Earth,Soul Warden,75,1
 Dragyri,Earth,Mattock Slave,50,6
-Dragyri,Earth,Taskmaster,50,1
-Dragyri,Earth,Shard Slave,25,3
-Dragyri,Earth,Sling Slave,25,3
-Dragyri,Earth,Spear Slave,25,6
+Dragyri,Earth,Taskmaster (Earth),50,1
+Dragyri,Earth,Shard Slave (Earth),25,3
+Dragyri,Earth,Sling Slave (Earth),25,3
+Dragyri,Earth,Spear Slave (Earth),25,6
 Dragyri,Fire,Rath'Zhi,200,C
 Dragyri,Fire,Jza'Mhi,150,C
 Dragyri,Fire,Fire Elemental,200,1
@@ -67,10 +67,10 @@ Dragyri,Fire,Volcanic Phalanx,75,3
 Dragyri,Fire,Artificer of the Alteghran,50,1
 Dragyri,Fire,Cavewing Slyth,50,4
 Dragyri,Fire,Razor Slyth,50,4
-Dragyri,Fire,Taskmaster,50,1
-Dragyri,Fire,Shard Slave,25,3
-Dragyri,Fire,Sling Slave,25,3
-Dragyri,Fire,Spear Slave,25,6
+Dragyri,Fire,Taskmaster (Fire),50,1
+Dragyri,Fire,Shard Slave (Fire),25,3
+Dragyri,Fire,Sling Slave (Fire),25,3
+Dragyri,Fire,Spear Slave (Fire),25,6
 Dragyri,Fire,Ember,0,*
 Dragyri,Ice,Luck'Kit'Kaii,200,C
 Dragyri,Ice,Dah'Vid,100,C
@@ -83,10 +83,10 @@ Dragyri,Ice,Soul Searcher,75,3
 Dragyri,Ice,Soul Splitter,75,2
 Dragyri,Ice,Soul Warden,75,1
 Dragyri,Ice,Hail Kin,50,3
-Dragyri,Ice,Taskmaster,50,1
-Dragyri,Ice,Shard Slave,25,3
-Dragyri,Ice,Sling Slave,25,3
-Dragyri,Ice,Spear Slave,25,6
+Dragyri,Ice,Taskmaster (Ice),50,1
+Dragyri,Ice,Shard Slave (Ice),25,3
+Dragyri,Ice,Sling Slave (Ice),25,3
+Dragyri,Ice,Spear Slave (Ice),25,6
 Kukulkani,Unaligned,Quetzol,175,C
 Kukulkani,Unaligned,Ixchel,150,C
 Kukulkani,Unaligned,Chac Xib,100,C
@@ -113,7 +113,7 @@ Kukulkani,Unaligned,Technomantic Apprentice,50,3
 Kukulkani,Unaligned,Harvester,25,4
 Dragyri,Shadow,Amabilia,200,C
 Dragyri,Shadow,Huntress,175,C
-Dragyri,Shadow,Hood,150,C
+Dragyri,Shadow,Hood (Shadow),150,C
 Dragyri,Shadow,Umbra Shadow Elemental,200,1
 Dragyri,Shadow,Death's Device of Shadow,150,3
 Dragyri,Shadow,Goliath,150,1
@@ -211,7 +211,7 @@ Skarrd,Metamorphosis,Nightmare Juggernaut,150,1
 Skarrd,Metamorphosis,Thrall,75,1
 Skarrd,Metamorphosis,Fallen Angel,50,4
 Skarrd,Metamorphosis,Grafter's Apprentice,50,2
-Skarrd,Metamorphosis,Dominique's Chalica,*,*
+Skarrd,Metamorphosis,Dominique's Chalica,0,*
 Skarrd,Toxic,Father Curwen,150,C
 Skarrd,Toxic,Leisa,100,C
 Skarrd,Toxic,Hoodoo,75,C
@@ -232,7 +232,7 @@ Skarrd,Unaligned,Disciples of Raze,75,3
 Skarrd,Unaligned,Drillhead,75,3
 Skarrd,Unaligned,Grafter,75,1
 Skarrd,Unaligned,Bone Doc,75,1
-Skarrd,Unaligned,Sister of Clarity,75,1
+Skarrd,Unaligned,Sister of Charity,75,1
 Skarrd,Unaligned,Harpy,50,6
 Skarrd,Unaligned,Fell Pack,50,2
 Skarrd,Unaligned,Fetish Bearer,50,1
@@ -361,6 +361,18 @@ Outcasts,Salt Nomads,Thornwind,50,4
 Outcasts,Salt Nomads,Tribal Warrior,50,6
 Outcasts,Salt Nomads,Vrock,50,4
 Outcasts,Salt Nomads,Nomad Herder,25,6
+Outcasts,Barrow Slavers,The Warden,150,C
+Outcasts,Barrow Slavers,Hood (Slavers),150,C
+Outcasts,Barrow Slavers,Bonner Spyte,100,C
+Outcasts,Barrow Slavers,Finn Deadeye,100,C
+Outcasts,Barrow Slavers,Aja,75,C
+Outcasts,Barrow Slavers,Devon,75,C
+Outcasts,Barrow Slavers,Slavemaster,100,1
+Outcasts,Barrow Slavers,Coffersman,75,1
+Outcasts,Barrow Slavers,Gang Boss,75,1
+Outcasts,Barrow Slavers,The Frenzied,50,4
+Outcasts,Barrow Slavers,The Unbound,50,3
+Outcasts,Barrow Slavers,Chain Ganger,25,6
 Brood,Delta Broodfolk,Helexa,150,C
 Brood,Delta Broodfolk,Myrmidon,200,1
 Brood,Delta Broodfolk,The Transformed,150,2

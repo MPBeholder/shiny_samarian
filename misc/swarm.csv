@@ -1,0 +1,12 @@
+Faction,Subfaction,Name,Cost,Amount
+Brood,Unaligned,Murtros,150,C
+Brood,Unaligned,Numbskull,150,1
+Brood,Unaligned,Mandible,100,1
+Brood,Unaligned,Pud Swarm,100,2
+Brood,Unaligned,Sawblade,100,4
+Brood,Unaligned,Pod,75,2
+Brood,Unaligned,Pud Thrower,75,4
+Brood,Unaligned,Grist,50,4
+Brood,Unaligned,Ratchet,50,4
+Brood,Unaligned,Broodhound,50,4
+Brood,Unaligned,Pud Roamer,0,*
