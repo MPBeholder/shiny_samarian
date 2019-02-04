@@ -1,35 +1,19 @@
 function(request){
-  
+  # Sidebar ---------------------------------
   sidebar <- dashboardSidebar(
     sidebarMenu(
       id = "tabs",
       menuItem("Factions", tabName = "home", icon = icon("vcard")),
-      menuItem("Build", tabName = "build_army", icon = icon("cogs")),
-      menuItem("Tournament", tabName = "build_tourney", icon = icon("users"))
+      menuItem("Build", tabName = "build_army", icon = icon("cogs"))#,
+      #menuItem("Tournament", tabName = "build_tourney", icon = icon("users"))
     )
   )
   
+  # Body ---------------------------------
   body <- dashboardBody(
     tags$head(tags$script(HTML("Shiny.addCustomMessageHandler('unbind-DT', function(id) {
-                         Shiny.unbindAll($('#'+id).find('table').DataTable().table().node());})")),
-              tags$script(HTML("Shiny.addCustomMessageHandler('reset-tooltip', function(val) {
-                         $('a[data-toggle=\"tooltip\"]').tooltip({
-    animated: 'fade',
-    placement: 'bottom',
-    html: true
-});})"))),
-    tags$style(type = "text/css",
-               HTML(".imgTooltip {
-                    display: none;
-                    }
-                    
-                    .ItemsTooltip:hover .imgTooltip {
-                    display: block;
-                    position: absolute;
-                    z-index: 1;
-                    }"
-                    )
-    ),
+                         Shiny.unbindAll($('#'+id).find('table').DataTable().table().node());})"))
+              ),
     useShinyjs(),
     introjsUI(),
     tabItems(
@@ -59,9 +43,7 @@ function(request){
           pickerInput(
             inputId = "army_selection",
             label = "Selected Army", 
-            choices = c("Brood","C.O.R.E","Dragyri","Forsaken","Outcasts","Kukulkani","Skarrd")#,
-            # choicesOpt = list(
-            #   subtext = HTML('<img class="avatar" src="K3.jpg" width = "20" height = "15" alt="Avatar">'))
+            choices = c("Brood","C.O.R.E","Dragyri","Forsaken","Outcasts","Kukulkani","Skarrd")
           )),
           column(width = 3,
           pickerInput(
@@ -69,32 +51,62 @@ function(request){
             label = "Selected Subfaction", 
             choices = c("")
           )),
-          column(width = 3,
+          column(width = 2,
           textInput("army_value", label = "Army Size (Points)")
           ),
-          column(width = 3,
+          column(width = 2,
                  htmlOutput("currentValue")
-          )),
-          DT::dataTableOutput("ArmyTable")
+          ),
+          column(width = 2, uiOutput("Downloader"))),
+          DT::dataTableOutput("ArmyTable"),
+          fluidRow(
+            column(width = 4, uiOutput("Helper")),
+            column(width = 8, uiOutput("Notesbox")))
           ),
   tabItem(tabName = "build_tourney")
   )
   )
   
+  # Header ---------------------------------
   header <- dashboardHeaderPlus(
     title = tagList(
       span(class = "logo-lg", "Samaria Lives"), 
-      img(src = "smaller_icon.png", width = 20, height = 20)),
-    enable_rightsidebar = FALSE,
-    rightSidebarIcon = "gears"
+      img(src = "smaller_icon.png", width = 20, height = 20)#,
+      ),
+    enable_rightsidebar = TRUE,
+    rightSidebarIcon = "info-circle"
   )
+  
+  # Right Sidebar ---------------------------------
+  rightsidemenu <- rightSidebar(
+    background = "dark",
+    rightSidebarTabContent(
+      id = 1,
+      icon = "book",
+      title = "Rules Reference",
+      active = TRUE,
+      pickerInput(inputId = "rule_selector", choices = rules.Reference[["Rules"]]),
+      htmlOutput("ruleReference")
+    ),
+    rightSidebarTabContent(
+      id = 2,
+      icon = "info-circle",
+      title = "General Info",
+      active = FALSE,
+      "Information will be placed here! Hooray!"
+    ))
+  
+  # Title ---------------------------------
   
   title = "Samarian Army Builder"
 
+  # Generate Page ---------------------------------
   dashboardPagePlus(
+    collapse_sidebar = TRUE,
     header,
     sidebar,
     body,
+    rightsidemenu,
     title
   )
 }

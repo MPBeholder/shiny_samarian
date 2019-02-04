@@ -1,0 +1,32 @@
+---
+title: "Army List"
+author: "Samaria Lives"
+output: pdf_document
+params:
+  Table: NA
+  Title: "Kukulkani"
+  CurrentPoint: "500"
+  MaxPoint: "750"
+  Notes: ""
+header-includes:
+    - \usepackage{caption}
+---
+
+\captionsetup[table]{labelformat=empty}
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r armyTable, echo = FALSE, tab.cap = NULL, results = 'asis'}
+library(knitr)
+kable(params$Table,caption = paste("A",params$CurrentPoint,"point",params$Title,"army",sep = " "))
+```
+
+```{r armyNotes, echo = FALSE, results = 'asis'}
+if (params$Notes != "") {
+  cat("Notes:")
+  cat(params$Notes) 
+  
+}
+```

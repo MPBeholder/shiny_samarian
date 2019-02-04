@@ -4,11 +4,11 @@ suppressMessages({
   library(shinycssloaders)
   library(shinydashboard)
   library(shinydashboardPlus)
-  library(shinyBS)
   library(shinyjs)
   library(shinyWidgets)
   library(DT)
   library(rintrojs)
+  library(rmarkdown)
 })
 
 source("misc/armyVariables.R")
