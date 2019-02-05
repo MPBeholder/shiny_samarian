@@ -1,9 +1,10 @@
 server <- function(input, output, session){
   # Base Reactive Value(s) ---------------------------------
   army <- reactiveValues(value = integer())  
-  
+
   # On Launch Modal ---------------------------------
   query_modal <- modalDialog(
+    # Opening Modal
     title = "A Note from the Wasteland",
     HTML("This is a fan created army building app for the Cool Mini Or Not (CMON) game Dark Age.</br>All images contained within this app are copyrighted to CMON."),
     easyClose = F
@@ -22,14 +23,15 @@ server <- function(input, output, session){
   
   # Obersvation Events ---------------------------------
   observeEvent(input$army_selection,{
+    # Reset army value when faction is changed.
     updatePickerInput(session, "subfaction_selection",choices = faction.Data[[input$army_selection]][['sub.Faction']])
     army$value <- 0
   })
   
   observeEvent(input$display_card,{
-    
+    # Select card
     displayedCard <- trimws(strsplit(input$display_card, "_")[[1]][1], which = c("both"))#strsplit(input$display_card, "_")[[1]][1]
-    
+    # Display card
     showModal(modalDialog(
       size = "l",
       HTML(paste0("<h4>Stat Cards for: ",displayedCard,"</h4>")),
@@ -43,15 +45,17 @@ server <- function(input, output, session){
   # Advanced Reactive Value(s) ---------------------------------
   
   selectedArmy <- reactive({
-    
+    # Generate selected army based on input
     req(c(input$army_selection,input$subfaction_selection))
     
     validate(
+      need(try(!is.na(input$army_value)), "Please select a valid army point amount!"),
       need(try(as.numeric(input$army_value) / 500 > 0), "Please select a valid army point amount!")
     )
-    
+    # Unbind/Bind DT shiny inputs
     session$sendCustomMessage('unbind-DT', 'ArmyTable') #TAG UNBIND
     
+    # Generate army data frame
     currentArmy <- faction.Df %>%
       dplyr::filter(grepl(input$army_selection, Faction)) %>%
       dplyr::filter(grepl(paste0("Unaligned|",input$subfaction_selection), Subfaction))  %>%
@@ -110,44 +114,49 @@ server <- function(input, output, session){
     req(input$army_value)
     
     validate(
-      
+      #need(try(length(input$army_value) != 0), "Please select a valid army point amount!"),
       need(try(as.numeric(input$army_value) / 500 > 0), "Please select a valid army point amount!")
       
     )
     
     val <- 0
-
+    # Calculate amount of points selected
     for (name in selectedArmy()[["Name"]]){
       
       val <- val + as.numeric(input[[name]]) * as.numeric(selectedArmy()$Cost[which(selectedArmy()[["Name"]] == name)])
     
     }
-    
-    if (val <= as.numeric(input$army_value)) {
+
+    if (length(val) != 0){
+      # Generate Current - Max Delta.
+      if (val <= as.numeric(input$army_value)) {
+        
+        textString <- paste0('Current Points: ',val,"/",input$army_value,'</br>Points Remaining: ',as.numeric(input$army_value) - val)
+      } else {
+        
+        textString <-HTML(paste0('Current Points: <font color=\"#FF0000\">',val,"/",input$army_value,'</font></br>You have too many models!'))
+      }
       
-      textString <- paste0('Current Points: ',val,"/",input$army_value,'</br>Points Remaining: ',as.numeric(input$army_value) - val)
+      # Enable or Disable the download button depending on army value.
+      if (val > as.numeric(input$army_value) || 
+          val <= 0) {
+        
+        shinyjs::disable("download_army")
+        
+      } else {
+        
+        shinyjs::enable("download_army")
+      }
+      
+      return(textString)
     } else {
-      
-      textString <-HTML(paste0('Current Points: <font color=\"#FF0000\">',val,"/",input$army_value,'</font></br>You have too many models!'))
+      # Error Placeholder
+      return("Loading...")
     }
-    
-    if (val > as.numeric(input$army_value) || 
-        val <= 0) {
-      
-      shinyjs::disable("download_army")
-      
-    } else {
-      
-      shinyjs::enable("download_army")
-    }
-    
-    
-    return(textString)
-    
   })
   
   output$ruleReference <- renderText({
-    
+    #Render text associated with selected rule.
     req(input$rule_selector)
     
     selectedRule <- which(rules.Reference[["Rules"]] == input$rule_selector)
@@ -157,6 +166,7 @@ server <- function(input, output, session){
   })
 
   output$Downloader <- renderUI({
+    #Download only renders when a valid amount of points has been selected
     validate(
       
       need(try(as.numeric(input$army_value) / 500 > 0), "")
@@ -167,6 +177,7 @@ server <- function(input, output, session){
   )
   
   output$Helper <- renderUI({
+    #Helper text for users on how to use the textAreaInput
     validate(
       
       need(try(as.numeric(input$army_value) / 500 > 0), "")
@@ -174,11 +185,13 @@ server <- function(input, output, session){
     )
     helpText("If needed, place any text you",
              "want displayed on your printout in the",
-             "text field to the right.")
+             "text field to the right. This could include",
+             "Subfaction bonuses, Psychogenics, etc...")
   }
   )
   
   output$Notesbox <- renderUI({
+    #TextAreaInput only renders when a valid amount of points has been selected.
     validate(
       
       need(try(as.numeric(input$army_value) / 500 > 0), "")
@@ -194,12 +207,8 @@ server <- function(input, output, session){
     filename = "Armylist.pdf",
     
     content = function(file) {
-      alert(input$army_notes)
+      # Normalize and Generate files ---------------------------------
       src <- normalizePath('misc/ArmyTemplate.Rmd')
-      owd <- setwd(tempdir())
-      on.exit(setwd(owd))
-      file.copy(src, 'ArmyTemplate.Rmd', overwrite = TRUE)
-      
       outputArmy <- tibble(Subfaction = character(),
                            Name = character(),
                            Type = character(),
@@ -209,10 +218,17 @@ server <- function(input, output, session){
       tempVal <- 0
       step <- 1
       
+      normalizedPaths <- rep("",nrow(selectedArmy()))
+      stat_name <- rep("",nrow(selectedArmy()))
+      
+      # Select unit subset ---------------------------------
+      
       for (name in selectedArmy()[["Name"]]){
-       
+        
         tempVal <- tempVal + as.numeric(input[[name]]) * as.numeric(selectedArmy()$Cost[which(selectedArmy()[["Name"]] == name)])
         if (as.numeric(input[[name]]) >= 1){
+          stat_name[step] <- paste(name,"png",sep = ".")
+          normalizedPaths[step] <- normalizePath(paste0("www/stat_cards/",paste(name,"png",sep = ".")))
           sel_name <- which(selectedArmy()[["Name"]] == name)
           characterRow <- tibble(Subfaction = as.character(selectedArmy()$Subfaction[sel_name]),
                                  Name = name,
@@ -228,6 +244,20 @@ server <- function(input, output, session){
         
       }
       
+      # Set temp working directory & copy---------------------------------
+      
+      owd <- setwd(tempdir())
+      on.exit(setwd(owd))
+      file.copy(src, 'ArmyTemplate.Rmd', overwrite = TRUE)
+      
+      # Copy all selected stat cards
+      
+      for (i in (i = 1:step-1)){
+        file.copy(normalizedPaths[i], stat_name[i], overwrite = TRUE)
+      }
+      
+      # Render document
+      
       out <- render('ArmyTemplate.Rmd', 
                     pdf_document(),
                     envir = new.env(),
@@ -238,6 +268,9 @@ server <- function(input, output, session){
                       MaxPoint = input$army_value,
                       Notes = input$army_notes
                     ))
+      
+      #Make document available for download
+      
       file.rename(out, file)
     }
   )
