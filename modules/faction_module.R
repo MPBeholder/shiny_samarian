@@ -26,13 +26,15 @@ samarianInfo <- function(id, box.Id = 1, faction = "Kukulkani") {
                width = 12,
                align = "center",
                faction.Data[[faction]][['back.Blurb']],
-               fluidRow(
-                 column(6,
+               # splitLayout(HTML(faction.Data[[faction]][['pros']]),
+               #             HTML(faction.Data[[faction]][['cons']]))
+               fluidRow(class = "text-left",
+                 column(6,HTML("<center>Pros:</center>"),
                         HTML(faction.Data[[faction]][['pros']])),
-                 column(6,
+                 column(6,HTML("<center>Cons:</center>"),
                         HTML(faction.Data[[faction]][['cons']]))
                ),
-               actionBttn(paste0("army_",faction),"Build")
+               actionButton(paste0("army_",faction),"Build")
              )
            )
          ))

@@ -12,27 +12,40 @@ function(request){
   # Body ---------------------------------
   body <- dashboardBody(
     tags$head(tags$script(HTML("Shiny.addCustomMessageHandler('unbind-DT', function(id) {
-                         Shiny.unbindAll($('#'+id).find('table').DataTable().table().node());})"))
-              ),
+                         Shiny.unbindAll($('#'+id).find('table').DataTable().table().node());})")),
+              tags$style(HTML("
+                              @media screen and (min-width: 768px){
+                                          .rwd-break { display: none; }
+                              }
+
+                              .rotate-container {
+                              padding-bottom:80px;
+                              
+                              }
+                              
+                              "))),
     useShinyjs(),
     introjsUI(),
     tabItems(
       tabItem(tabName = "home",
               fluidRow(
                 samarianInfo('K3', box.Id = 1, faction = "Kukulkani"),
+                HTML('<br class="rwd-break">'),
                 samarianInfo('FS', box.Id = 2, faction = "Forsaken")
                   ),
               br(),
               fluidRow(
                 samarianInfo('C', box.Id = 3, faction = "C.O.R.E"),
+                HTML('<br class="rwd-break">'),
                 samarianInfo('Brd', box.Id = 4, faction = "Brood")
               ),
               br(),
               fluidRow(
                 samarianInfo('O', box.Id = 5, faction = "Outcasts"),
+                HTML('<br class="rwd-break">'),
                 samarianInfo('SK', box.Id = 6, faction = "Skarrd")
               ),
-              br(),
+              HTML('<br class="rwd-break">'),
               fluidRow(
                 samarianInfo('DG', box.Id = 7, faction = "Dragyri")
               )

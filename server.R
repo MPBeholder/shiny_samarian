@@ -58,7 +58,7 @@ server <- function(input, output, session){
     # Generate army data frame
     currentArmy <- faction.Df %>%
       dplyr::filter(grepl(input$army_selection, Faction)) %>%
-      dplyr::filter(grepl(paste0("Unaligned|",input$subfaction_selection), Subfaction))  %>%
+      dplyr::filter(grepl(paste0("Unaligned|Bounty Hunter|",input$subfaction_selection), Subfaction))  %>%
       mutate(Allotment = case_when(
         Amount == "C" ~ 1,
         Amount == "*" ~ 1,
