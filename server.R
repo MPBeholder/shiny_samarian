@@ -35,9 +35,14 @@ server <- function(input, output, session){
     showModal(modalDialog(
       size = "l",
       HTML(paste0("<h4>Stat Cards for: ",displayedCard,"</h4>")),
-      HTML("<center>"),
-      HTML(paste0('<img src = "stat_cards/',displayedCard,'.png">')),
-      HTML("</center>")
+      fluidRow(
+        column(width = 6,
+               HTML(paste0('<img src = "stat_cards/',displayedCard,'_0.png">'))
+               ),
+        column(width = 6,
+               HTML(paste0('<img src = "stat_cards/',displayedCard,'_1.png">'))
+        )
+      )
     ))
     
   })

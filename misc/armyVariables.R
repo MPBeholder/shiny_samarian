@@ -43,7 +43,7 @@ faction.Data <- list(
     "cons" = "<ul><li>High cost units</li><li>Elements have different weaknesses</li></ul>",
     "header.Img" = "drag_back.jpg",
     "back.Img" = "faction_icons/Dragyri-Generic.png",
-    "sub.Faction" = c("Ice","Fire","Wind","Earth","Shadow")
+    "sub.Faction" = c("Ice","Fire","Air","Earth","Shadow")
   ),
   "Outcasts" = list(
     "front.Blurb" = "Those humans who live outside the walls of New Ashkelon and avoid the predations of the Skarrd survive in the barren wasteland and form the nebulous Outcast.",
