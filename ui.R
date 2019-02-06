@@ -17,7 +17,13 @@ function(request){
                               @media screen and (min-width: 768px){
                                           .rwd-break { display: none; }
                               }
-
+                              img {
+    max-width: 100%;
+    max-height: 100%;
+  display: block;
+  margin-left: auto;
+                              margin-right: auto;
+}
                               .rotate-container {
                               padding-bottom:80px;
                               
