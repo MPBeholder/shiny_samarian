@@ -6,7 +6,14 @@ server <- function(input, output, session){
   query_modal <- modalDialog(
     # Opening Modal
     title = "A Note from the Wasteland",
-    HTML("This is a fan created army building app for the Cool Mini Or Not (CMON) game Dark Age.</br>All images contained within this app are copyrighted to CMON."),
+    HTML('This is a fan created army building app for the Cool Mini Or Not (CMON) game Dark Age.</br>All images contained within this app are copyrighted to CMON.</br>If you encounter any issues please post an issue on github. <a href = "https://github.com/MPBeholder/shiny_samarian" target ="_blank"><img width = "15px" height = "15px" src = "github_mark_64px.png"></a>'),
+    hr(),
+    fluidRow(
+      column(width = 6,
+             HTML('<a target="_blank" href="http://dark-age.com"><img class = "custom" style="padding-top:12%" height = "50%" width = "50%" src = "DA_Logo3.png"></a>')),
+      column(width = 6,
+             HTML('<a target="_blank" href="https://cmon.com"><img class = "custom" height = "50%" width = "50%" src = "cmon_logo.png"></a>'))
+    ),
     easyClose = F
   )
 
@@ -37,10 +44,10 @@ server <- function(input, output, session){
       HTML(paste0("<h4>Stat Cards for: ",displayedCard,"</h4>")),
       fluidRow(
         column(width = 6,
-               HTML(paste0('<img src = "stat_cards/',displayedCard,'_0.png">'))
+               HTML(paste0('<img class = "custom" src = "stat_cards/',displayedCard,'_0.png">'))
                ),
         column(width = 6,
-               HTML(paste0('<img src = "stat_cards/',displayedCard,'_1.png">'))
+               HTML(paste0('<img class = "custom" src = "stat_cards/',displayedCard,'_1.png">'))
         )
       )
     ))
@@ -92,7 +99,7 @@ server <- function(input, output, session){
                                       editable = FALSE,
                                       extensions = c("Scroller","FixedHeader"),
                                       options = list(dom = 't',
-                                                     autoWidth = TRUE,
+                                                     autoWidth = FALSE,
                                                      server = TRUE,
                                                      fixedHeader = TRUE,
                                                      scrollX = TRUE,
