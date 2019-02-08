@@ -11,21 +11,27 @@ function(request){
   
   # Body ---------------------------------
   body <- dashboardBody(
-    tags$head(tags$script(HTML("Shiny.addCustomMessageHandler('unbind-DT', function(id) {
+    tags$head(tags$meta(property = "og:title", content = share$title),
+              tags$meta(property = "og:type", content = "website"),
+              tags$meta(property = "og:url", content = share$url),
+              tags$meta(property = "og:description", content = share$description),
+
+              tags$script(HTML("Shiny.addCustomMessageHandler('unbind-DT', function(id) {
                          Shiny.unbindAll($('#'+id).find('table').DataTable().table().node());})")),
               tags$style(HTML("
                               @media screen and (min-width: 768px){
                                           .rwd-break { display: none; }
                               }
-                              img {
-    max-width: 100%;
-    max-height: 100%;
-  display: block;
-  margin-left: auto;
-                              margin-right: auto;
+                              img.custom {
+                                max-width: 100%;
+                                max-height: 100%;
+                                display: block;
+                                margin-left: auto;
+                                vertical-align: middle;
+                                margin-right: auto;
 }
                               .rotate-container {
-                              padding-bottom:80px;
+                                padding-bottom:80px;
                               
                               }
                               
@@ -90,7 +96,7 @@ function(request){
   header <- dashboardHeaderPlus(
     title = tagList(
       span(class = "logo-lg", "Samaria Lives"), 
-      img(src = "smaller_icon.png", width = 20, height = 20)#,
+      img(src = "smaller_icon.png", width = 32, height = 25)#,
       ),
     enable_rightsidebar = TRUE,
     rightSidebarIcon = "info-circle"
