@@ -29,10 +29,9 @@ function(request){
                                 margin-left: auto;
                                 vertical-align: middle;
                                 margin-right: auto;
-}
+                              }
                               .rotate-container {
                                 padding-bottom:80px;
-                              
                               }
                               
                               "))),
@@ -118,7 +117,7 @@ function(request){
       icon = "info-circle",
       title = "General Info",
       active = FALSE,
-      "Information will be placed here! Hooray!"
+      HTML("Samarian Army Builder v0.1</br>All logos and cards copyright CMON.</br>Code developed by MPBeholder.")
     ))
   
   # Title ---------------------------------
