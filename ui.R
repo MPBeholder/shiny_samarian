@@ -95,7 +95,7 @@ function(request){
   header <- dashboardHeaderPlus(
     title = tagList(
       span(class = "logo-lg", "Samaria Lives"), 
-      img(src = "smaller_icon.png", width = 32, height = 25)#,
+      img(src = "smaller_icon.png", width = 32, height = 25,style="padding-right:10px;")#,
       ),
     enable_rightsidebar = TRUE,
     rightSidebarIcon = "info-circle"

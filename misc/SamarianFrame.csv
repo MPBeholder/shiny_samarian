@@ -21,7 +21,7 @@ C.O.R.E/Brood,Bounty Hunter,Aren,125,C
 C.O.R.E/Brood,Bounty Hunter,C.O.R.E Hound,0,C
 Outcasts,Bounty Hunter,Jarl Ramsaur,125,C
 Brood/C.O.R.E/Dragyri/Forsaken/Kukulkani/Outcasts/Skarrd,Bounty Hunter,Onyx,125,C
-Outcasts,Bounty Hunter,Blades,100,C
+Outcasts,Bounty Hunter,Blades (Bounty Hunter),100,C
 Forsaken/Outcasts/Skarrd,Bounty Hunter,Gristle,100,C
 Brood/Outcasts,Bounty Hunter,Irinya,100,C
 Outcasts,Bounty Hunter,Phadras & Maximo,125,C
@@ -264,6 +264,14 @@ Forsaken,Unaligned,Field Medic,50,1
 Forsaken,Unaligned,Shepherd,50,1
 Forsaken,Unaligned,Flock,25,6
 Forsaken,Unaligned,Militia,25,3
+Forsaken,Isaac,Saint Isaac (AJAX),200,C
+Forsaken,Isaac,Saint Isaac,150,C
+Forsaken,Isaac,Captain Cora Machariel,100,C
+Forsaken,Isaac,Prometheus,150,2
+Forsaken,Isaac,AJAX Exo-Frame,125,2
+Forsaken,Isaac,Helldiver Shock Trooper,100,2
+Forsaken,Isaac,Centipede,75,4
+Forsaken,Isaac,Controller,50,6
 Forsaken,Heretic,The Scorpius,200,C
 Forsaken,Heretic,Saint Johann,150,C
 Forsaken,Heretic,Jon Woe,150,C
@@ -346,11 +354,11 @@ Outcasts,Court of Freeton,Judge Brooks,150,C
 Outcasts,Court of Freeton,Brute Marshal,100,2
 Outcasts,Salt Nomads,Bendahrin Durshe,150,C
 Outcasts,Salt Nomads,Moonless Night,150,C
-Outcasts,Salt Nomads,Blades,125,C
+Outcasts,Salt Nomads,Blades (Salt),125,C
 Outcasts,Salt Nomads,Kane,125,C
 Outcasts,Salt Nomads,Lynette,100,C
-Outcasts,Salt Nomads,Ideo,0,C
-Outcasts,Salt Nomads,Vox,0,C
+Outcasts,Salt Nomads,Ideo,0,*
+Outcasts,Salt Nomads,Vox,0,*
 Outcasts,Salt Nomads,Berserker,100,1
 Outcasts,Salt Nomads,Caravan Keeper,100,1
 Outcasts,Salt Nomads,Hand of War,75,4
