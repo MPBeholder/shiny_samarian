@@ -223,6 +223,11 @@ server <- function(input, output, session){
     filename = "Armylist.pdf",
     
     content = function(file) {
+      progress <- shiny::Progress$new()
+      # Make sure it closes when we exit this reactive, even if there's an error
+      on.exit(progress$close())
+      progress$set(message = "Making plot", value = 0)
+      n <- nrow(selectedArmy())
       # Normalize and Generate files ---------------------------------
       src <- normalizePath('misc/ArmyTemplate.Rmd')
       outputArmy <- tibble(Subfaction = character(),
@@ -257,6 +262,7 @@ server <- function(input, output, session){
           outputArmy[step,] <- characterRow
           step <- step + 1
         }
+        progress$inc(1/n, detail = paste("Checking: ", name))
         
       }
       
@@ -286,7 +292,7 @@ server <- function(input, output, session){
                     ))
       
       #Make document available for download
-      
+      progress$close()
       file.rename(out, file)
     }
   )
