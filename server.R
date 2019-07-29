@@ -3,22 +3,23 @@ server <- function(input, output, session){
   army <- reactiveValues(value = integer())  
 
   # On Launch Modal ---------------------------------
-  query_modal <- modalDialog(
-    # Opening Modal
-    title = "A Note from the Wasteland",
-    HTML('This is a fan created army building app for the Cool Mini Or Not (CMON) game Dark Age.</br>All images contained within this app are copyrighted to CMON.</br>If you encounter any issues please post an issue on github. <a href = "https://github.com/MPBeholder/shiny_samarian" target ="_blank"><img width = "15px" height = "15px" src = "github_mark_64px.png"></a>'),
-    hr(),
-    fluidRow(
-      column(width = 6,
-             HTML('<a target="_blank" href="http://dark-age.com"><img class = "custom" style="padding-top:12%" height = "50%" width = "50%" src = "DA_Logo3.png"></a>')),
-      column(width = 6,
-             HTML('<a target="_blank" href="https://cmon.com"><img class = "custom" height = "50%" width = "50%" src = "cmon_logo.png"></a>'))
-    ),
-    easyClose = F
-  )
-
-  showModal(query_modal)
   
+  sendSweetAlert(
+    session = session,
+    html = TRUE,
+    title = "A Note from the Wasteland",
+    text = fluidRow(
+          column(width = 12,
+                   HTML('This is a fan created army building app for the Cool Mini Or Not (CMON) game Dark Age.</br>All images contained within this app are copyrighted to CMON.</br>If you encounter any issues please post an issue on github. <a href = "https://github.com/MPBeholder/shiny_samarian" target ="_blank"><img width = "15px" height = "15px" src = "github_mark_64px.png"></a>'),
+                 hr()
+                 ),
+          column(width = 6,
+                 HTML('<a target="_blank" href="http://dark-age.com"><img class = "custom" style="padding-top:12%" height = "50%" width = "50%" src = "DA_Logo3.png"></a>')),
+          column(width = 6,
+                 HTML('<a target="_blank" href="https://cmon.com"><img class = "custom" height = "50%" width = "50%" src = "cmon_logo.png"></a>'))
+        ),
+    type = "info"
+  )
   # Modular Components ---------------------------------
   samarianInfoServer(input,output,session,faction = "Kukulkani")
   samarianInfoServer(input,output,session,faction = "Forsaken")
@@ -39,18 +40,20 @@ server <- function(input, output, session){
     # Select card
     displayedCard <- trimws(strsplit(input$display_card, "_")[[1]][1], which = c("both"))#strsplit(input$display_card, "_")[[1]][1]
     # Display card
-    showModal(modalDialog(
-      size = "l",
-      HTML(paste0("<h4>Stat Cards for: ",displayedCard,"</h4>")),
-      fluidRow(
+    sendSweetAlert(
+      session = session,
+      html = TRUE,
+      title = HTML(paste0("Stat Cards for: ",displayedCard)),
+      text = fluidRow(
         column(width = 6,
                HTML(paste0('<img class = "custom" src = "stat_cards/',displayedCard,'_0.png">'))
-               ),
+        ),
         column(width = 6,
                HTML(paste0('<img class = "custom" src = "stat_cards/',displayedCard,'_1.png">'))
         )
-      )
-    ))
+      ),
+      type = "info"
+    )
     
   })
   
@@ -68,8 +71,9 @@ server <- function(input, output, session){
     session$sendCustomMessage('unbind-DT', 'ArmyTable') #TAG UNBIND
     
     # Generate army data frame
+    suppressWarnings(
     currentArmy <- faction.Df %>%
-      dplyr::filter(grepl(input$army_selection, Faction)) %>%
+      dplyr::filter(grepl(input$army_selection, Faction) | grepl(input$subfaction_selection, Faction)) %>%
       dplyr::filter(grepl(paste0("Unaligned|Bounty Hunter|",input$subfaction_selection), Subfaction))  %>%
       mutate(Allotment = case_when(
         Amount == "C" ~ 1,
@@ -85,9 +89,9 @@ server <- function(input, output, session){
       arrange(Subfaction, Amount) %>%
       ungroup() %>%
       group_by(Name) %>%
-      mutate(Display = HTML('<button id="',Name,'" type="button" class="btn btn-default action-button" onclick="Shiny.onInputChange(&quot;display_card&quot;,  this.id + &quot;_&quot; + Math.random())">Show Card</button>')) %>%
+      mutate(Display = (HTML('<button id="',Name,'" type="button" class="btn btn-default action-button" onclick="Shiny.onInputChange(&quot;display_card&quot;,  this.id + &quot;_&quot; + Math.random())">Show Card</button>'))) %>%
       dplyr::select(Faction,Subfaction,Name,Display,Cost,Amount,Allotment,Number)
-    
+    )
     return(currentArmy)
   })
   
@@ -130,9 +134,7 @@ server <- function(input, output, session){
     req(input$army_value)
     
     validate(
-      #need(try(length(input$army_value) != 0), "Please select a valid army point amount!"),
       need(try(as.numeric(input$army_value) / 500 > 0), "Please select a valid army point amount!")
-      
     )
     
     val <- 0
@@ -156,12 +158,9 @@ server <- function(input, output, session){
       # Enable or Disable the download button depending on army value.
       if (val > as.numeric(input$army_value) || 
           val <= 0) {
-        
-        shinyjs::disable("download_army")
-        
+        shinyjs::disable("generateArmy")
       } else {
-        
-        shinyjs::enable("download_army")
+        shinyjs::enable("generateArmy")
       }
       
       return(textString)
@@ -183,50 +182,63 @@ server <- function(input, output, session){
 
   output$Downloader <- renderUI({
     #Download only renders when a valid amount of points has been selected
+    
     validate(
       
       need(try(as.numeric(input$army_value) / 500 > 0), "")
       
     )
-    downloadButton("download_army","Download Army List")
+    
+    # downloadButton("downloadArmy","Download Army List")
+    actionButton("generateArmy","Finalize and Generate Army", icon = icon("download"))
+    
   }
   )
   
-  output$Helper <- renderUI({
-    #Helper text for users on how to use the textAreaInput
-    validate(
-      
-      need(try(as.numeric(input$army_value) / 500 > 0), "")
-      
-    )
-    helpText("If needed, place any text you",
-             "want displayed on your printout in the",
-             "text field to the right. This could include",
-             "Subfaction bonuses, Psychogenics, etc...")
-  }
-  )
+  # output$Helper <- renderUI({
+  #   #Helper text for users on how to use the textAreaInput
+  #   validate(
+  #     
+  #     need(try(as.numeric(input$army_value) / 500 > 0), "")
+  #     
+  #   )
+  #   
+  #   helpText("If needed, place any text you",
+  #            "want displayed on your printout in the",
+  #            "text field to the right. This could include",
+  #            "Subfaction bonuses, Psychogenics, etc...")
+  #   
+  # }
+  # )
   
-  output$Notesbox <- renderUI({
-    #TextAreaInput only renders when a valid amount of points has been selected.
-    validate(
-      
-      need(try(as.numeric(input$army_value) / 500 > 0), "")
-      
-    )
-    textAreaInput("army_notes",NULL,width = "100%")
-  }
-  )
+  # output$Notesbox <- renderUI({
+  #   #TextAreaInput only renders when a valid amount of points has been selected.
+  #   validate(
+  #     
+  #     need(try(as.numeric(input$army_value) / 500 > 0), "")
+  #     
+  #   )
+  #   
+  #   textAreaInput("army_notes",NULL,width = "100%")
+  # 
+  #   }
+  # )
   
   # Download Outputs ---------------------------------
   
-  output$download_army <- downloadHandler(
+  output$downloadArmy <- downloadHandler(
     filename = "Armylist.pdf",
     
     content = function(file) {
-      progress <- shiny::Progress$new()
+      
+      closeSweetAlert(session)
+      
+      progressSweetAlert(
+        session = session, id = "armyProgress",
+        title = "Generating Army",
+        display_pct = FALSE, value = 0)
       # Make sure it closes when we exit this reactive, even if there's an error
-      on.exit(progress$close())
-      progress$set(message = "Making plot", value = 0)
+      # on.exit(progress$close())
       n <- nrow(selectedArmy())
       # Normalize and Generate files ---------------------------------
       src <- normalizePath('misc/ArmyTemplate.Rmd')
@@ -238,6 +250,7 @@ server <- function(input, output, session){
       
       tempVal <- 0
       step <- 1
+      progressIterate <- 1
       
       normalizedPaths <- rep("",nrow(selectedArmy()))
       stat_name <- rep("",nrow(selectedArmy()))
@@ -262,7 +275,15 @@ server <- function(input, output, session){
           outputArmy[step,] <- characterRow
           step <- step + 1
         }
-        progress$inc(1/n, detail = paste("Checking: ", name))
+        
+        updateProgressBar(
+          session = session,
+          id = "armyProgress",
+          value = progressIterate * (100 / n), total = 100,
+          title = "Generating Army"
+        )
+        progressIterate <- progressIterate + 1
+        #progress$inc(1/n, detail = paste("Checking: ", name))
         
       }
       
@@ -279,7 +300,7 @@ server <- function(input, output, session){
       }
       
       # Render document
-      
+      tryCatch({
       out <- render('ArmyTemplate.Rmd', 
                     pdf_document(),
                     envir = new.env(),
@@ -288,13 +309,292 @@ server <- function(input, output, session){
                       Title = input$army_selection,
                       CurrentPoint =  tempVal,
                       MaxPoint = input$army_value,
-                      Notes = input$army_notes
+                      Notes = ''#input$army_notes
                     ))
       
       #Make document available for download
-      progress$close()
+      closeSweetAlert(session)
+      
+      sendSweetAlert(
+        session = session,
+        title = "Army Generated",
+        text = "Army successfully downloaded",
+        type = "success"
+      )
+      
       file.rename(out, file)
+      
+      },
+      error = function(c) {
+        closeSweetAlert(session)
+        sendSweetAlert(
+          session = session,
+          title = "Error",
+          text = "Army generation failed",
+          type = "error"
+        )
+      }
+      )
     }
   )
   
+  # output$addonUI <- renderUI({
+  #   #Download only renders when a valid amount of points has been selected
+  #   
+  #   validate(
+  #     
+  #     need(try(as.numeric(input$army_value) / 500 > 0), "")
+  #     
+  #   )
+  #   
+  #   actionButton("addOns","Upgrades & Psychogenics")
+  #   
+  # }
+  # )
+  
+  # Add-Ons : Upgrades and Psychogenics ---------------------------------
+  
+  autoReactUpgrades <- reactiveValues(selected = "")
+  autoReactPsychogenics <- reactiveValues(selected = "")
+  
+  output$upgradeUI <- renderUI({
+    
+    outputArmy <- tibble(Subfaction = character(),
+                         Name = character(),
+                         Type = character(),
+                         Value = character(),
+                         Amount = character())
+    
+    tempVal <- 0
+    step <- 1
+    
+    # Select unit subset ---------------------------------
+    
+    for (name in selectedArmy()[["Name"]]){
+      
+      tempVal <- tempVal + as.numeric(input[[name]]) * as.numeric(selectedArmy()$Cost[which(selectedArmy()[["Name"]] == name)])
+      
+      if (as.numeric(input[[name]]) >= 1){
+        sel_name <- which(selectedArmy()[["Name"]] == name)
+        characterRow <- tibble(Subfaction = as.character(selectedArmy()$Subfaction[sel_name]),
+                               Name = name,
+                               Type = case_when(
+                                 as.character(selectedArmy()$Amount[sel_name]) == "C" ~ "Character",
+                                 TRUE ~ "Unit"
+                               ),
+                               Value = as.character(selectedArmy()$Cost[sel_name]),
+                               Amount = as.character(input[[name]]))
+        outputArmy[step,] <- characterRow
+        step <- step + 1
+      }
+      
+    }
+    
+    outputTibble <<- outputArmy
+    
+    upgradeFrame <- faction.Df %>% 
+      filter(Name %in% outputArmy$Name) %>%
+      dplyr::select(Upgrade,UpgradeNum) %>%
+      filter(!is.na(Upgrade))
+    
+    validate(
+      need(nrow(upgradeFrame) != 0, HTML("No selectable Upgrades or Bio-Gens!"))
+    )
+    
+    if (any(str_detect(upgradeFrame$Upgrade,"/")) || 
+        any(str_detect(upgradeFrame$UpgradeNum,"/"))) {
+      
+      upgradeFrame <- upgradeFrame %>%
+        separate_rows(Upgrade,UpgradeNum,sep = "/")
+    }
+    
+    upgradeFrame <- upgradeFrame %>%
+      mutate(UpgradeNum = as.integer(UpgradeNum))
+    
+    autoUpgrades <- upgrades.Df %>% 
+      filter(Name %in% upgradeFrame$Upgrade) %>%
+      pull(Name)
+      
+    autoReactUpgrades$selected <- autoUpgrades
+    
+    selectableUpgrades <- upgradeFrame %>%
+      filter(!Upgrade %in% autoUpgrades) %>%
+      group_by(Upgrade) %>%
+      summarize(n = sum(UpgradeNum)) %>%
+      filter(!is.na(Upgrade))
+    
+    validate(
+      need(nrow(selectableUpgrades) != 0, HTML("No selectable Upgrades or Bio-Gens!"))
+    )
+    
+    upgradeList <- list()
+    
+    for (faction in selectableUpgrades$Upgrade) {
+      upgradeList[[faction]] <- upgrades.Df %>% filter(Faction == faction) %>% pull(Name)
+    }
+    
+    pickerInput(
+      inputId = "upgradeInput",
+      label = "Select Upgrades and Bio-Gens",
+      choices = upgradeList,
+      multiple = TRUE,
+      #selected = selectedUpgrades$selected,
+      options = list("max-options-group" = selectableUpgrades$n,
+                     "max-options-text" = "Maximum upgrades or bio-gens for this group selected")
+    )
+  })
+  
+  output$psychoUI <- renderUI({
+    
+    outputArmy <- tibble(Subfaction = character(),
+                         Name = character(),
+                         Type = character(),
+                         Value = character(),
+                         Amount = character())
+    
+    tempVal <- 0
+    step <- 1
+    
+    # Select unit subset ---------------------------------
+    
+    for (name in selectedArmy()[["Name"]]){
+      
+      tempVal <- tempVal + as.numeric(input[[name]]) * as.numeric(selectedArmy()$Cost[which(selectedArmy()[["Name"]] == name)])
+      
+      if (as.numeric(input[[name]]) >= 1){
+        sel_name <- which(selectedArmy()[["Name"]] == name)
+        characterRow <- tibble(Subfaction = as.character(selectedArmy()$Subfaction[sel_name]),
+                               Name = name,
+                               Type = case_when(
+                                 as.character(selectedArmy()$Amount[sel_name]) == "C" ~ "Character",
+                                 TRUE ~ "Unit"
+                               ),
+                               Value = as.character(selectedArmy()$Cost[sel_name]),
+                               Amount = as.character(input[[name]]))
+        outputArmy[step,] <- characterRow
+        step <- step + 1
+      }
+      
+    }
+    
+    outputTibble <<- outputArmy
+    
+    psychogenicFrame <- faction.Df %>% 
+      filter(Name %in% outputArmy$Name) %>%
+      dplyr::select(Psychogenic,PsychogenicNum) %>%
+      filter(!is.na(Psychogenic))
+    
+    validate(
+      need(nrow(psychogenicFrame) != 0, HTML("No selectable Psychogenics or Rituals!"))
+    )
+    
+    if (any(str_detect(psychogenicFrame$Psychogenic,"/")) || 
+        any(str_detect(psychogenicFrame$PsychogenicNum,"/"))) {
+      
+      psychogenicFrame <- psychogenicFrame %>%
+        separate_rows(Psychogenic,PsychogenicNum,sep = "/")
+    }
+    
+    psychogenicFrame <- psychogenicFrame %>%
+      mutate(PsychogenicNum = as.integer(PsychogenicNum))
+    
+    autoPsychogenics <- psychogenic.Df %>% 
+      filter(Name %in% psychogenicFrame$Psychogenic) %>%
+      pull(Name)
+    
+    autoReactPsychogenics$selected <- autoPsychogenics
+    
+    selectablePsychogenics <- psychogenicFrame %>%
+      filter(!Psychogenic %in% autoPsychogenics) %>%
+      group_by(Psychogenic) %>%
+      summarize(n = sum(PsychogenicNum)) %>%
+      filter(!is.na(Psychogenic))
+    
+    if (any(selectablePsychogenics$n == 0)) {
+      autoIncludes <- psychogenic.Df %>%
+        filter(Faction == selectablePsychogenics %>%
+        filter(n == 0) %>%
+        pull(Psychogenic)) %>%
+        filter(Subfaction == "Unaligned") %>%
+        pull(Name) %>%
+        append(autoPsychogenics)
+      
+      autoReactPsychogenics$selected <- autoIncludes
+    }
+    
+    selectablePsychogenics <- selectablePsychogenics %>%
+      filter(n != 0)
+    
+    validate(
+      need(nrow(selectablePsychogenics) != 0, HTML("No selectable Psychogenics or Rituals!"))
+    )
+    
+    psychogenicList <- list()
+    
+    for (faction in selectablePsychogenics$Psychogenic) {
+      psychogenicList[[faction]] <- psychogenic.Df %>% 
+        filter(Faction == input$army_selection) %>% 
+        filter(Subfaction == faction) %>%
+        pull(Name)
+    }
+    
+    pickerInput(
+      inputId = "psychogenicInput",
+      label = "Select Psychogenics",
+      choices = psychogenicList,
+      multiple = TRUE,
+      #selected = selectedPsychogenics$selected,
+      options = list("max-options-group" = selectablePsychogenics$n,
+                     "max-options-text" = "Maximum psychogenics for this group selected")
+    )
+  })
+  
+  # Add-Ons Modal ---------------------------------
+  
+  observeEvent(input$generateArmy,{
+    
+    sendSweetAlert(
+      session = session,
+      html = TRUE,
+      title = 'Finalize Army',
+      text = tagList(fluidRow(
+        # Upgrades
+        column(width = 6,
+               HTML("<center>"),
+               uiOutput("upgradeUI"),
+               HTML("</center>")),
+        # Psychogenics
+        column(width = 6,
+               HTML("<center>"),
+               uiOutput("psychoUI"),
+               HTML("</center>"))),
+        hr(),
+        fluidRow(
+        column(width = 6,
+               HTML("<center>"),
+                  pickerInput('fileType','Select Download Type',choices = c("Full","Reference"),selected = "Full"),
+               HTML("</center>")),
+        column(width = 6,
+               div(class = "vertAlign",
+                   HTML("<center>"),
+                   downloadButton('downloadArmy','Download Army'),
+                   HTML("</center>")
+               )
+        ))
+      ),
+      btn_labels = c('Dismiss'),
+      type = "warning"
+    )
+    
+  })
+  
+  
+  
+  
+  # observeEvent(input$saveUpgrades,{
+  #   selectedUpgrades$selected <- input$upgradeInput
+  #   selectedPsychogenics$selected <- input$psychogenicInput
+  #   
+  #   removeModal()
+  # })
 }

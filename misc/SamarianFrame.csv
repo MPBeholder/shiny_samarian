@@ -1,243 +1,243 @@
-Faction,Subfaction,Name,Cost,Amount
-Dragyri,Air,Yovanka,200,C
-Dragyri,Air,Mha'Kin'Zhi,150,C
-Dragyri,Air,Storm Elemental,200,1
-Dragyri,Air,Death's Device of Air,150,3
-Dragyri,Air,Spirit Lord of Air,150,1
-Dragyri,Air,Cyclone,100,3
-Dragyri,Air,Soul Warden,75,1
-Dragyri,Air,Squall,75,3
-Dragyri,Air,Tempest,75,3
-Dragyri,Air,Wail,75,3
-Dragyri,Air,Whisper,75,3
-Dragyri,Air,Disc Slave,50,4
-Dragyri,Air,Taskmaster (Earth),50,1
-Dragyri,Air,Zephyr,50,3
-Dragyri,Air,Shard Slave (Air),25,3
-Dragyri,Air,Sling Slave (Air),25,3
-Dragyri,Air,Spear Slave (Air),25,6
-Outcasts,Bounty Hunter,Captain Flay,175,C
-C.O.R.E/Brood,Bounty Hunter,Aren,125,C
-C.O.R.E/Brood,Bounty Hunter,C.O.R.E Hound,0,C
-Outcasts,Bounty Hunter,Jarl Ramsaur,125,C
-Brood/C.O.R.E/Dragyri/Forsaken/Kukulkani/Outcasts/Skarrd,Bounty Hunter,Onyx,125,C
-Outcasts,Bounty Hunter,Blades (Bounty Hunter),100,C
-Forsaken/Outcasts/Skarrd,Bounty Hunter,Gristle,100,C
-Brood/Outcasts,Bounty Hunter,Irinya,100,C
-Outcasts,Bounty Hunter,Phadras & Maximo,125,C
-Outcasts/Skarrd,Bounty Hunter,Suzy Belle & Wroth,200,C
-Forsaken/Outcasts/Skarrd,Bounty Hunter,Cesspool,75,C
-Outcasts,Bounty Hunter,Dedlock,75,C
-Outcasts,Bounty Hunter,John 'Clank' Carter,75,C
-Outcasts,Bounty Hunter,Lucky,75,C
-Outcasts,Bounty Hunter,Nathaniel & Orchid,75,C
-Outcasts,Bounty Hunter,Old Ma,75,C
-Kukulkani/Skarrd,Bounty Hunter,Skars,75,C
-Dragyri/Forsaken/Outcasts,Bounty Hunter,X'Cess,75,C
-Outcasts,Bounty Hunter,Talen Scouts,50,3
-Outcasts,Bounty Hunter,Trent Enforcers,50,4
-Dragyri,Unaligned,Aether Lord,0,*
-Dragyri,Unaligned,Aether Wisp,0,*
-Dragyri,Earth,San'Triahn,200,C
-Dragyri,Earth,Ghrakun,150,C
-Dragyri,Earth,Greater Avalanche Elemental,200,1
-Dragyri,Earth,Spirit Lord of Earth,150,2
-Dragyri,Earth,Quake,100,3
-Dragyri,Earth,Bedrock Sentry,75,2
-Dragyri,Earth,Fissure,75,3
-Dragyri,Earth,Pillar,75,3
-Dragyri,Earth,Soul Warden,75,1
-Dragyri,Earth,Mattock Slave,50,6
-Dragyri,Earth,Taskmaster (Earth),50,1
-Dragyri,Earth,Shard Slave (Earth),25,3
-Dragyri,Earth,Sling Slave (Earth),25,3
-Dragyri,Earth,Spear Slave (Earth),25,6
-Dragyri,Fire,Rath'Zhi,200,C
-Dragyri,Fire,Jza'Mhi,150,C
-Dragyri,Fire,Fire Elemental,200,1
-Dragyri,Fire,Enforcer of Judgment,175,1
-Dragyri,Fire,Spirit Lord of Fire,150,1
-Dragyri,Fire,Inferno,100,4
-Dragyri,Fire,Cinder Slave,25,4
-Dragyri,Fire,Brimstone,75,3
-Dragyri,Fire,Pyre,75,4
-Dragyri,Fire,Soul Warden,75,1
-Dragyri,Fire,Volcanic Helot,75,3
-Dragyri,Fire,Volcanic Phalanx,75,3
-Dragyri,Fire,Artificer of the Alteghran,50,1
-Dragyri,Fire,Cavewing Slyth,50,4
-Dragyri,Fire,Razor Slyth,50,4
-Dragyri,Fire,Taskmaster (Fire),50,1
-Dragyri,Fire,Shard Slave (Fire),25,3
-Dragyri,Fire,Sling Slave (Fire),25,3
-Dragyri,Fire,Spear Slave (Fire),25,6
-Dragyri,Fire,Ember,0,*
-Dragyri,Ice,Luck'Kit'Kaii,200,C
-Dragyri,Ice,Dah'Vid,100,C
-Dragyri,Ice,Ice Elemental,200,1
-Dragyri,Ice,Death's Device of Ice,150,3
-Dragyri,Ice,Spirit Lord of Ice,150,1
-Dragyri,Ice,Frostbite,100,3
-Dragyri,Ice,Blizzard,75,3
-Dragyri,Ice,Soul Searcher,75,3
-Dragyri,Ice,Soul Splitter,75,2
-Dragyri,Ice,Soul Warden,75,1
-Dragyri,Ice,Hail Kin,50,3
-Dragyri,Ice,Taskmaster (Ice),50,1
-Dragyri,Ice,Shard Slave (Ice),25,3
-Dragyri,Ice,Sling Slave (Ice),25,3
-Dragyri,Ice,Spear Slave (Ice),25,6
-Kukulkani,Unaligned,Quetzol,175,C
-Kukulkani,Unaligned,Ixchel,150,C
-Kukulkani,Unaligned,Chac Xib,100,C
-Kukulkani,Unaligned,Cabrakan,200,1
-Kukulkani,Unaligned,Coatlai,150,1
-Kukulkani,Unaligned,Supreme War Captain,125,1
-Kukulkani,Unaligned,Tuucha'nak,125,2
-Kukulkani,Unaligned,Ah'Chu'Kuk,100,3
-Kukulkani,Unaligned,Coatlanak,100,2
-Kukulkani,Unaligned,Living Ancestor,100,1
-Kukulkani,Unaligned,War Priest,100,1
-Kukulkani,Unaligned,Balam,75,4
-Kukulkani,Unaligned,Chosen of the Coatlai,75,4
-Kukulkani,Unaligned,Doom Seer,75,3
-Kukulkani,Unaligned,Honored Dead,75,4
-Kukulkani,Unaligned,Honor Guard,75,3
-Kukulkani,Unaligned,Moon Warrior,75,4
-Kukulkani,Unaligned,Sun Warrior,75,4
-Kukulkani,Unaligned,Devoted Priest,50,3
-Kukulkani,Unaligned,Kaachika,50,4
-Kukulkani,Unaligned,Kukulkani Warrior,50,6
-Kukulkani,Unaligned,Ocelotl,50,4
-Kukulkani,Unaligned,Technomantic Apprentice,50,3
-Kukulkani,Unaligned,Harvester,25,4
-Dragyri,Shadow,Amabilia,200,C
-Dragyri,Shadow,Huntress,175,C
-Dragyri,Shadow,Hood (Shadow),150,C
-Dragyri,Shadow,Umbra Shadow Elemental,200,1
-Dragyri,Shadow,Death's Device of Shadow,150,3
-Dragyri,Shadow,Goliath,150,1
-Dragyri,Shadow,Spirit Lord of Shadow,150,1
-Dragyri,Shadow,Keeper,100,2
-Dragyri,Shadow,Strega,100,1
-Dragyri,Shadow,Vespa,100,2
-Dragyri,Shadow,Gatherer,75,3
-Dragyri,Shadow,Havik,75,2
-Dragyri,Shadow,Naedrae,75,3
-Dragyri,Shadow,Raaf,75,4
-Dragyri,Shadow,Shadowfinder Bot,75,1
-Dragyri,Shadow,Soul Warden,75,1
-Dragyri,Shadow,Greater Spiderling,50,2
-Dragyri,Shadow,Lesser Spiderling,25,4
-Dragyri,Shadow,Shadow Menial,25,3
-C.O.R.E,Unaligned,ICON-CL457,200,C
-C.O.R.E,Unaligned,Centurion,150,C
-C.O.R.E,Unaligned,L1ghtBr1nger,150,C
-C.O.R.E,Unaligned,Banshee,125,C
-C.O.R.E,Unaligned,Nexus,75,C
-C.O.R.E,Unaligned,Churgeon,150,1
-C.O.R.E,Unaligned,Tyrrex-3,175,1
-C.O.R.E,Unaligned,Recovery Unit,150,1
-C.O.R.E,Unaligned,Tseudo,125,1
-C.O.R.E,Unaligned,DRG-Y,100,3
-C.O.R.E,Unaligned,Pathfinder MK-I,100,2
-C.O.R.E,Unaligned,Pathfinder MK-II,100,2
-C.O.R.E,Unaligned,TB-13,100,2
-C.O.R.E,Unaligned,Thumper,100,2
-C.O.R.E,Unaligned,Ghost,75,1
-C.O.R.E,Unaligned,Legionary,75,2
-C.O.R.E,Unaligned,Rend,75,3
-C.O.R.E,Unaligned,Tallman,75,2
-C.O.R.E,Unaligned,Titan Menial,75,2
-C.O.R.E,Unaligned,Zetamax,75,3
-C.O.R.E,Unaligned,Grotesque,50,4
-C.O.R.E,Unaligned,Infiltrator,50,4
-C.O.R.E,Unaligned,L-CST,50,4
-C.O.R.E,Unaligned,Raptr-7,50,4
-C.O.R.E,Unaligned,Repair Menial,50,2
-C.O.R.E,Unaligned,Menial Bot,25,6
-C.O.R.E,Unaligned,Spartan Menial,25,3
-C.O.R.E,Unaligned,Welder Drone,25,4
-Brood,Broodmere Spawn,Scion,150,C
-Brood,Broodmere Spawn,Howler,200,1
-Brood,Broodmere Spawn,Bloat,100,2
-Brood,Broodmere Spawn,Gazelle,75,4
-Brood,Broodmere Spawn,Lasher,75,4
-Brood,Broodmere Spawn,Plight,75,4
-Brood,Broodmere Spawn,Alpha Broodling,50,2
-Brood,Broodmere Spawn,Mucous Bloatling,50,4
-Brood,Broodmere Spawn,Broodling,25,6
-Brood,Unaligned,Murtros,150,C
-Brood,Unaligned,Numbskull,150,1
-Brood,Unaligned,Mandible,100,1
-Brood,Unaligned,Pud Swarm,100,2
-Brood,Unaligned,Sawblade,100,4
-Brood,Unaligned,Pod,75,2
-Brood,Unaligned,Pud Thrower,75,4
-Brood,Unaligned,Grist,50,4
-Brood,Unaligned,Ratchet,50,4
-Brood,Unaligned,Broodhound,50,4
-Brood,Unaligned,Pud Roamer,0,*
-Brood,Progeny,Progeny Prime,200,C
-Brood,Progeny,MJB-4,150,C
-Brood,Progeny,Death Harvester,200,1
-Brood,Progeny,Twilight Stalker,125,1
-Brood,Progeny,Basilisk,100,2
-Brood,Progeny,Berserker,75,3
-Brood,Progeny,Gorgon,75,2
-Brood,Progeny,Marsh Leaper,50,4
-Brood,Progeny,Scavenger Leech,25,6
-Skarrd,Blood,Father Mayhem,150,C
-Skarrd,Blood,Red,100,C
-Skarrd,Blood,Blood Abomination,200,1
-Skarrd,Blood,Keepsake,75,1
-Skarrd,Blood,Blood Mistress,50,4
-Skarrd,Blood,Blood Reign,50,1
-Skarrd,Blood,Puppet,25,4
-Skarrd,Decay,The Marius Project,150,C
-Skarrd,Decay,Mother Blazon,150,C
-Skarrd,Decay,Decay Abomination,200,1
-Skarrd,Decay,Dishonor,100,2
-Skarrd,Decay,Fallout,75,4
-Skarrd,Decay,Reaper,75,2
-Skarrd,Decay,Macabre,50,4
-Skarrd,Decay,Flesh Echo,25,6
-Skarrd,Metamorphosis,Father Johann,150,C
-Skarrd,Metamorphosis,Quietus,100,C
-Skarrd,Metamorphosis,Dexus,100,C
-Skarrd,Metamorphosis,Dominique,75,C
-Skarrd,Metamorphosis,Juggernaut,200,1
-Skarrd,Metamorphosis,Nightmare Juggernaut,150,1
-Skarrd,Metamorphosis,Thrall,75,1
-Skarrd,Metamorphosis,Fallen Angel,50,4
-Skarrd,Metamorphosis,Grafter's Apprentice,50,2
-Skarrd,Metamorphosis,Dominique's Chalica,0,*
-Skarrd,Toxic,Father Curwen,150,C
-Skarrd,Toxic,Leisa,100,C
-Skarrd,Toxic,Hoodoo,75,C
-Skarrd,Toxic,Toxic Abomination,200,1
-Skarrd,Toxic,Kaustic,50,2
-Skarrd,Toxic,Toxic Mistress,50,4
-Skarrd,Unaligned,Raze,200,C
-Skarrd,Unaligned,Jon Woe,150,C
-Skarrd,Unaligned,ANG-IE,100,C
-Skarrd,Unaligned,Saber,100,C
-Skarrd,Unaligned,Blazon,75,C
-Skarrd,Unaligned,Abomination,200,1
-Skarrd,Unaligned,Warhead,175,2
-Skarrd,Unaligned,Golab,100,3
-Skarrd,Unaligned,Tribal Father,100,1
-Skarrd,Unaligned,Worm Shepherd,75,1
-Skarrd,Unaligned,Disciples of Raze,75,3
-Skarrd,Unaligned,Drillhead,75,3
-Skarrd,Unaligned,Grafter,75,1
-Skarrd,Unaligned,Bone Doc,75,1
-Skarrd,Unaligned,Sister of Charity,75,1
-Skarrd,Unaligned,Harpy,50,6
-Skarrd,Unaligned,Fell Pack,50,2
-Skarrd,Unaligned,Fetish Bearer,50,1
-Skarrd,Unaligned,Scourge,50,2
-Skarrd,Unaligned,Warblade,50,4
+Faction,Subfaction,Name,Cost,Amount,Upgrade,UpgradeNum,Psychogenic,PsychogenicNum
+Dragyri,Air,Yovanka,200,C,,,Air/Unaligned,3
+Dragyri,Air,Mha'Kin'Zhi,150,C,,,,
+Dragyri,Air,Storm Elemental,200,1,,,,
+Dragyri,Air,Death's Device of Air,150,3,,,,
+Dragyri,Air,Spirit Lord of Air,150,1,,,Air/Unaligned,2
+Dragyri,Air,Cyclone,100,3,,,Bladewind,1
+Dragyri,Air,Soul Warden (Air),75,1,,,Air/Unaligned,3
+Dragyri,Air,Squall,75,3,,,,
+Dragyri,Air,Tempest,75,3,,,,
+Dragyri,Air,Wail,75,3,,,Screaming Gale,1
+Dragyri,Air,Whisper,75,3,,,Shifting Crosswind,1
+Dragyri,Air,Disc Slave,50,4,,,,
+Dragyri,Air,Taskmaster (Earth),50,1,,,,
+Dragyri,Air,Zephyr,50,3,,,,
+Dragyri,Air,Shard Slave (Air),25,3,,,,
+Dragyri,Air,Sling Slave (Air),25,3,,,,
+Dragyri,Air,Spear Slave (Air),25,6,,,,
+Outcasts,Bounty Hunter,Captain Flay,175,C,,,,
+C.O.R.E/Brood,Bounty Hunter,Aren,125,C,C.O.R.E/Brood,1/1,,
+C.O.R.E/Brood,Bounty Hunter,C.O.R.E Hound,0,C,,,,
+Outcasts,Bounty Hunter,Jarl Ramsaur,125,C,,,,
+Brood/C.O.R.E/Dragyri/Forsaken/Kukulkani/Outcasts/Skarrd,Bounty Hunter,Onyx,125,C,,,,
+Outcasts,Bounty Hunter,Blades (Bounty Hunter),100,C,,,,
+Forsaken/Outcasts/Skarrd,Bounty Hunter,Gristle,100,C,,,,
+Brood/Outcasts,Bounty Hunter,Irinya,100,C,,,Brood,1
+Outcasts,Bounty Hunter,Phadras & Maximo,125,C,,,,
+Outcasts/Skarrd,Bounty Hunter,Suzy Belle & Wroth,200,C,,,,
+Forsaken/Outcasts/Skarrd,Bounty Hunter,Cesspool,75,C,,,,
+Outcasts,Bounty Hunter,Dedlock,75,C,,,,
+Outcasts,Bounty Hunter,John 'Clank' Carter,75,C,,,,
+Outcasts,Bounty Hunter,Lucky,75,C,,,,
+Outcasts,Bounty Hunter,Nathaniel & Orchid,75,C,,,,
+Outcasts,Bounty Hunter,Old Ma,75,C,,,,
+Kukulkani/Skarrd,Bounty Hunter,Skars,75,C,,,,
+Air/Forsaken/Outcasts,Bounty Hunter,X'Cess,75,C,,,,
+Outcasts,Bounty Hunter,Talen Scouts,50,3,,,,
+Outcasts,Bounty Hunter,Trent Enforcers,50,4,,,,
+Dragyri,Unaligned,Aether Lord,0,*,,,,
+Dragyri,Unaligned,Aether Wisp,0,*,,,,
+Dragyri,Earth,San'Triahn,200,C,,,Earth/Unaligned,3
+Dragyri,Earth,Ghrakun,150,C,,,Earth/Unaligned,2
+Dragyri,Earth,Greater Avalanche Elemental,200,1,,,,
+Dragyri,Earth,Spirit Lord of Earth,150,2,,,Earth/Unaligned,2
+Dragyri,Earth,Quake,100,3,,,,
+Dragyri,Earth,Bedrock Sentry,75,2,,,,
+Dragyri,Earth,Fissure,75,3,,,,
+Dragyri,Earth,Pillar,75,3,,,Center Of Gravity,1
+Dragyri,Earth,Soul Warden (Earth),75,1,,,Earth/Unaligned,3
+Dragyri,Earth,Mattock Slave,50,6,,,,
+Dragyri,Earth,Taskmaster (Earth),50,1,,,,
+Dragyri,Earth,Shard Slave (Earth),25,3,,,,
+Dragyri,Earth,Sling Slave (Earth),25,3,,,,
+Dragyri,Earth,Spear Slave (Earth),25,6,,,,
+Dragyri,Fire,Rath'Zhi,200,C,,,,
+Dragyri,Fire,Jza'Mhi,150,C,,,Fire/Unaligned,3
+Dragyri,Fire,Fire Elemental,200,1,,,,
+Dragyri,Fire,Enforcer of Judgment,175,1,,,,
+Dragyri,Fire,Spirit Lord of Fire,150,1,,,Fire,1
+Dragyri,Fire,Inferno,100,4,,,,
+Dragyri,Fire,Cinder Slave,25,4,,,,
+Dragyri,Fire,Brimstone,75,3,,,,
+Dragyri,Fire,Pyre,75,4,,,,
+Dragyri,Fire,Soul Warden (Fire),75,1,,,Fire/Unaligned,3
+Dragyri,Fire,Volcanic Helot,75,3,,,Fiery Resolve,1
+Dragyri,Fire,Volcanic Phalanx,75,3,,,Shield Of Hatred,1
+Dragyri,Fire,Artificer of the Alteghran,50,1,,,,
+Dragyri,Fire,Cavewing Slyth,50,4,,,,
+Dragyri,Fire,Razor Slyth,50,4,,,,
+Dragyri,Fire,Taskmaster (Fire),50,1,,,,
+Dragyri,Fire,Shard Slave (Fire),25,3,,,,
+Dragyri,Fire,Sling Slave (Fire),25,3,,,,
+Dragyri,Fire,Spear Slave (Fire),25,6,,,,
+Dragyri,Fire,Ember,0,*,,,,
+Dragyri,Ice,Luck'Kit'Kaii,200,C,,,,
+Dragyri,Ice,Dah'Vid,100,C,,,,
+Dragyri,Ice,Ice Elemental,200,1,,,,
+Dragyri,Ice,Death's Device of Ice,150,3,,,,
+Dragyri,Ice,Spirit Lord of Ice,150,1,,,Ice/Unaligned,2
+Dragyri,Ice,Frostbite,100,3,,,Icy Resolve,1
+Dragyri,Ice,Blizzard,75,3,,,Chilling Grasp,1
+Dragyri,Ice,Soul Searcher,75,3,,,,
+Dragyri,Ice,Soul Splitter,75,2,,,Obscuring Fog,1
+Dragyri,Ice,Soul Warden (Ice),75,1,,,Ice/Unaligned,3
+Dragyri,Ice,Hail Kin,50,3,,,,
+Dragyri,Ice,Taskmaster (Ice),50,1,,,,
+Dragyri,Ice,Shard Slave (Ice),25,3,,,,
+Dragyri,Ice,Sling Slave (Ice),25,3,,,,
+Dragyri,Ice,Spear Slave (Ice),25,6,,,,
+Kukulkani,Unaligned,Quetzol,175,C,,,,
+Kukulkani,Unaligned,Ixchel,150,C,,,Kukulkani/Gaze Of The Moon Goddess,0/1
+Kukulkani,Unaligned,Chac Xib,100,C,,,Kukulkani,0
+Kukulkani,Unaligned,Cabrakan,200,1,,,Kukulkani,0
+Kukulkani,Unaligned,Coatlai,150,1,,,,
+Kukulkani,Unaligned,Supreme War Captain,125,1,,,,
+Kukulkani,Unaligned,Tuucha'nak,125,2,,,,
+Kukulkani,Unaligned,Ah'Chu'Kuk,100,3,,,,
+Kukulkani,Unaligned,Coatlanak,100,2,,,,
+Kukulkani,Unaligned,Living Ancestor,100,1,,,,
+Kukulkani,Unaligned,War Priest,100,1,,,Kukulkani,0
+Kukulkani,Unaligned,Balam,75,4,,,,
+Kukulkani,Unaligned,Chosen of the Coatlai,75,4,,,,
+Kukulkani,Unaligned,Doom Seer,75,3,,,,
+Kukulkani,Unaligned,Honored Dead,75,4,,,,
+Kukulkani,Unaligned,Honor Guard,75,3,,,,
+Kukulkani,Unaligned,Moon Warrior,75,4,,,,
+Kukulkani,Unaligned,Sun Warrior,75,4,,,,
+Kukulkani,Unaligned,Devoted Priest,50,3,,,Kukulkani,0
+Kukulkani,Unaligned,Kaachika,50,4,,,,
+Kukulkani,Unaligned,Kukulkani Warrior,50,6,,,,
+Kukulkani,Unaligned,Ocelotl,50,4,,,,
+Kukulkani,Unaligned,Technomantic Apprentice,50,3,,,Open The Void Road,1
+Kukulkani,Unaligned,Harvester,25,4,,,,
+Dragyri,Shadow,Amabilia,200,C,,,Shadow/Unaligned,3
+Dragyri,Shadow,Huntress,175,C,,,Ensnaring Webs,1
+Dragyri,Shadow,Hood (Shadow),150,C,,,Shadow/Unaligned,2
+Dragyri,Shadow,Umbra Shadow Elemental,200,1,,,,
+Dragyri,Shadow,Death's Device of Shadow,150,3,,,,
+Dragyri,Shadow,Goliath,150,1,,,,
+Dragyri,Shadow,Spirit Lord of Shadow,150,1,,,Shadow/Unaligned,2
+Dragyri,Shadow,Keeper,100,2,,,Call To Darkness,1
+Dragyri,Shadow,Strega,100,1,,,Shadow/Unaligned,2
+Dragyri,Shadow,Vespa,100,2,,,,
+Dragyri,Shadow,Gatherer,75,3,,,Shadewalk,1
+Dragyri,Shadow,Havik,75,2,,,,
+Dragyri,Shadow,Naedrae,75,3,,,Ghostform,1
+Dragyri,Shadow,Raaf,75,4,,,,
+Dragyri,Shadow,Shadowfinder Bot,75,1,,,,
+Dragyri,Shadow,Soul Warden (Shadow),75,1,,,Shadow/Unaligned,3
+Dragyri,Shadow,Greater Spiderling,50,2,,,,
+Dragyri,Shadow,Lesser Spiderling,25,4,,,,
+Dragyri,Shadow,Shadow Menial,25,3,,,,
+C.O.R.E,Unaligned,ICON-CL457,200,C,C.O.R.E,2,,
+C.O.R.E,Unaligned,Centurion,150,C,C.O.R.E,1,,
+C.O.R.E,Unaligned,L1ghtBr1nger,150,C,,,,
+C.O.R.E,Unaligned,Banshee,125,C,C.O.R.E,1,,
+C.O.R.E,Unaligned,Nexus,75,C,C.O.R.E,2,,
+C.O.R.E,Unaligned,Churgeon,150,1,C.O.R.E,1,,
+C.O.R.E,Unaligned,Tyrrex-3,175,1,Void Battery,1,,
+C.O.R.E,Unaligned,Recovery Unit,150,1,C.O.R.E,1,,
+C.O.R.E,Unaligned,Tseudo,125,1,Shield Generator,1,,
+C.O.R.E,Unaligned,DRG-Y,100,3,,,,
+C.O.R.E,Unaligned,Pathfinder MK-I,100,2,,,,
+C.O.R.E,Unaligned,Pathfinder MK-II,100,2,,,,
+C.O.R.E,Unaligned,TB-13,100,2,,
+C.O.R.E,Unaligned,Thumper,100,2,,
+C.O.R.E,Unaligned,Ghost,75,1,,
+C.O.R.E,Unaligned,Legionary,75,2,,
+C.O.R.E,Unaligned,Rend,75,3,,
+C.O.R.E,Unaligned,Tallman,75,2,,
+C.O.R.E,Unaligned,Titan Menial,75,2,,
+C.O.R.E,Unaligned,Zetamax,75,3,,
+C.O.R.E,Unaligned,Grotesque,50,4,Consumption Engine,1
+C.O.R.E,Unaligned,Infiltrator,50,4,,
+C.O.R.E,Unaligned,L-CST,50,4,,
+C.O.R.E,Unaligned,Raptr-7,50,4,,
+C.O.R.E,Unaligned,Repair Menial,50,2,,
+C.O.R.E,Unaligned,Menial Bot,25,6,,
+C.O.R.E,Unaligned,Spartan Menial,25,3,,
+C.O.R.E,Unaligned,Welder Drone,25,4,,
+Brood,Broodmere Spawn,Scion,150,C,Brood,1
+Brood,Broodmere Spawn,Howler,200,1,,
+Brood,Broodmere Spawn,Bloat,100,2,Brood,1
+Brood,Broodmere Spawn,Gazelle,75,4,,
+Brood,Broodmere Spawn,Lasher,75,4,Chameleonic Flesh,1
+Brood,Broodmere Spawn,Plight,75,4,Acid Blood,1
+Brood,Broodmere Spawn,Alpha Broodling,50,2,,
+Brood,Broodmere Spawn,Mucous Bloatling,50,4,,
+Brood,Broodmere Spawn,Broodling,25,6,,
+Brood,Unaligned,Murtros,150,C,Brood,1
+Brood,Unaligned,Numbskull,150,1,,
+Brood,Unaligned,Mandible,100,1,Brood,1
+Brood,Unaligned,Pud Swarm,100,2,,
+Brood,Unaligned,Sawblade,100,4,Acid Blood,1
+Brood,Unaligned,Pod,75,2,,
+Brood,Unaligned,Pud Thrower,75,4,,
+Brood,Unaligned,Grist,50,4,,,,
+Brood,Unaligned,Ratchet,50,4,,,,
+Brood,Unaligned,Broodhound,50,4,,,,
+Brood,Unaligned,Pud Roamer,0,*,,,,
+Brood,Progeny,Progeny Prime,200,C,,,Brood,3
+Brood,Progeny,MJB-4,150,C,Brood,1,,
+Brood,Progeny,Death Harvester,200,1,Resin Spinneret,1,,
+Brood,Progeny,Twilight Stalker,125,1,,,,
+Brood,Progeny,Basilisk,100,2,,,,
+Brood,Progeny,Berserker,75,3,,,,
+Brood,Progeny,Gorgon,75,2,,,,
+Brood,Progeny,Marsh Leaper,50,4,,,,
+Brood,Progeny,Scavenger Leech,25,6,,,,
+Skarrd,Blood,Father Mayhem,150,C,,,Blood,3
+Skarrd,Blood,Red,100,C,,,,
+Skarrd,Blood,Blood Abomination,200,1,,,,
+Skarrd,Blood,Keepsake,75,1,,,Blood,2
+Skarrd,Blood,Blood Mistress,50,4,,,,
+Skarrd,Blood,Blood Reign,50,1,,,,
+Skarrd,Blood,Puppet,25,4,,,,
+Skarrd,Decay,The Marius Project,150,C,,,,
+Skarrd,Decay,Mother Blazon,150,C,,,Decay,3
+Skarrd,Decay,Decay Abomination,200,1,,,,
+Skarrd,Decay,Dishonor,100,2,,,,
+Skarrd,Decay,Fallout,75,4,,,Unearthly Glow,1
+Skarrd,Decay,Reaper,75,2,,,Decay,2
+Skarrd,Decay,Macabre,50,4,,,,
+Skarrd,Decay,Flesh Echo,25,6,,,,
+Skarrd,Metamorphosis,Father Johann,150,C,,,Metamorphosis,3
+Skarrd,Metamorphosis,Quietus,100,C,,,Metamorphosis,2
+Skarrd,Metamorphosis,Dexus,100,C,,,,
+Skarrd,Metamorphosis,Dominique,75,C,,,,
+Skarrd,Metamorphosis,Juggernaut,200,1,,,,
+Skarrd,Metamorphosis,Nightmare Juggernaut,150,1,,,,
+Skarrd,Metamorphosis,Thrall,75,1,,,Metamorphosis,2
+Skarrd,Metamorphosis,Fallen Angel,50,4,,,Master Of Metal,1
+Skarrd,Metamorphosis,Grafter's Apprentice,50,2,,,Metamorphosis,1
+Skarrd,Metamorphosis,Dominique's Chalica,0,*,,,,
+Skarrd,Toxic,Father Curwen,150,C,,,Toxic,3
+Skarrd,Toxic,Leisa,100,C,,,,
+Skarrd,Toxic,Hoodoo,75,C,,,Toxic,2
+Skarrd,Toxic,Toxic Abomination,200,1,,,,
+Skarrd,Toxic,Kaustic,50,2,,,,
+Skarrd,Toxic,Toxic Mistress,50,4,,,,
+Skarrd,Unaligned,Raze,200,C,,,,
+Skarrd,Unaligned,Jon Woe,150,C,,,,
+Skarrd,Unaligned,ANG-IE,100,C,,,,
+Skarrd,Unaligned,Saber,100,C,,,,
+Skarrd,Unaligned,Blazon,75,C,,,Mad Visions,1
+Skarrd,Unaligned,Abomination,200,1,,,,
+Skarrd,Unaligned,Warhead,175,2,,,,
+Skarrd,Unaligned,Golab,100,3,,,,
+Skarrd,Unaligned,Tribal Father,100,1,,,Unaligned,2
+Skarrd,Unaligned,Worm Shepherd,75,1,,,Psychogenic Backlash,1
+Skarrd,Unaligned,Disciples of Raze,75,3,,,,
+Skarrd,Unaligned,Drillhead,75,3,,,,
+Skarrd,Unaligned,Grafter,75,1,,,,
+Skarrd,Unaligned,Bone Doc,75,1,,,Unaligned,3
+Skarrd,Unaligned,Sister of Charity,75,1,,,,
+Skarrd,Unaligned,Harpy,50,6,,,,
+Skarrd,Unaligned,Fell Pack,50,2,,,,
+Skarrd,Unaligned,Fetish Bearer,50,1,,,Unaligned,1
+Skarrd,Unaligned,Scourge,50,2,,,,
+Skarrd,Unaligned,Warblade,50,4,,,,
 Skarrd,Unaligned,Buzzblade,25,6
 Skarrd,Unaligned,Charity's Might,0,*
 Skarrd,Unaligned,Charity's Zeal,0,*
@@ -270,22 +270,22 @@ Forsaken,Isaac,Captain Cora Machariel,100,C
 Forsaken,Isaac,Prometheus,150,2
 Forsaken,Isaac,AJAX Exo-Frame,125,2
 Forsaken,Isaac,Helldiver Shock Trooper,100,2
-Forsaken,Isaac,Centipede,75,4
-Forsaken,Isaac,Controller,50,6
-Forsaken,Heretic,The Scorpius,200,C
-Forsaken,Heretic,Saint Johann,150,C
-Forsaken,Heretic,Jon Woe,150,C
-Forsaken,Heretic,ANG-IE,100,C
-Forsaken,Heretic,Quietus,100,C
-Forsaken,Heretic,Dexus,75,C
-Forsaken,Heretic,Dominique,75,C
-Forsaken,Heretic,Harboya,75,C
-Forsaken,Heretic,Worm Shepherd,75,1
-Forsaken,Joan,Saint Joan,200,C
-Forsaken,Joan,The Grey Lady,175,C
-Forsaken,Joan,Saint Joan (Inquisitor),150,C
-Forsaken,Joan,Ariel,75,C
-Forsaken,Joan,Salome,75,C
+Forsaken,Isaac,Centipede,75,4,,,,
+Forsaken,Isaac,Controller,50,6,,,,
+Forsaken,Heretic,The Scorpius,200,C,,,,
+Forsaken,Heretic,Saint Johann,150,C,,,,
+Forsaken,Heretic,Jon Woe,150,C,,,,
+Forsaken,Heretic,ANG-IE,100,C,,,,
+Forsaken,Heretic,Quietus,100,C,,,,
+Forsaken,Heretic,Dexus,75,C,,,,
+Forsaken,Heretic,Dominique,75,C,,,,
+Forsaken,Heretic,Harboya,75,C,,,,
+Forsaken,Heretic,Worm Shepherd,75,1,,,Psychogenic Backlash,1
+Forsaken,Joan,Saint Joan,200,C,,,Joan,3
+Forsaken,Joan,The Grey Lady,175,C,,,,
+Forsaken,Joan,Saint Joan (Inquisitor),150,C,,,Joan,3
+Forsaken,Joan,Ariel,75,C,,,,
+Forsaken,Joan,Salome,75,C,,,,
 Forsaken,Joan,Tania,75,C
 Forsaken,Joan,Deathknight,75,4
 Forsaken,Joan,Inquisitor,75,2
@@ -302,38 +302,38 @@ Forsaken,Luke,Saint Luke (Shotgun),150,C
 Forsaken,Luke,Marionette,100,C
 Forsaken,Luke,Zuriel,100,C
 Forsaken,Luke,Arsenal,75,4
-Forsaken,Luke,Stinger,50,6
-Forsaken,Mark,Saint Mark (Dragon),200,C
-Forsaken,Mark,Saint Mark,150,C
-Forsaken,Mark,Hephzibah,75,C
-Forsaken,Mark,The Sentinel,75,C
-Forsaken,Mark,Junker,75,3
-Forsaken,Mark,Shade,50,4
-Forsaken,Mary,Saint Mary (Unicorn),200,C
-Forsaken,Mary,Saint Mary,150,C
-Forsaken,Mary,Joan,75,C
-Forsaken,Mary,Judah,75,C
-Forsaken,Mary,Clergy Ann,75,4
-Forsaken,Mary,Flense,50,6
-Forsaken,Prevailer,Archangel Gabriel,150,C
-Forsaken,Prevailer,Archangel Michael,150,C
-Forsaken,Prevailer,Archangel Raphael,150,C
-Forsaken,Prevailer,Esh,150,C
-Forsaken,Prevailer,Grand Templar Marius,150,C
-Forsaken,Prevailer,Prevailer Lilith,100,C
-Forsaken,Prevailer,Zephon,0,C
-Forsaken,Prevailer,Nabu,0,C
-Forsaken,Prevailer,Yael,0,C
-Forsaken,Prevailer,Crimson Mother,75,1
-Forsaken,Prevailer,Red Sister,75,4
-Forsaken,Prevailer,Skylancer,75,3
-Forsaken,Prevailer,Sight of the Prevailers,75,1
-Forsaken,Prevailer,Voice of the Prevailers,75,1
-Forsaken,Prevailer,Warknight Captain,75,1
-Forsaken,Prevailer,Warknight,50,4
-Forsaken,Prevailer,Warknight Bondsman,50,2
-Forsaken,Prevailer,Repentant,25,4
-Outcasts,Scavengers,Hoj,150,C
+Forsaken,Luke,Stinger,50,6,,,,
+Forsaken,Mark,Saint Mark (Dragon),200,C,,,,
+Forsaken,Mark,Saint Mark,150,C,,,,
+Forsaken,Mark,Hephzibah,75,C,,,,
+Forsaken,Mark,The Sentinel,75,C,,,,
+Forsaken,Mark,Junker,75,3,,,,
+Forsaken,Mark,Shade,50,4,,,,
+Forsaken,Mary,Saint Mary (Unicorn),200,C,,,,
+Forsaken,Mary,Saint Mary,150,C,,,,
+Forsaken,Mary,Joan,75,C,,,Precognition,1
+Forsaken,Mary,Judah,75,C,,,,
+Forsaken,Mary,Clergy Ann,75,4,,,,
+Forsaken,Mary,Flense,50,6,,,,
+Forsaken,Prevailer,Archangel Gabriel,150,C,,,,
+Forsaken,Prevailer,Archangel Michael,150,C,,,,
+Forsaken,Prevailer,Archangel Raphael,150,C,,,,
+Forsaken,Prevailer,Esh,150,C,,,Final Judgment,1
+Forsaken,Prevailer,Grand Templar Marius,150,C,,,,
+Forsaken,Prevailer,Prevailer Lilith,100,C,,,,
+Forsaken,Prevailer,Zephon,0,C,,,,
+Forsaken,Prevailer,Nabu,0,C,,,,
+Forsaken,Prevailer,Yael,0,C,,,,
+Forsaken,Prevailer,Crimson Mother,75,1,,,Mark Of The Beast,1
+Forsaken,Prevailer,Red Sister,75,4,,,,
+Forsaken,Prevailer,Skylancer,75,3,,,,
+Forsaken,Prevailer,Sight of the Prevailers,75,1,,,Wrath Of Heaven,1
+Forsaken,Prevailer,Voice of the Prevailers,75,1,,,Prevailer,3
+Forsaken,Prevailer,Warknight Captain,75,1,,,Weight of Sin,3
+Forsaken,Prevailer,Warknight,50,4,,,,
+Forsaken,Prevailer,Warknight Bondsman,50,2,,,,
+Forsaken,Prevailer,Repentant,25,4,,,Penitence Blast,1
+Outcasts,Scavengers,Hoj,150,C,,,,
 Outcasts,Scavengers,Oz,100,C
 Outcasts,Scavengers,Warchief,100,1
 Outcasts,Unaligned,Scut,25,6
@@ -366,27 +366,28 @@ Outcasts,Salt Nomads,Moloki,75,4
 Outcasts,Salt Nomads,Oathpourer,75,1
 Outcasts,Salt Nomads,The Dishonored,75,1
 Outcasts,Salt Nomads,Thornwind,50,4
-Outcasts,Salt Nomads,Tribal Warrior,50,6
-Outcasts,Salt Nomads,Vrock,50,4
-Outcasts,Salt Nomads,Nomad Herder,25,6
-Outcasts,Barrow Slavers,The Warden,150,C
-Outcasts,Barrow Slavers,Hood (Slavers),150,C
-Outcasts,Barrow Slavers,Bonner Spyte,100,C
-Outcasts,Barrow Slavers,Finn Deadeye,100,C
-Outcasts,Barrow Slavers,Aja,75,C
-Outcasts,Barrow Slavers,Devon,75,C
-Outcasts,Barrow Slavers,Slavemaster,100,1
-Outcasts,Barrow Slavers,Coffersman,75,1
-Outcasts,Barrow Slavers,Gang Boss,75,1
-Outcasts,Barrow Slavers,The Frenzied,50,4
-Outcasts,Barrow Slavers,The Unbound,50,3
-Outcasts,Barrow Slavers,Chain Ganger,25,6
-Brood,Delta Broodfolk,Helexa,150,C
-Brood,Delta Broodfolk,Myrmidon,200,1
-Brood,Delta Broodfolk,The Transformed,150,2
-Brood,Delta Broodfolk,Skinner,75,4
-Brood,Delta Broodfolk,Harpooner,75,4
-Brood,Delta Broodfolk,Dive Gunner,50,4
-Brood,Delta Broodfolk,Dive Salvager,50,4
-Brood,Delta Broodfolk,Spearfolk Alpha,50,2
-Brood,Delta Broodfolk,Spearfolk,25,6
+Outcasts,Salt Nomads,Tribal Warrior,50,6,,
+Outcasts,Salt Nomads,Vrock,50,4,,
+Outcasts,Salt Nomads,Nomad Herder,25,6,,
+Outcasts,Barrow Slavers,The Warden,150,C,,
+Outcasts,Barrow Slavers,Hood (Slavers),150,C,,
+Outcasts,Barrow Slavers,Bonner Spyte,100,C,,
+Outcasts,Barrow Slavers,Finn Deadeye,100,C,,
+Forsaken,Prevailer,Sight of the Prevailers,75,1,,,Wrath Of Heaven,1
+Outcasts,Barrow Slavers,Aja,75,C,,Sins Of The Father,1
+Outcasts,Barrow Slavers,Devon,75,C,,
+Outcasts,Barrow Slavers,Slavemaster,100,1,,
+Outcasts,Barrow Slavers,Coffersman,75,1,,
+Outcasts,Barrow Slavers,Gang Boss,75,1,,
+Outcasts,Barrow Slavers,The Frenzied,50,4,,
+Outcasts,Barrow Slavers,The Unbound,50,3,,
+Outcasts,Barrow Slavers,Chain Ganger,25,6,,
+Brood,Delta Broodfolk,Helexa,150,C,Brood,3
+Brood,Delta Broodfolk,Myrmidon,200,1,,,Brood,2
+Brood,Delta Broodfolk,The Transformed,150,2,,,Brood,1
+Brood,Delta Broodfolk,Skinner,75,4,,,,
+Brood,Delta Broodfolk,Harpooner,75,4,,,,
+Brood,Delta Broodfolk,Dive Gunner,50,4,,,,
+Brood,Delta Broodfolk,Dive Salvager,50,4,,,,
+Brood,Delta Broodfolk,Spearfolk Alpha,50,2,,,Brood,1
+Brood,Delta Broodfolk,Spearfolk,25,6,,,,

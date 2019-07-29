@@ -13,7 +13,7 @@ suppressMessages({
 })
 
 share <- list(
-  title = "Samarian Army Builder",
+  title = "Dark Age Army Builder",
   url = "https://radevo.shinyapps.io/Samarian_Army_Builder/",
   description = "Before everything dies, you need an army.",
   twitter_user = "-"
@@ -21,4 +21,10 @@ share <- list(
 
 source("misc/armyVariables.R")
 source("modules/faction_module.R")
-faction.Df <- read_csv("misc/SamarianFrame.csv")
+
+suppressWarnings({
+  faction.Df <- read_csv("misc/SamarianFrame.csv")
+  psychogenic.Df <- read_csv("misc/PsychogenicFrame.csv")
+  upgrades.Df <- read_csv("misc/UpgradeFrame.csv")
+  faction.Rules <- read_csv("misc/factionRules.csv")
+})
