@@ -4,6 +4,7 @@ author: "Samaria Lives"
 output: pdf_document
 params:
   Table: NA
+  PsychoTable: NA
   Title: "Kukulkani"
   CurrentPoint: "500"
   MaxPoint: "750"
@@ -15,6 +16,7 @@ header-includes:
 \captionsetup[table]{labelformat=empty}
 
 ```{r setup, include=FALSE}
+library(knitr)
 knitr::opts_chunk$set(echo = TRUE,
                       collapse = TRUE,
   cache = FALSE,
@@ -28,9 +30,8 @@ knitr::opts_chunk$set(echo = TRUE,
 ```
 
 ```{r armyTable, echo = FALSE, tab.cap = NULL, results = 'asis'}
-#
-library(knitr)
 kable(params$Table,caption = paste("A",params$CurrentPoint,"point",params$Title,"army",sep = " "))
+kable(params$PsychoTable,caption = "Army Add-ons")
 ```
 
 ```{r armyNotes, echo = FALSE, results = 'asis'}
@@ -45,4 +46,15 @@ if (params$Notes != "") {
 # Include army cards
 path <- paste0(params$Table$Name,".png")
 knitr::include_graphics(path)
+```
+```{r Add-onsCards, echo = FALSE, results = 'asis', out.width="49%", out.height="40%",fig.show='hold',fig.align='center' }
+# Include army cards
+upgrades <- unlist(str_split(paste0(params$PsychoTable[['Upgrades & Bio-Gens']]), pattern = ", "))
+psychos <- unlist(str_split(paste0(params$PsychoTable[['Psychogenics & Rituals']]), pattern = ", "))
+combination <- c(unique(upgrades),unique(psychos))
+combination <- combination[which(combination != '')] %>%
+  tolower()
+combination <- gsub(" ","_",combination)
+pathAddon <- paste0(combination,".png")
+knitr::include_graphics(pathAddon)
 ```

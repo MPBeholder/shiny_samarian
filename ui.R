@@ -91,9 +91,6 @@ function(request){
                        div(class = "vertAlign",
                            htmlOutput("currentValue"))
                 ),
-                # column(width = 2,
-                #        div(class = "vertAlign",
-                #            uiOutput("addonUI"))),
                 column(width = 3, 
                        div(class = "vertAlign",
                            uiOutput("Downloader")))),
