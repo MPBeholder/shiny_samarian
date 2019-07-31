@@ -257,6 +257,35 @@ server <- function(input, output, session){
       
       # Select unit subset ---------------------------------
       
+      normalizedUpgrades <- gsub(".*\\|","",c(autoReactUpgrades$selected,input$upgradeInput))
+      normalizedPsychos <- gsub(".*\\|","",c(autoReactPsychogenics$selected,input$psychogenicInput))
+      
+      # print(normalizedUpgrades)
+      # print(normalizedPsychos)
+      
+      totalUpgrades <- append(autoReactUpgrades$selected,input$upgradeInput) %>% 
+        tibble::enframe(name = NULL) %>% 
+        separate(value,c("name","value"),sep = "\\|") %>% 
+        group_by(name) %>% 
+        dplyr::summarise(value = paste0(value,collapse = ", ")) %>%
+        filter(name != "") %>%
+        dplyr::rename("Upgrades & Bio-Gens" = "value") %>%
+        dplyr::rename("Name" = "name")
+      
+      totalPsycho <- append(autoReactPsychogenics$selected,input$psychogenicInput) %>% 
+        tibble::enframe(name = NULL) %>% 
+        separate(value,c("name","value"),sep = "\\|") %>% 
+        group_by(name) %>% 
+        dplyr::summarise(value = paste0(value,collapse = ", ")) %>%
+        filter(name != "")  %>%
+        dplyr::rename("Psychogenics & Rituals" = "value") %>%
+        dplyr::rename("Name" = "name")
+      
+      reset("psychogenicInput")
+      reset("upgradeInput")
+      autoReactUpgrades$selected <- ""
+      autoReactPsychogenics$selected <- ""
+      
       for (name in selectedArmy()[["Name"]]){
         
         tempVal <- tempVal + as.numeric(input[[name]]) * as.numeric(selectedArmy()$Cost[which(selectedArmy()[["Name"]] == name)])
@@ -287,7 +316,36 @@ server <- function(input, output, session){
         
       }
       
+      # tmpUpgrades <<- totalUpgrades
+      # tmpPsycho <<- totalPsycho
+      # tmpTable <<- outputArmy
+      # tmpNormalizedUpgrades <<- normalizedUpgrades
+      # tmpNormalizedPsychos <<- normalizedPsychos
+      
+      upPsychoArmy <- outputArmy %>% 
+        dplyr::select(Name) %>%
+        dplyr::left_join(totalUpgrades, by = "Name") %>%
+        dplyr::left_join(totalPsycho, by = "Name") %>%
+        replace_na(list(`Upgrades & Bio-Gens` = "",`Psychogenics & Rituals` = ""))
       # Set temp working directory & copy---------------------------------
+      
+      normalizedAddons <- tibble(destination = character(),current = character())
+      
+      for (upgrade in normalizedUpgrades) {
+        if (upgrade == "") {break}
+        name <- gsub(" ","_",tolower(upgrade))
+        fullName <- paste0(name,".png")
+        upgradePath <- normalizePath(paste0("www/stat_cards/",paste(name,"png",sep = ".")))
+        normalizedAddons <- bind_rows(normalizedAddons,tibble(destination = fullName,current = upgradePath))
+      }
+      
+      for (psycho in normalizedPsychos){
+        if (psycho == "") {break}
+        name <- gsub(" ","_",tolower(psycho))
+        fullName <- paste0(name,".png")
+        psychoPath <- normalizePath(paste0("www/stat_cards/",paste(name,"png",sep = ".")))
+        normalizedAddons <- bind_rows(normalizedAddons,tibble(destination = fullName,current = psychoPath))
+      }
       
       owd <- setwd(tempdir())
       on.exit(setwd(owd))
@@ -299,6 +357,11 @@ server <- function(input, output, session){
         file.copy(normalizedPaths[i], stat_name[i], overwrite = TRUE)
       }
       
+      for (j in (j = 1:nrow(normalizedAddons))){
+        #print(normalizedAddons[j])
+        file.copy(normalizedAddons$current[j], normalizedAddons$destination[j], overwrite = TRUE)
+      }
+      
       # Render document
       tryCatch({
       out <- render('ArmyTemplate.Rmd', 
@@ -306,6 +369,7 @@ server <- function(input, output, session){
                     envir = new.env(),
                     params = list(
                       Table = outputArmy,
+                      PsychoTable = upPsychoArmy,
                       Title = input$army_selection,
                       CurrentPoint =  tempVal,
                       MaxPoint = input$army_value,
@@ -394,33 +458,40 @@ server <- function(input, output, session){
     
     upgradeFrame <- faction.Df %>% 
       filter(Name %in% outputArmy$Name) %>%
-      dplyr::select(Upgrade,UpgradeNum) %>%
+      dplyr::select(Name,Upgrade,UpgradeNum) %>%
       filter(!is.na(Upgrade))
     
     validate(
       need(nrow(upgradeFrame) != 0, HTML("No selectable Upgrades or Bio-Gens!"))
     )
     
-    if (any(str_detect(upgradeFrame$Upgrade,"/")) || 
+    if (any(str_detect(upgradeFrame$Upgrade,"/")) && 
         any(str_detect(upgradeFrame$UpgradeNum,"/"))) {
       
       upgradeFrame <- upgradeFrame %>%
         separate_rows(Upgrade,UpgradeNum,sep = "/")
+      
+    } else if (any(str_detect(upgradeFrame$Upgrade,"/"))) {
+      upgradeFrame <- upgradeFrame %>%
+        separate_rows(Upgrade,sep = "/")
+    } else if (any(str_detect(upgradeFrame$UpgradeNum,"/"))) {
+      upgradeFrame <- upgradeFrame %>%
+        separate_rows(UpgradeNum,sep = "/")
     }
     
     upgradeFrame <- upgradeFrame %>%
       mutate(UpgradeNum = as.integer(UpgradeNum))
     
-    autoUpgrades <- upgrades.Df %>% 
-      filter(Name %in% upgradeFrame$Upgrade) %>%
-      pull(Name)
+    autoUpgrades <- upgradeFrame %>%
+      filter(Upgrade %in% upgrades.Df$Name) %>%
+      mutate(comboUpgrade = paste(Name,Upgrade,sep = "|")) %>%
+      pull(comboUpgrade)
       
     autoReactUpgrades$selected <- autoUpgrades
     
     selectableUpgrades <- upgradeFrame %>%
-      filter(!Upgrade %in% autoUpgrades) %>%
-      group_by(Upgrade) %>%
-      summarize(n = sum(UpgradeNum)) %>%
+      filter(!Upgrade %in% unlist(str_split(autoUpgrades,"\\|"))) %>%
+      mutate(nameCombo = paste(Name,Upgrade,sep = "|"))  %>%
       filter(!is.na(Upgrade))
     
     validate(
@@ -429,19 +500,36 @@ server <- function(input, output, session){
     
     upgradeList <- list()
     
-    for (faction in selectableUpgrades$Upgrade) {
-      upgradeList[[faction]] <- upgrades.Df %>% filter(Faction == faction) %>% pull(Name)
+    for (faction in selectableUpgrades$nameCombo) {
+      upgradeVector <- upgrades.Df %>% filter(Faction == str_split(faction,"\\|")[[1]][2]) %>% pull(Name)
+      
+      selUpgradeVector <- paste(str_split(faction,"\\|")[[1]][1],upgradeVector,sep = "|")
+      names(selUpgradeVector) <- upgradeVector
+      upgradeList[[faction]] <- selUpgradeVector#upgrades.Df %>% filter(Faction == str_split(faction,"\\|")[[1]][2]) %>% pull(Name)
     }
     
+    # selectableUpgrades <- upgradeFrame %>%
+    #   filter(!Upgrade %in% autoUpgrades) %>%
+    #   group_by(Upgrade) %>%
+    #   summarize(n = sum(UpgradeNum)) %>%
+    #   filter(!is.na(Upgrade))
+    
+    
+    # upgradeList <- list()
+    # 
+    # for (faction in selectableUpgrades$Upgrade) {
+    #   upgradeList[[faction]] <- upgrades.Df %>% filter(Faction == faction) %>% pull(Name)
+    # }
+    tagList(
     pickerInput(
       inputId = "upgradeInput",
       label = "Select Upgrades and Bio-Gens",
       choices = upgradeList,
       multiple = TRUE,
       #selected = selectedUpgrades$selected,
-      options = list("max-options-group" = selectableUpgrades$n,
+      options = list("max-options-group" = selectableUpgrades$UpgradeNum,
                      "max-options-text" = "Maximum upgrades or bio-gens for this group selected")
-    )
+    ))
   })
   
   output$psychoUI <- renderUI({
@@ -481,14 +569,14 @@ server <- function(input, output, session){
     
     psychogenicFrame <- faction.Df %>% 
       filter(Name %in% outputArmy$Name) %>%
-      dplyr::select(Psychogenic,PsychogenicNum) %>%
+      dplyr::select(Name,Psychogenic,PsychogenicNum) %>%
       filter(!is.na(Psychogenic))
     
     validate(
       need(nrow(psychogenicFrame) != 0, HTML("No selectable Psychogenics or Rituals!"))
     )
     
-    if (any(str_detect(psychogenicFrame$Psychogenic,"/")) || 
+    if (any(str_detect(psychogenicFrame$Psychogenic,"/")) &&
         any(str_detect(psychogenicFrame$PsychogenicNum,"/"))) {
       
       psychogenicFrame <- psychogenicFrame %>%
@@ -498,32 +586,38 @@ server <- function(input, output, session){
     psychogenicFrame <- psychogenicFrame %>%
       mutate(PsychogenicNum = as.integer(PsychogenicNum))
     
-    autoPsychogenics <- psychogenic.Df %>% 
-      filter(Name %in% psychogenicFrame$Psychogenic) %>%
-      pull(Name)
+    autoPsychogenics <- psychogenicFrame %>%
+      filter(Psychogenic %in% psychogenic.Df$Name) %>%
+      mutate(comboPsycho = paste(Name,Psychogenic,sep = "|")) %>%
+      pull(comboPsycho)
     
     autoReactPsychogenics$selected <- autoPsychogenics
     
     selectablePsychogenics <- psychogenicFrame %>%
-      filter(!Psychogenic %in% autoPsychogenics) %>%
-      group_by(Psychogenic) %>%
-      summarize(n = sum(PsychogenicNum)) %>%
+      filter(!Psychogenic %in% unlist(str_split(autoPsychogenics,"\\|"))) %>%
+      mutate(nameCombo = paste(Name,Psychogenic,sep = "|"))  %>%
       filter(!is.na(Psychogenic))
     
-    if (any(selectablePsychogenics$n == 0)) {
+    if (any(selectablePsychogenics$PsychogenicNum == 0)) {
       autoIncludes <- psychogenic.Df %>%
-        filter(Faction == selectablePsychogenics %>%
-        filter(n == 0) %>%
-        pull(Psychogenic)) %>%
+        filter(Faction == selectablePsychogenics %>% 
+                 filter(PsychogenicNum == 0) %>% 
+                 pull(Psychogenic)) %>%
         filter(Subfaction == "Unaligned") %>%
-        pull(Name) %>%
-        append(autoPsychogenics)
+        pull(Name)
       
-      autoReactPsychogenics$selected <- autoIncludes
+      massIncluder <- selectablePsychogenics %>% 
+        filter(PsychogenicNum == 0) %>% 
+        pull(Name)
+      
+      selectablePsychogenics <- selectablePsychogenics %>%
+        filter(PsychogenicNum != 0)
+      
+      autoPsychogenics <- append(autoPsychogenics,paste(massIncluder,autoIncludes,sep = "|"))
+
+      autoReactPsychogenics$selected <- autoPsychogenics
     }
     
-    selectablePsychogenics <- selectablePsychogenics %>%
-      filter(n != 0)
     
     validate(
       need(nrow(selectablePsychogenics) != 0, HTML("No selectable Psychogenics or Rituals!"))
@@ -531,20 +625,65 @@ server <- function(input, output, session){
     
     psychogenicList <- list()
     
-    for (faction in selectablePsychogenics$Psychogenic) {
-      psychogenicList[[faction]] <- psychogenic.Df %>% 
-        filter(Faction == input$army_selection) %>% 
-        filter(Subfaction == faction) %>%
+    for (faction in selectablePsychogenics$nameCombo) {
+      splitFaction <- str_split(faction,"\\|")[[1]][2]
+      psychoVector <- psychogenic.Df %>% 
+        filter(Subfaction %in% unlist(str_split(splitFaction,"/"))) %>%
+        filter(Faction %in% input$army_selection) %>%
         pull(Name)
+      
+      selPsychoVector <- paste(str_split(faction,"\\|")[[1]][1],psychoVector,sep = "|")
+      names(selPsychoVector) <- psychoVector
+      psychogenicList[[faction]] <- selPsychoVector#upgrades.Df %>% filter(Faction == str_split(faction,"\\|")[[1]][2]) %>% pull(Name)
     }
+    
+    
+    
+    
+    
+    
+    
+    # selectablePsychogenics <- psychogenicFrame %>%
+    #   filter(!Psychogenic %in% autoPsychogenics) %>%
+    #   group_by(Psychogenic) %>%
+    #   summarize(n = sum(PsychogenicNum)) %>%
+    #   filter(!is.na(Psychogenic))
+    # 
+    # if (any(selectablePsychogenics$n == 0)) {
+    #   autoIncludes <- psychogenic.Df %>%
+    #     filter(Faction == selectablePsychogenics %>%
+    #     filter(n == 0) %>%
+    #     pull(Psychogenic)) %>%
+    #     filter(Subfaction == "Unaligned") %>%
+    #     pull(Name) %>%
+    #     append(autoPsychogenics)
+    #   
+    #   autoReactPsychogenics$selected <- autoIncludes
+    # }
+    # 
+    # selectablePsychogenics <- selectablePsychogenics %>%
+    #   filter(n != 0)
+    
+    # validate(
+    #   need(nrow(selectablePsychogenics) != 0, HTML("No selectable Psychogenics or Rituals!"))
+    # )
+    
+    # psychogenicList <- list()
+    # 
+    # for (faction in selectablePsychogenics$Psychogenic) {
+    #   psychogenicList[[faction]] <- psychogenic.Df %>% 
+    #     filter(Faction == input$army_selection) %>% 
+    #     filter(Subfaction == faction) %>%
+    #     pull(Name)
+    # }
     
     pickerInput(
       inputId = "psychogenicInput",
       label = "Select Psychogenics",
       choices = psychogenicList,
       multiple = TRUE,
-      #selected = selectedPsychogenics$selected,
-      options = list("max-options-group" = selectablePsychogenics$n,
+      #selected = selectedPsychogenics$selected,selectableUpgrades$UpgradeNum
+      options = list("max-options-group" = selectablePsychogenics$PsychogenicNum,
                      "max-options-text" = "Maximum psychogenics for this group selected")
     )
   })
@@ -587,14 +726,5 @@ server <- function(input, output, session){
     )
     
   })
-  
-  
-  
-  
-  # observeEvent(input$saveUpgrades,{
-  #   selectedUpgrades$selected <- input$upgradeInput
-  #   selectedPsychogenics$selected <- input$psychogenicInput
-  #   
-  #   removeModal()
-  # })
+
 }
