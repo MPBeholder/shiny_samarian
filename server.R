@@ -326,7 +326,8 @@ server <- function(input, output, session){
         dplyr::select(Name) %>%
         dplyr::left_join(totalUpgrades, by = "Name") %>%
         dplyr::left_join(totalPsycho, by = "Name") %>%
-        replace_na(list(`Upgrades & Bio-Gens` = "",`Psychogenics & Rituals` = ""))
+        replace_na(list(`Upgrades & Bio-Gens` = "",`Psychogenics & Rituals` = "")) %>%
+        filter(!(`Upgrades & Bio-Gens` == "" & `Psychogenics & Rituals` == ""))
       # Set temp working directory & copy---------------------------------
       
       normalizedAddons <- tibble(destination = character(),current = character())
@@ -357,11 +358,12 @@ server <- function(input, output, session){
         file.copy(normalizedPaths[i], stat_name[i], overwrite = TRUE)
       }
       
-      for (j in (j = 1:nrow(normalizedAddons))){
-        #print(normalizedAddons[j])
-        file.copy(normalizedAddons$current[j], normalizedAddons$destination[j], overwrite = TRUE)
+      if (nrow(normalizedAddons) != 0){
+        for (j in (j = 1:nrow(normalizedAddons))){
+          #print(normalizedAddons[j])
+          file.copy(normalizedAddons$current[j], normalizedAddons$destination[j], overwrite = TRUE)
+        }
       }
-      
       # Render document
       tryCatch({
       out <- render('ArmyTemplate.Rmd', 
