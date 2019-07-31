@@ -718,7 +718,7 @@ server <- function(input, output, session){
         column(width = 6,
                div(class = "vertAlign",
                    HTML("<center>"),
-                   downloadButton('downloadArmy','Download Army'),
+                   uiOutput("dlHandler"),#downloadButton('downloadArmy','Download Army'),
                    HTML("</center>")
                )
         ))
@@ -726,7 +726,35 @@ server <- function(input, output, session){
       btn_labels = c('Dismiss'),
       type = "warning"
     )
-    
   })
 
+  output$dlHandler <- renderUI({
+    
+    #Download only renders when upgrade and psychogenic rules satisfied
+    
+      currentUpgrades <- gsub(".*\\|","",c(input$upgradeInput))
+      currentPsychogenics <- gsub(".*\\|","",c(input$psychogenicInput))
+
+      upgradeVal <- if_else(input$subfaction_selection == "Broodmere Spawn",2,1)
+      
+      maxUpgrades <- max(table(currentUpgrades),na.rm = T)
+      maxPsychos <- max(table(currentPsychogenics),na.rm = T)
+        
+    validate(
+
+      need(try(maxUpgrades <= upgradeVal), "Too many duplicate Upgrades or Bio-Gens")
+
+    )
+
+    validate(
+
+      need(try(maxPsychos <= 1), "Too many duplicate Psychogenics")
+
+    )
+    
+    downloadButton('downloadArmy','Download Army')
+    
+  }
+  )
+  
 }
