@@ -78,7 +78,7 @@ server <- function(input, output, session){
       mutate(Allotment = case_when(
         Amount == "C" ~ 1,
         Amount == "*" ~ 1,
-        TRUE ~ (as.numeric(Amount) * if_else(as.numeric(input$army_value) / 500 < 1, 1, floor(as.numeric(input$army_value) / 500)))
+        TRUE ~ (as.integer(Amount) * ifelse(as.numeric(input$army_value) / 500 < 1, 1, floor(as.numeric(input$army_value) / 500)))
       )) %>%
       group_by(Name,Subfaction) %>%
       mutate(Number = paste0('<select id = "',Name,'" class="armyCount">',

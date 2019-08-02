@@ -373,7 +373,6 @@ Outcasts,Barrow Slavers,The Warden,150,C,,
 Outcasts,Barrow Slavers,Hood (Slavers),150,C,,
 Outcasts,Barrow Slavers,Bonner Spyte,100,C,,
 Outcasts,Barrow Slavers,Finn Deadeye,100,C,,
-Forsaken,Prevailer,Sight of the Prevailers,75,1,,,Wrath Of Heaven,1
 Outcasts,Barrow Slavers,Aja,75,C,,Sins Of The Father,1
 Outcasts,Barrow Slavers,Devon,75,C,,
 Outcasts,Barrow Slavers,Slavemaster,100,1,,
@@ -384,7 +383,7 @@ Outcasts,Barrow Slavers,The Unbound,50,3,,
 Outcasts,Barrow Slavers,Chain Ganger,25,6,,
 Brood,Delta Broodfolk,Helexa,150,C,Brood,3
 Brood,Delta Broodfolk,Myrmidon,200,1,,,Brood,2
-Brood,Delta Broodfolk,The Transformed,150,2,,,Brood,1
+Brood,Delta Broodfolk,The Transformed,150,2,Brood,1,Brood,1
 Brood,Delta Broodfolk,Skinner,75,4,,,,
 Brood,Delta Broodfolk,Harpooner,75,4,,,,
 Brood,Delta Broodfolk,Dive Gunner,50,4,,,,
