@@ -31,7 +31,9 @@ knitr::opts_chunk$set(echo = TRUE,
 
 ```{r armyTable, echo = FALSE, tab.cap = NULL, results = 'asis'}
 kable(params$Table,caption = paste("A",params$CurrentPoint,"point",params$Title,"army",sep = " "))
-kable(params$PsychoTable,caption = "Army Add-ons")
+if (nrow(params$PsychoTable) != 0 ){
+  kable(params$PsychoTable,caption = "Army Add-ons")
+}
 ```
 
 ```{r armyNotes, echo = FALSE, results = 'asis'}
@@ -49,6 +51,7 @@ knitr::include_graphics(path)
 ```
 ```{r Add-onsCards, echo = FALSE, results = 'asis', out.width="49%", out.height="40%",fig.show='hold',fig.align='center' }
 # Include army cards
+if (nrow(params$PsychoTable) != 0) {
 upgrades <- unlist(str_split(paste0(params$PsychoTable[['Upgrades & Bio-Gens']]), pattern = ", "))
 psychos <- unlist(str_split(paste0(params$PsychoTable[['Psychogenics & Rituals']]), pattern = ", "))
 combination <- c(unique(upgrades),unique(psychos))
@@ -57,4 +60,5 @@ combination <- combination[which(combination != '')] %>%
 combination <- gsub(" ","_",combination)
 pathAddon <- paste0(combination,".png")
 knitr::include_graphics(pathAddon)
+}
 ```

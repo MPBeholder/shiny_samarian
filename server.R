@@ -227,7 +227,11 @@ server <- function(input, output, session){
   # Download Outputs ---------------------------------
   
   output$downloadArmy <- downloadHandler(
-    filename = "Armylist.pdf",
+    filename = function() {
+      paste("armyList-", Sys.Date(), ifelse(input$fileType == "Full",".pdf",".html"), sep="")
+    },
+    
+    #contentType = ifelse(input$fileType == "Full","application/pdf","text/html"),
     
     content = function(file) {
       
@@ -242,6 +246,7 @@ server <- function(input, output, session){
       n <- nrow(selectedArmy())
       # Normalize and Generate files ---------------------------------
       src <- normalizePath('misc/ArmyTemplate.Rmd')
+      src_quick <- normalizePath('misc/quickArmyTemplate.Rmd')
       outputArmy <- tibble(Subfaction = character(),
                            Name = character(),
                            Type = character(),
@@ -316,11 +321,11 @@ server <- function(input, output, session){
         
       }
       
-      # tmpUpgrades <<- totalUpgrades
-      # tmpPsycho <<- totalPsycho
-      # tmpTable <<- outputArmy
-      # tmpNormalizedUpgrades <<- normalizedUpgrades
-      # tmpNormalizedPsychos <<- normalizedPsychos
+      tmpUpgrades <<- totalUpgrades
+      tmpPsycho <<- totalPsycho
+      tmpTable <<- outputArmy
+      tmpNormalizedUpgrades <<- normalizedUpgrades
+      tmpNormalizedPsychos <<- normalizedPsychos
       
       upPsychoArmy <- outputArmy %>% 
         dplyr::select(Name) %>%
@@ -328,6 +333,10 @@ server <- function(input, output, session){
         dplyr::left_join(totalPsycho, by = "Name") %>%
         replace_na(list(`Upgrades & Bio-Gens` = "",`Psychogenics & Rituals` = "")) %>%
         filter(!(`Upgrades & Bio-Gens` == "" & `Psychogenics & Rituals` == ""))
+      
+      quickrefTable <- outputArmy %>%
+        dplyr::left_join(upPsychoArmy, by = "Name")
+      
       # Set temp working directory & copy---------------------------------
       
       normalizedAddons <- tibble(destination = character(),current = character())
@@ -350,6 +359,11 @@ server <- function(input, output, session){
       
       owd <- setwd(tempdir())
       on.exit(setwd(owd))
+      
+      if (input$fileType == "Reference") {
+        file.copy(src_quick, 'quickArmyTemplate.Rmd', overwrite = TRUE)
+      } else {
+        
       file.copy(src, 'ArmyTemplate.Rmd', overwrite = TRUE)
       
       # Copy all selected stat cards
@@ -364,20 +378,30 @@ server <- function(input, output, session){
           file.copy(normalizedAddons$current[j], normalizedAddons$destination[j], overwrite = TRUE)
         }
       }
+      }
       # Render document
       tryCatch({
-      out <- render('ArmyTemplate.Rmd', 
-                    pdf_document(),
-                    envir = new.env(),
-                    params = list(
-                      Table = outputArmy,
-                      PsychoTable = upPsychoArmy,
-                      Title = input$army_selection,
-                      CurrentPoint =  tempVal,
-                      MaxPoint = input$army_value,
-                      Notes = ''#input$army_notes
-                    ))
-      
+        
+      if (input$fileType == "Reference") {
+        out <- render('quickArmyTemplate.Rmd', 
+                      html_document(),
+                      envir = new.env(),
+                      params = list(
+                        Table = quickrefTable
+                      ))
+      } else {
+        out <- render('ArmyTemplate.Rmd', 
+                      pdf_document(),
+                      envir = new.env(),
+                      params = list(
+                        Table = outputArmy,
+                        PsychoTable = upPsychoArmy,
+                        Title = input$army_selection,
+                        CurrentPoint =  tempVal,
+                        MaxPoint = input$army_value,
+                        Notes = ''#input$army_notes
+                      ))
+      }
       #Make document available for download
       closeSweetAlert(session)
       
@@ -629,10 +653,17 @@ server <- function(input, output, session){
     
     for (faction in selectablePsychogenics$nameCombo) {
       splitFaction <- str_split(faction,"\\|")[[1]][2]
-      psychoVector <- psychogenic.Df %>% 
-        filter(Subfaction %in% unlist(str_split(splitFaction,"/"))) %>%
-        filter(Faction %in% input$army_selection) %>%
-        pull(Name)
+      
+      if (splitFaction %in% psychogenic.Df$Faction) {
+        psychoVector <- psychogenic.Df %>% 
+          filter(Faction %in% unlist(str_split(splitFaction,"/"))) %>%
+          pull(Name)
+      } else {
+        psychoVector <- psychogenic.Df %>% 
+          filter(Subfaction %in% unlist(str_split(splitFaction,"/"))) %>%
+          filter(Faction %in% input$army_selection) %>%
+          pull(Name)
+      }
       
       selPsychoVector <- paste(str_split(faction,"\\|")[[1]][1],psychoVector,sep = "|")
       names(selPsychoVector) <- psychoVector
