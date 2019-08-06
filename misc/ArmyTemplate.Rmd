@@ -30,7 +30,10 @@ knitr::opts_chunk$set(echo = TRUE,
 ```
 
 ```{r armyTable, echo = FALSE, tab.cap = NULL, results = 'asis'}
-kable(params$Table,caption = paste("A",params$CurrentPoint,"point",params$Title,"army",sep = " "))
+tempTable <- params$Table %>%
+        mutate(Name = gsub("_"," ",Name))
+kable(tempTable,
+      caption = paste("A",params$CurrentPoint,"point",params$Title,"army",sep = " "))
 if (nrow(params$PsychoTable) != 0 ){
   kable(params$PsychoTable,caption = "Army Add-ons")
 }

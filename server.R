@@ -46,10 +46,10 @@ server <- function(input, output, session){
       title = HTML(paste0("Stat Cards for: ",displayedCard)),
       text = fluidRow(
         column(width = 6,
-               HTML(paste0('<img class = "custom" src = "stat_cards/',displayedCard,'_0.png">'))
+               HTML(paste0('<img class = "custom" src = "stat_cards/',gsub(" ","_",tolower(displayedCard)),'_0.png">'))
         ),
         column(width = 6,
-               HTML(paste0('<img class = "custom" src = "stat_cards/',displayedCard,'_1.png">'))
+               HTML(paste0('<img class = "custom" src = "stat_cards/',gsub(" ","_",tolower(displayedCard)),'_1.png">'))
         )
       ),
       type = "info"
@@ -295,11 +295,11 @@ server <- function(input, output, session){
         
         tempVal <- tempVal + as.numeric(input[[name]]) * as.numeric(selectedArmy()$Cost[which(selectedArmy()[["Name"]] == name)])
         if (as.numeric(input[[name]]) >= 1){
-          stat_name[step] <- paste(name,"png",sep = ".")
-          normalizedPaths[step] <- normalizePath(paste0("www/stat_cards/",paste(name,"png",sep = ".")))
+          stat_name[step] <- paste(gsub(" ","_",(name)),"png",sep = ".")
+          normalizedPaths[step] <- normalizePath(paste0("www/stat_cards/",paste(gsub(" ","_",(name)),"png",sep = ".")))
           sel_name <- which(selectedArmy()[["Name"]] == name)
           characterRow <- tibble(Subfaction = as.character(selectedArmy()$Subfaction[sel_name]),
-                                 Name = name,
+                                 Name = gsub(" ","_",(name)),
                                  Type = case_when(
                                    as.character(selectedArmy()$Amount[sel_name]) == "C" ~ "Character",
                                    TRUE ~ "Unit"
@@ -326,13 +326,18 @@ server <- function(input, output, session){
       tmpTable <<- outputArmy
       tmpNormalizedUpgrades <<- normalizedUpgrades
       tmpNormalizedPsychos <<- normalizedPsychos
+      tmpNormalized <<- normalizedPaths
+      tmpStats <<- stat_name
+      
+      #outputArmy$Name <- gsub("_"," ",outputArmy$Name)
+        
       
       upPsychoArmy <- outputArmy %>% 
         dplyr::select(Name) %>%
         dplyr::left_join(totalUpgrades, by = "Name") %>%
         dplyr::left_join(totalPsycho, by = "Name") %>%
         replace_na(list(`Upgrades & Bio-Gens` = "",`Psychogenics & Rituals` = "")) %>%
-        filter(!(`Upgrades & Bio-Gens` == "" & `Psychogenics & Rituals` == ""))
+        filter(!(`Upgrades & Bio-Gens` == "" & `Psychogenics & Rituals` == "")) 
       
       quickrefTable <- outputArmy %>%
         dplyr::left_join(upPsychoArmy, by = "Name")

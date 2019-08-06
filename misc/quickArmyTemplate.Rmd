@@ -17,7 +17,9 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ```{r armyRef, echo = FALSE, results = 'asis'}
 datatable(
-  cbind(' ' = 'Add-Ons &oplus;',  params$Table), escape = -2,
+  cbind(' ' = 'Add-Ons &oplus;',  params$Table %>%
+        mutate(Name = gsub("_"," ",Name))
+        ), escape = -2,
   options = list(
     dom = 't',
     columnDefs = list(
