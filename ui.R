@@ -11,14 +11,27 @@ function(request){
   
   # Body ---------------------------------
   body <- dashboardBody(
-    tags$head(tags$meta(property = "og:title", content = share$title),
-              tags$meta(property = "og:type", content = "website"),
-              tags$meta(property = "og:url", content = share$url),
-              tags$meta(property = "og:description", content = share$description),
-              tags$style(".swal-modal {width: 60%;}"),
-              tags$script(HTML("Shiny.addCustomMessageHandler('unbind-DT', function(id) {
+    firebaseUI('SamarianBase',
+               Sys.getenv("fbAPI"),
+               Sys.getenv("fbDomain"),
+               Sys.getenv("fbID")),
+    ganalyticsUI('analytics',Sys.getenv("gaAPI")),
+    tags$head(tags$link(rel="shortcut icon", href="DA_Logo3.png")),
+    shiny::tags$head(
+      shiny::tags$link(rel = "stylesheet", href = "snackbar.css"),
+      shiny::tags$script(src="snackbar.js"),
+      shiny::tags$script(src="https://www.gstatic.com/firebasejs/5.7.0/firebase-app.js"),
+      shiny::tags$script(src="https://www.gstatic.com/firebasejs/5.7.0/firebase-auth.js"),
+      shiny::tags$script(src="sof-auth.js")
+    ),
+    shiny::tags$head(shiny::tags$meta(property = "og:title", content = share$title),
+                     shiny::tags$meta(property = "og:type", content = "website"),
+                     shiny::tags$meta(property = "og:url", content = share$url),
+                     shiny::tags$meta(property = "og:description", content = share$description),
+                     shiny::tags$style(".swal-modal {width: 60%;}"),
+                     shiny::tags$script(HTML("Shiny.addCustomMessageHandler('unbind-DT', function(id) {
                                Shiny.unbindAll($('#'+id).find('table').DataTable().table().node());})")),
-              tags$style(HTML("
+                     shiny::tags$style(HTML("
                               @media screen and (min-width: 768px){
                                 .rwd-break { display: none; }
                               }
@@ -44,7 +57,7 @@ function(request){
                               }
                               "))),
     useShinyjs(),
-    introjsUI(),
+    extendShinyjs(text = jsCode),
     useSweetAlert(),
     tabItems(
       tabItem(tabName = "home",

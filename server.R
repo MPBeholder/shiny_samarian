@@ -36,6 +36,28 @@ server <- function(input, output, session){
     army$value <- 0
   })
   
+  output$stat1 <- renderImage({
+    req(input$display_card)
+    displayedCard <- trimws(strsplit(input$display_card, "_")[[1]][1], which = c("both"))
+    selCard <- gsub(" ","_",(displayedCard))
+    filename <- normalizePath(paste0("./www/stat_cards/",paste(paste0(selCard,"_0"),"png",sep = ".")))
+    
+    list(src = filename,
+         alt = paste("Stat Card: ", gsub(" ","_",(displayedCard))))
+    
+  }, deleteFile = FALSE)
+  
+  output$stat2 <- renderImage({
+    req(input$display_card)
+    displayedCard <- trimws(strsplit(input$display_card, "_")[[1]][1], which = c("both"))
+    selCard <- gsub(" ","_",(displayedCard))
+    filename <- normalizePath(paste0("./www/stat_cards/",paste(paste0(selCard,"_1"),"png",sep = ".")))
+    
+    list(src = filename,
+         alt = paste("Abilities Card: ", gsub(" ","_",(displayedCard))))
+    
+  }, deleteFile = FALSE)
+  
   observeEvent(input$display_card,{
     # Select card
     displayedCard <- trimws(strsplit(input$display_card, "_")[[1]][1], which = c("both"))#strsplit(input$display_card, "_")[[1]][1]
@@ -46,11 +68,11 @@ server <- function(input, output, session){
       title = HTML(paste0("Stat Cards for: ",displayedCard)),
       text = fluidRow(
         column(width = 6,
-               HTML(paste0('<img class = "custom" src = "stat_cards/',gsub(" ","_",tolower(displayedCard)),'_0.png">'))
-        ),
+               withSpinner(imageOutput("stat1",height = '250px')#HTML(paste0('<img class = "custom" src = "stat_cards/',gsub(" ","_",tolower(displayedCard)),'_0.png">'))
+        )),
         column(width = 6,
-               HTML(paste0('<img class = "custom" src = "stat_cards/',gsub(" ","_",tolower(displayedCard)),'_1.png">'))
-        )
+               withSpinner(imageOutput("stat2",height = '250px')#HTML(paste0('<img class = "custom" src = "stat_cards/',gsub(" ","_",tolower(displayedCard)),'_1.png">'))
+        ))
       ),
       type = "info"
     )
@@ -234,7 +256,7 @@ server <- function(input, output, session){
     #contentType = ifelse(input$fileType == "Full","application/pdf","text/html"),
     
     content = function(file) {
-      
+      js$pushAnalytic(input$fileType,'Download',paste(input$army_selection,input$subfaction_selection,sep = "-"),as.integer(input$army_value))
       closeSweetAlert(session)
       
       progressSweetAlert(
@@ -729,7 +751,7 @@ server <- function(input, output, session){
   # Add-Ons Modal ---------------------------------
   
   observeEvent(input$generateArmy,{
-    
+    #js$pushAnalytic('aaa','bbbb','cccc','dddd')
     sendSweetAlert(
       session = session,
       html = TRUE,
