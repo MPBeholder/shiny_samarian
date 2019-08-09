@@ -1,25 +1,7 @@
 server <- function(input, output, session){
   # Base Reactive Value(s) ---------------------------------
   army <- reactiveValues(value = integer())  
-
-  # On Launch Modal ---------------------------------
   
-  sendSweetAlert(
-    session = session,
-    html = TRUE,
-    title = "A Note from the Wasteland",
-    text = fluidRow(
-          column(width = 12,
-                   HTML('This is a fan created army building app for the Cool Mini Or Not (CMON) game Dark Age.</br>All images contained within this app are copyrighted to CMON.</br>If you encounter any issues please post an issue on github. <a href = "https://github.com/MPBeholder/shiny_samarian" target ="_blank"><img width = "15px" height = "15px" src = "github_mark_64px.png"></a>'),
-                 hr()
-                 ),
-          column(width = 6,
-                 HTML('<a target="_blank" href="http://dark-age.com"><img class = "custom" style="padding-top:12%" height = "50%" width = "50%" src = "DA_Logo3.png"></a>')),
-          column(width = 6,
-                 HTML('<a target="_blank" href="https://cmon.com"><img class = "custom" height = "50%" width = "50%" src = "cmon_logo.png"></a>'))
-        ),
-    type = "info"
-  )
   # Modular Components ---------------------------------
   samarianInfoServer(input,output,session,faction = "Kukulkani")
   samarianInfoServer(input,output,session,faction = "Forsaken")
@@ -29,6 +11,27 @@ server <- function(input, output, session){
   samarianInfoServer(input,output,session,faction = "Brood")
   samarianInfoServer(input,output,session,faction = "Skarrd")
   
+  hide_waiter()
+  
+  # On Launch Modal ---------------------------------
+    #shinyFileChoose(input, 'files', root=c(root='.'), filetypes=c('', 'txt','png'))
+  
+  sendSweetAlert(
+    session = session,
+    html = TRUE,
+    title = "A Note from the Wasteland",
+    text = fluidRow(
+      column(width = 12,
+             HTML('This is a fan created army building app for the Cool Mini Or Not (CMON) game Dark Age.</br>All images contained within this app are copyrighted to CMON.</br>If you encounter any issues please post an issue on github. <a href = "https://github.com/MPBeholder/shiny_samarian" target ="_blank"><img width = "15px" height = "15px" src = "github_mark_64px.png"></a>'),
+             hr()
+      ),
+      column(width = 6,
+             HTML('<a target="_blank" href="http://dark-age.com"><img class = "custom" style="padding-top:12%" height = "50%" width = "50%" src = "DA_Logo3.png"></a>')),
+      column(width = 6,
+             HTML('<a target="_blank" href="https://cmon.com"><img class = "custom" height = "50%" width = "50%" src = "cmon_logo.png"></a>'))
+    ),
+    type = "info"
+  )
   # Obersvation Events ---------------------------------
   observeEvent(input$army_selection,{
     # Reset army value when faction is changed.
@@ -68,10 +71,10 @@ server <- function(input, output, session){
       title = HTML(paste0("Stat Cards for: ",displayedCard)),
       text = fluidRow(
         column(width = 6,
-               withSpinner(imageOutput("stat1",height = '250px')#HTML(paste0('<img class = "custom" src = "stat_cards/',gsub(" ","_",tolower(displayedCard)),'_0.png">'))
+               (imageOutput("stat1",height = '250px')#HTML(paste0('<img class = "custom" src = "stat_cards/',gsub(" ","_",tolower(displayedCard)),'_0.png">'))
         )),
         column(width = 6,
-               withSpinner(imageOutput("stat2",height = '250px')#HTML(paste0('<img class = "custom" src = "stat_cards/',gsub(" ","_",tolower(displayedCard)),'_1.png">'))
+               (imageOutput("stat2",height = '250px')#HTML(paste0('<img class = "custom" src = "stat_cards/',gsub(" ","_",tolower(displayedCard)),'_1.png">'))
         ))
       ),
       type = "info"

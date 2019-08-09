@@ -5,6 +5,7 @@ function(request){
       id = "tabs",
       menuItem("Factions", tabName = "home", icon = icon("vcard")),
       menuItem("Build", tabName = "build_army", icon = icon("cogs"))#,
+      #shinyFilesButton('files', label='File select', title='Please select a file', multiple=FALSE)
       #menuItem("Tournament", tabName = "build_tourney", icon = icon("users"))
     )
   )
@@ -28,7 +29,8 @@ function(request){
                      shiny::tags$meta(property = "og:type", content = "website"),
                      shiny::tags$meta(property = "og:url", content = share$url),
                      shiny::tags$meta(property = "og:description", content = share$description),
-                     shiny::tags$style(".swal-modal {width: 60%;}"),
+                     shiny::tags$style(".swal-modal {width: 100%;}"),
+                     shiny::tags$style("@media (min-width:576px) {.swal-modal {width: 60%;}}"),
                      shiny::tags$script(HTML("Shiny.addCustomMessageHandler('unbind-DT', function(id) {
                                Shiny.unbindAll($('#'+id).find('table').DataTable().table().node());})")),
                      shiny::tags$style(HTML("
@@ -59,6 +61,8 @@ function(request){
     useShinyjs(),
     extendShinyjs(text = jsCode),
     useSweetAlert(),
+    use_waiter(),
+    show_waiter_on_load(spin_fading_circles(),logo = "DA_Logo3.png"),
     tabItems(
       tabItem(tabName = "home",
               fluidRow(
@@ -98,7 +102,7 @@ function(request){
                          choices = c("")
                        )),
                 column(width = 2,
-                       textInput("army_value", label = "Army Size (Points)")
+                       numericInput("army_value", label = "Army Size (Points)",value = 0,min = 0)
                 ),
                 column(width = 3,
                        div(class = "vertAlign",
@@ -119,7 +123,7 @@ function(request){
   # Header ---------------------------------
   header <- dashboardHeaderPlus(
     title = tagList(
-      span(class = "logo-lg", "Samaria Lives"), 
+      span(class = "logo-lg", "Samarian Army Builder"), 
       img(src = "smaller_icon.png", width = 32, height = 25,style="padding-right:10px;")#,
     ),
     enable_rightsidebar = TRUE,

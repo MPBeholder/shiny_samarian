@@ -1,4 +1,5 @@
-suppressMessages({
+suppressPackageStartupMessages({
+  library(shinyFiles)
   library(V8)
   library(waiter)
   library(shiny)
@@ -25,12 +26,12 @@ source("misc/armyVariables.R")
 source("modules/faction_module.R")
 source("modules/firebase_module.R")
 
-suppressMessages({
+suppressWarnings(suppressMessages({
   faction.Df <- read_csv("misc/SamarianFrame.csv")
   psychogenic.Df <- read_csv("misc/PsychogenicFrame.csv")
   upgrades.Df <- read_csv("misc/UpgradeFrame.csv")
   faction.Rules <- read_csv("misc/factionRules.csv")
-})
+}))
 
 
 jsCode <- "shinyjs.pushAnalytic = function(params){

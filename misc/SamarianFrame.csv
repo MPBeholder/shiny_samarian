@@ -2,8 +2,8 @@ Faction,Subfaction,Name,Cost,Amount,Upgrade,UpgradeNum,Psychogenic,PsychogenicNu
 Dragyri,Air,Yovanka,200,C,,,Air/Unaligned,3
 Dragyri,Air,Mha'Kin'Zhi,150,C,,,,
 Dragyri,Air,Storm Elemental,200,1,,,,
-Dragyri,Air,Death's Device of Air,150,3,,,,
-Dragyri,Air,Spirit Lord of Air,150,1,,,Air/Unaligned,2
+Dragyri,Air,Death's Device Of Air,150,3,,,,
+Dragyri,Air,Spirit Lord Of Air,150,1,,,Air/Unaligned,2
 Dragyri,Air,Cyclone,100,3,,,Bladewind,1
 Dragyri,Air,Soul Warden (Air),75,1,,,Air/Unaligned,3
 Dragyri,Air,Squall,75,3,,,,
@@ -41,7 +41,7 @@ Dragyri,Unaligned,Aether Wisp,0,*,,,,
 Dragyri,Earth,San'Triahn,200,C,,,Earth/Unaligned,3
 Dragyri,Earth,Ghrakun,150,C,,,Earth/Unaligned,2
 Dragyri,Earth,Greater Avalanche Elemental,200,1,,,,
-Dragyri,Earth,Spirit Lord of Earth,150,2,,,Earth/Unaligned,2
+Dragyri,Earth,Spirit Lord Of Earth,150,2,,,Earth/Unaligned,2
 Dragyri,Earth,Quake,100,3,,,,
 Dragyri,Earth,Bedrock Sentry,75,2,,,,
 Dragyri,Earth,Fissure,75,3,,,,
@@ -55,8 +55,8 @@ Dragyri,Earth,Spear Slave (Earth),25,6,,,,
 Dragyri,Fire,Rath'Zhi,200,C,,,,
 Dragyri,Fire,Jza'Mhi,150,C,,,Fire/Unaligned,3
 Dragyri,Fire,Fire Elemental,200,1,,,,
-Dragyri,Fire,Enforcer of Judgment,175,1,,,,
-Dragyri,Fire,Spirit Lord of Fire,150,1,,,Fire,1
+Dragyri,Fire,Enforcer Of Judgment,175,1,,,,
+Dragyri,Fire,Spirit Lord Of Fire,150,1,,,Fire,1
 Dragyri,Fire,Inferno,100,4,,,,
 Dragyri,Fire,Cinder Slave,25,4,,,,
 Dragyri,Fire,Brimstone,75,3,,,,
@@ -64,7 +64,7 @@ Dragyri,Fire,Pyre,75,4,,,,
 Dragyri,Fire,Soul Warden (Fire),75,1,,,Fire/Unaligned,3
 Dragyri,Fire,Volcanic Helot,75,3,,,Fiery Resolve,1
 Dragyri,Fire,Volcanic Phalanx,75,3,,,Shield Of Hatred,1
-Dragyri,Fire,Artificer of the Alteghran,50,1,,,,
+Dragyri,Fire,Artificer Of The Alteghran,50,1,,,,
 Dragyri,Fire,Cavewing Slyth,50,4,,,,
 Dragyri,Fire,Razor Slyth,50,4,,,,
 Dragyri,Fire,Taskmaster (Fire),50,1,,,,
@@ -75,8 +75,8 @@ Dragyri,Fire,Ember,0,*,,,,
 Dragyri,Ice,Luck'Kit'Kaii,200,C,,,,
 Dragyri,Ice,Dah'Vid,100,C,,,,
 Dragyri,Ice,Ice Elemental,200,1,,,,
-Dragyri,Ice,Death's Device of Ice,150,3,,,,
-Dragyri,Ice,Spirit Lord of Ice,150,1,,,Ice/Unaligned,2
+Dragyri,Ice,Death's Device Of Ice,150,3,,,,
+Dragyri,Ice,Spirit Lord Of Ice,150,1,,,Ice/Unaligned,2
 Dragyri,Ice,Frostbite,100,3,,,Icy Resolve,1
 Dragyri,Ice,Blizzard,75,3,,,Chilling Grasp,1
 Dragyri,Ice,Soul Searcher,75,3,,,,
@@ -115,9 +115,9 @@ Dragyri,Shadow,Amabilia,200,C,,,Shadow/Unaligned,3
 Dragyri,Shadow,Huntress,175,C,,,Ensnaring Webs,1
 Dragyri,Shadow,Hood (Shadow),150,C,,,Shadow/Unaligned,2
 Dragyri,Shadow,Umbra Shadow Elemental,200,1,,,,
-Dragyri,Shadow,Death's Device of Shadow,150,3,,,,
+Dragyri,Shadow,Death's Device Of Shadow,150,3,,,,
 Dragyri,Shadow,Goliath,150,1,,,,
-Dragyri,Shadow,Spirit Lord of Shadow,150,1,,,Shadow/Unaligned,2
+Dragyri,Shadow,Spirit Lord Of Shadow,150,1,,,Shadow/Unaligned,2
 Dragyri,Shadow,Keeper,100,2,,,Call To Darkness,1
 Dragyri,Shadow,Strega,100,1,,,Shadow/Unaligned,2
 Dragyri,Shadow,Vespa,100,2,,,,
