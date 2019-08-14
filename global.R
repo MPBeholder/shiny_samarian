@@ -13,6 +13,7 @@ suppressPackageStartupMessages({
   library(DT)
   library(rintrojs)
   library(rmarkdown)
+  library(mongolite)
 })
 
 share <- list(

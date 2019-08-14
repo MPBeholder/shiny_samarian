@@ -300,7 +300,8 @@ server <- function(input, output, session){
         dplyr::summarise(value = paste0(value,collapse = ", ")) %>%
         filter(name != "") %>%
         dplyr::rename("Upgrades & Bio-Gens" = "value") %>%
-        dplyr::rename("Name" = "name")
+        dplyr::rename("Name" = "name") %>%
+        mutate(Name = gsub(" ","_",Name))
       
       totalPsycho <- append(autoReactPsychogenics$selected,input$psychogenicInput) %>% 
         tibble::enframe(name = NULL) %>% 
@@ -309,7 +310,8 @@ server <- function(input, output, session){
         dplyr::summarise(value = paste0(value,collapse = ", ")) %>%
         filter(name != "")  %>%
         dplyr::rename("Psychogenics & Rituals" = "value") %>%
-        dplyr::rename("Name" = "name")
+        dplyr::rename("Name" = "name") %>%
+        mutate(Name = gsub(" ","_",Name))
       
       reset("psychogenicInput")
       reset("upgradeInput")
@@ -547,8 +549,17 @@ server <- function(input, output, session){
     
     selectableUpgrades <- upgradeFrame %>%
       filter(!Upgrade %in% unlist(str_split(autoUpgrades,"\\|"))) %>%
-      mutate(nameCombo = paste(Name,Upgrade,sep = "|"))  %>%
       filter(!is.na(Upgrade))
+    
+    tempSelectable <<- selectableUpgrades
+    
+    selectableUpgrades <- selectableUpgrades %>%
+      dplyr::left_join(outputArmy %>% 
+                         dplyr::select(Name, Amount), 
+                       by = "Name") %>%
+      mutate(UpgradeNum = UpgradeNum * as.integer(Amount)) %>%
+      mutate(nameCombo = paste(Name,Upgrade,UpgradeNum,sep = "|"))  %>%
+      dplyr::select(-Amount)
     
     validate(
       need(nrow(selectableUpgrades) != 0, HTML("No selectable Upgrades or Bio-Gens!"))
@@ -651,8 +662,16 @@ server <- function(input, output, session){
     
     selectablePsychogenics <- psychogenicFrame %>%
       filter(!Psychogenic %in% unlist(str_split(autoPsychogenics,"\\|"))) %>%
-      mutate(nameCombo = paste(Name,Psychogenic,sep = "|"))  %>%
+      #mutate(nameCombo = paste(Name,Psychogenic,sep = "|"))  %>%
       filter(!is.na(Psychogenic))
+    
+    selectablePsychogenics <- selectablePsychogenics %>%
+      dplyr::left_join(outputArmy %>% 
+                         dplyr::select(Name, Amount), 
+                       by = "Name") %>%
+      mutate(PsychogenicNum = PsychogenicNum * as.integer(Amount)) %>%
+      mutate(nameCombo = paste(Name,Psychogenic,PsychogenicNum,sep = "|"))  %>%
+      dplyr::select(-Amount)
     
     if (any(selectablePsychogenics$PsychogenicNum == 0)) {
       autoIncludes <- psychogenic.Df %>%
@@ -754,7 +773,6 @@ server <- function(input, output, session){
   # Add-Ons Modal ---------------------------------
   
   observeEvent(input$generateArmy,{
-    #js$pushAnalytic('aaa','bbbb','cccc','dddd')
     sendSweetAlert(
       session = session,
       html = TRUE,
@@ -779,7 +797,13 @@ server <- function(input, output, session){
         column(width = 6,
                div(class = "vertAlign",
                    HTML("<center>"),
-                   uiOutput("dlHandler"),#downloadButton('downloadArmy','Download Army'),
+                   column(width = 12,
+                          uiOutput("dlHandler")
+                          ),
+                   hr(),
+                   hr(),
+                   column(width = 12,
+                          uiOutput("saveArmy")),
                    HTML("</center>")
                )
         ))
@@ -789,6 +813,34 @@ server <- function(input, output, session){
     )
   })
 
+  output$saveArmy <- renderUI({
+    
+    currentUpgrades <- gsub(".*\\|","",c(input$upgradeInput))
+    currentPsychogenics <- gsub(".*\\|","",c(input$psychogenicInput))
+    
+    upgradeVal <- if_else(input$subfaction_selection == "Broodmere Spawn",2,1)
+    
+    suppressWarnings({
+      maxUpgrades <- max(table(currentUpgrades),na.rm = T)
+      maxPsychos <- max(table(currentPsychogenics),na.rm = T)
+    })
+    
+    validate(
+      
+      need(try(maxUpgrades <= upgradeVal), "Too many duplicate Upgrades or Bio-Gens")
+      
+    )
+    
+    validate(
+      
+      need(try(maxPsychos <= 1), "Too many duplicate Psychogenics")
+      
+    )
+    
+    actionButton('save','Save Army',icon = icon("save"))
+    
+  })
+  
   output$dlHandler <- renderUI({
     
     #Download only renders when upgrade and psychogenic rules satisfied
@@ -798,8 +850,10 @@ server <- function(input, output, session){
 
       upgradeVal <- if_else(input$subfaction_selection == "Broodmere Spawn",2,1)
       
-      maxUpgrades <- max(table(currentUpgrades),na.rm = T)
-      maxPsychos <- max(table(currentPsychogenics),na.rm = T)
+      suppressWarnings({
+        maxUpgrades <- max(table(currentUpgrades),na.rm = T)
+        maxPsychos <- max(table(currentPsychogenics),na.rm = T)
+      })
         
     validate(
 
@@ -817,5 +871,196 @@ server <- function(input, output, session){
     
   }
   )
+
+  observeEvent(input$save,{
+    closeSweetAlert(session)
+    confirmSweetAlert(
+      session = session,
+      inputId = "confirmSave",
+      type = "warning",
+      title = "Want to confirm ?",
+      danger_mode = TRUE
+    )
+    
+    
+  })
   
+  
+  observeEvent(input$confirmSave,{
+    if (input$confirmSave) {
+    outputArmy <- tibble(User = character(),
+                         SavedName = character(),
+                         Faction = character(),
+                         Subfaction = character(),
+                         Name = character(),
+                         Type = character(),
+                         Value = character(),
+                         Amount = character())
+    
+    tempVal <- 0
+    step <- 1
+    progressIterate <- 1
+    n <- nrow(selectedArmy())
+    
+    # inputSweetAlert(
+    #   session = session, inputId = "armyName",
+    #   title = "Army saved name?"
+    # )
+    
+    progressSweetAlert(
+      session = session, id = "saveProgress",
+      title = "Saving Army",
+      display_pct = FALSE, value = 0)
+    
+    totalUpgrades <- append(autoReactUpgrades$selected,input$upgradeInput) %>% 
+      tibble::enframe(name = NULL) %>% 
+      separate(value,c("name","value"),sep = "\\|") %>% 
+      group_by(name) %>% 
+      dplyr::summarise(value = paste0(value,collapse = ", ")) %>%
+      filter(name != "") %>%
+      dplyr::rename("Upgrades & Bio-Gens" = "value") %>%
+      dplyr::rename("Name" = "name") %>%
+      mutate(Name = gsub(" ","_",Name))
+    
+    totalPsycho <- append(autoReactPsychogenics$selected,input$psychogenicInput) %>% 
+      tibble::enframe(name = NULL) %>% 
+      separate(value,c("name","value"),sep = "\\|") %>% 
+      group_by(name) %>% 
+      dplyr::summarise(value = paste0(value,collapse = ", ")) %>%
+      filter(name != "")  %>%
+      dplyr::rename("Psychogenics & Rituals" = "value") %>%
+      dplyr::rename("Name" = "name") %>%
+      mutate(Name = gsub(" ","_",Name))
+    
+    reset("psychogenicInput")
+    reset("upgradeInput")
+    autoReactUpgrades$selected <- ""
+    autoReactPsychogenics$selected <- ""
+    
+    for (name in selectedArmy()[["Name"]]){
+      sel_name <- which(selectedArmy()[["Name"]] == name)
+      tempVal <- tempVal + as.numeric(input[[name]]) * as.numeric(selectedArmy()$Cost[which(selectedArmy()[["Name"]] == name)])
+      if (as.numeric(input[[name]]) >= 1){
+        characterRow <- tibble(User = as.character('aready'),
+                               SavedName = as.character('asdf'),
+                               Faction = as.character(input$army_selection),
+                               Subfaction = as.character(selectedArmy()$Subfaction[sel_name]),
+                               Name = gsub(" ","_",(name)),
+                               Type = case_when(
+                                 as.character(selectedArmy()$Amount[sel_name]) == "C" ~ "Character",
+                                 TRUE ~ "Unit"
+                               ),
+                               Value = as.character(selectedArmy()$Cost[sel_name]),
+                               Amount = as.character(input[[name]]))
+        outputArmy[step,] <- characterRow
+        step <- step + 1
+      }
+      
+      updateProgressBar(
+        session = session,
+        id = "saveProgress",
+        value = progressIterate * (100 / n), total = 100,
+        title = "Saving Army"
+      )
+      progressIterate <- progressIterate + 1
+      # progress$inc(1/n, detail = paste("Checking: ", name))
+      
+    }
+    
+    tmpUpgrades <<- totalUpgrades
+    tmpPsycho <<- totalPsycho
+    tmpTable <<- outputArmy
+    
+    upPsychoArmy <- outputArmy %>% 
+      dplyr::select(Name) %>%
+      dplyr::left_join(totalUpgrades, by = "Name") %>%
+      dplyr::left_join(totalPsycho, by = "Name") %>%
+      replace_na(list(`Upgrades & Bio-Gens` = "",`Psychogenics & Rituals` = "")) %>%
+      filter(!(`Upgrades & Bio-Gens` == "" & `Psychogenics & Rituals` == "")) 
+    
+    quickrefTable <- outputArmy %>%
+      dplyr::left_join(upPsychoArmy, by = "Name")
+    
+    savedFile <<- quickrefTable
+
+    closeSweetAlert(session)
+    
+    sendSweetAlert(
+      session = session,
+      title = "Army Saved",
+      text = "Army successfully saved",
+      type = "success"
+    )
+    
+    } else {
+      sendSweetAlert(
+        session = session,
+        html = TRUE,
+        title = 'Finalize Army',
+        text = tagList(fluidRow(
+          # Upgrades
+          column(width = 6,
+                 HTML("<center>"),
+                 uiOutput("upgradeUI"),
+                 HTML("</center>")),
+          # Psychogenics
+          column(width = 6,
+                 HTML("<center>"),
+                 uiOutput("psychoUI"),
+                 HTML("</center>"))),
+          hr(),
+          fluidRow(
+            column(width = 6,
+                   HTML("<center>"),
+                   pickerInput('fileType','Select Download Type',choices = c("Full","Reference"),selected = "Full"),
+                   HTML("</center>")),
+            column(width = 6,
+                   div(class = "vertAlign",
+                       HTML("<center>"),
+                       column(width = 12,
+                              uiOutput("dlHandler")
+                       ),
+                       hr(),
+                       hr(),
+                       column(width = 12,
+                              uiOutput("saveArmy")),
+                       HTML("</center>")
+                   )
+            ))
+        ),
+        btn_labels = c('Dismiss'),
+        type = "warning"
+      )
+    }
+  }, ignoreInit = T)
+  
+  
+  firebaseServer(input,output,session)
+  
+  observeEvent(input$submitSignIn, {
+    updateTabItems(session, "tabs", "army_login")
+  })
+  
+  signed_in_user_df <- reactive({
+    req(session$userData$current_user())
+    
+    out <- session$userData$current_user()
+    out <- unlist(out)
+    
+    data.frame(
+      name = names(out),
+      value = unname(out)
+    )
+  })
+  
+  output$user_out <- DT::renderDT({
+    datatable(
+      signed_in_user_df(),
+      rownames = FALSE,
+      options = list(
+        dom = "tp",
+        scrollX = TRUE
+      )
+    )
+  })
 }

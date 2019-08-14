@@ -4,7 +4,8 @@ function(request){
     sidebarMenu(
       id = "tabs",
       menuItem("Factions", tabName = "home", icon = icon("vcard")),
-      menuItem("Build", tabName = "build_army", icon = icon("cogs"))#,
+      menuItem("Build", tabName = "build_army", icon = icon("cogs")),
+      menuItem("My Armies", tabName = "army_login", icon = icon("users"))
       #shinyFilesButton('files', label='File select', title='Please select a file', multiple=FALSE)
       #menuItem("Tournament", tabName = "build_tourney", icon = icon("users"))
     )
@@ -12,7 +13,7 @@ function(request){
   
   # Body ---------------------------------
   body <- dashboardBody(
-    firebaseUI('SamarianBase',
+    firebaseHead('SamarianBase',
                Sys.getenv("fbAPI"),
                Sys.getenv("fbDomain"),
                Sys.getenv("fbID")),
@@ -116,9 +117,36 @@ function(request){
               #   column(width = 4, uiOutput("Helper")),
               #   column(width = 8, uiOutput("Notesbox")))
       ),
+      tabItem(tabName = 'army_login',
+              # tags$button(
+              #   id = "submit_sign_out",
+              #   type = "button",
+              #   "Sign Out",
+              #   class = "btn-danger pull-right",
+              #   style = "color: white;"
+              # ),
+              source("modules/firebaseSignIn.R", local = TRUE)$value,
+              source("modules/firebaseRegister.R", local = TRUE)$value,
+              source("modules/firebaseVerify.R", local = TRUE)$value,
+              DT::DTOutput("user_out")),
       tabItem(tabName = "build_tourney")
     )
               )
+  
+  # Left Sidebar ---------------------------------
+  
+  # leftsideMenu <- tagList(
+  #   dropdownBlock(
+  #     id = "mydropdown",
+  #     title = "Dropdown 1",
+  #     icon = icon("sliders"),
+  #     sliderInput(
+  #       inputId = "n",
+  #       label = "Number of observations",
+  #       min = 10, max = 100, value = 30
+  #     )
+  #   )
+  # )
   
   # Header ---------------------------------
   header <- dashboardHeaderPlus(
@@ -127,11 +155,27 @@ function(request){
       img(src = "smaller_icon.png", width = 32, height = 25,style="padding-right:10px;")#,
     ),
     enable_rightsidebar = TRUE,
+    tags$li(class = "dropdown",
+            style = "padding-top:8px",
+            dropdownButton(
+              inputId = "loginDropdown",
+              label = "",
+              icon = icon("user"),
+              status = "info",
+              right = T,
+              circle = FALSE,
+              tagList(
+                HTML('<center>'),
+                actionButton('submitSignIn','Sign In'),
+                actionButton('submit_sign_out','Sign Out'),
+                HTML('</center>')
+              )
+            )),
     rightSidebarIcon = "info-circle"
   )
   
   # Right Sidebar ---------------------------------
-  rightsidemenu <- rightSidebar(
+  rightsideMenu <- rightSidebar(
     background = "dark",
     rightSidebarTabContent(
       id = 1,
@@ -159,7 +203,7 @@ function(request){
     header,
     sidebar,
     body,
-    rightsidemenu,
+    rightsideMenu,
     title
   )
   }
