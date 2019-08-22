@@ -38,7 +38,14 @@ function(request){
                               @media screen and (min-width: 768px){
                                 .rwd-break { display: none; }
                               }
+                              
+                              @media (max-width: 767px) {
 
+.skin-blue .main-header .navbar .dropdown-menu li a {
+	color: inherit;
+}
+
+}
                               img.custom {
                                 max-width: 100%;
                                 max-height: 100%;

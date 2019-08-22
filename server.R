@@ -4,12 +4,22 @@ server <- function(input, output, session){
   
   mongoTrigger <- makeReactiveTrigger()
   # Create session specific connection to mongo
-  
-  db.SAB <- mongo(collection = "SAB", db = "appFirebase", url = paste0("mongodb://",Sys.getenv('mongoUser'),":",Sys.getenv('mongoPass'),"@",Sys.getenv('mongoURL')))
+  tryCatch({
+    db.SAB <- mongo(collection = "SAB", db = "appFirebase", url = paste0("mongodb://",Sys.getenv('mongoUser'),":",Sys.getenv('mongoPass'),"@",Sys.getenv('mongoURL')))
+  },
+    error = function(c) {
+    sendSweetAlert(
+      session,
+      title = "Connection Error",
+      text = "Cannot connect to database! Try again later",
+      type = "error"
+    )
+  })
   
   # Close session specific connection to mongo
   
   session$onSessionEnded(function() {
+    
     
     db.SAB$disconnect()
     
@@ -1151,7 +1161,6 @@ server <- function(input, output, session){
             `Upgrades & Bio-Gens` == "" ~ "None",
             TRUE ~ `Upgrades & Bio-Gens`
           ))
-        
         
         tempArmy <<- formattingArmy
         
