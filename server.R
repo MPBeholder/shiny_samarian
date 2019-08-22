@@ -2,6 +2,19 @@ server <- function(input, output, session){
   # Base Reactive Value(s) ---------------------------------
   army <- reactiveValues(value = integer())  
   
+  mongoTrigger <- makeReactiveTrigger()
+  # Create session specific connection to mongo
+  
+  db.SAB <- mongo(collection = "SAB", db = "appFirebase", url = paste0("mongodb://",Sys.getenv('mongoUser'),":",Sys.getenv('mongoPass'),"@",Sys.getenv('mongoURL')))
+  
+  # Close session specific connection to mongo
+  
+  session$onSessionEnded(function() {
+    
+    db.SAB$disconnect()
+    
+  })
+  
   # Modular Components ---------------------------------
   samarianInfoServer(input,output,session,faction = "Kukulkani")
   samarianInfoServer(input,output,session,faction = "Forsaken")
@@ -815,6 +828,8 @@ server <- function(input, output, session){
 
   output$saveArmy <- renderUI({
     
+    validate(need(session$userData$current_user(),"Sign in to save armies!"))
+    
     currentUpgrades <- gsub(".*\\|","",c(input$upgradeInput))
     currentPsychogenics <- gsub(".*\\|","",c(input$psychogenicInput))
     
@@ -878,13 +893,32 @@ server <- function(input, output, session){
       session = session,
       inputId = "confirmSave",
       type = "warning",
-      title = "Want to confirm ?",
+      title = "Confirm Save?",
+      html = T,
+      btn_labels = c("Cancel",
+                     "Confirm"),
+      text = fluidRow(HTML("<center>"),
+                      textInput('saveName','Army Name',value = ""),
+                      br(),
+                      uiOutput('nameCheck'),
+                      HTML("</center>")),
       danger_mode = TRUE
     )
-    
-    
   })
   
+  output$nameCheck <- renderUI({
+    
+    if (input$saveName == "") {
+      textOut <- '<span style = "color:lightgray;">Please enter an army name</span>'
+    } else if (input$saveName %in% currentArmies()[["SavedName"]]) {
+      textOut <- '<span style = "color:red;">Name already in use!</span>'
+    } else {
+      textOut <- '<span style = "color:lightgray;">Valid army name</span>'
+    }
+    
+    HTML(textOut)
+    
+  })
   
   observeEvent(input$confirmSave,{
     if (input$confirmSave) {
@@ -892,6 +926,7 @@ server <- function(input, output, session){
                          SavedName = character(),
                          Faction = character(),
                          Subfaction = character(),
+                         armySubfaction = character(),
                          Name = character(),
                          Type = character(),
                          Value = character(),
@@ -901,11 +936,6 @@ server <- function(input, output, session){
     step <- 1
     progressIterate <- 1
     n <- nrow(selectedArmy())
-    
-    # inputSweetAlert(
-    #   session = session, inputId = "armyName",
-    #   title = "Army saved name?"
-    # )
     
     progressSweetAlert(
       session = session, id = "saveProgress",
@@ -941,9 +971,10 @@ server <- function(input, output, session){
       sel_name <- which(selectedArmy()[["Name"]] == name)
       tempVal <- tempVal + as.numeric(input[[name]]) * as.numeric(selectedArmy()$Cost[which(selectedArmy()[["Name"]] == name)])
       if (as.numeric(input[[name]]) >= 1){
-        characterRow <- tibble(User = as.character('aready'),
-                               SavedName = as.character('asdf'),
+        characterRow <- tibble(User = as.character(signed_in_user_uid()),
+                               SavedName = as.character(input$saveName),
                                Faction = as.character(input$army_selection),
+                               armySubfaction = as.character(input$subfaction_selection),
                                Subfaction = as.character(selectedArmy()$Subfaction[sel_name]),
                                Name = gsub(" ","_",(name)),
                                Type = case_when(
@@ -955,7 +986,7 @@ server <- function(input, output, session){
         outputArmy[step,] <- characterRow
         step <- step + 1
       }
-      
+
       updateProgressBar(
         session = session,
         id = "saveProgress",
@@ -980,6 +1011,10 @@ server <- function(input, output, session){
     
     quickrefTable <- outputArmy %>%
       dplyr::left_join(upPsychoArmy, by = "Name")
+    
+    db.SAB$insert(quickrefTable)
+    
+    mongoTrigger$trigger()
     
     savedFile <<- quickrefTable
 
@@ -1041,21 +1076,215 @@ server <- function(input, output, session){
     updateTabItems(session, "tabs", "army_login")
   })
   
+  observeEvent(input$saveName,{
+    
+    if (input$saveName == "" || input$saveName %in% currentArmies()[["SavedName"]]) {
+      
+      shinyjs::disable(selector = ".swal-button--confirm")
+      
+    } else {
+      
+      shinyjs::enable(selector = ".swal-button--confirm")
+      
+    }
+    
+  },ignoreInit = T)
+  
+  signed_in_user_uid <-reactive({
+    req(session$userData$current_user())
+    out <- session$userData$current_user()
+    out <- unlist(out)
+    
+    unname(out)[1]
+    
+  })
+  
   signed_in_user_df <- reactive({
     req(session$userData$current_user())
     
     out <- session$userData$current_user()
     out <- unlist(out)
-    
+    current_userDat <<- out
     data.frame(
       name = names(out),
       value = unname(out)
     )
   })
   
+  currentArmies <- reactive({
+    req(session$userData$current_user())
+    
+    mongoTrigger$depend()
+    
+    userQuery <- paste0('{"User":"',signed_in_user_uid(),'"}')
+    
+    print(userQuery)
+    db.SAB$find(userQuery)
+  })
+  
+  output$savedArmies <- renderUI({
+
+    validate(need(session$userData$current_user(),"You must have one or more armies saved!"))
+    
+    armyNames <- currentArmies() %>% 
+      pull(SavedName) %>% 
+      unique()
+
+    tagList(
+      lapply(armyNames, function(x) {
+        selectedArmy <- currentArmies() %>%
+          filter(SavedName == unlist(x)) %>%
+          mutate(actualScore = case_when(
+            Value == "C" ~ as.numeric(Value),
+            TRUE ~ as.numeric(Value) * as.numeric(Amount))
+          )
+        
+        formattingArmy <- selectedArmy %>%
+          dplyr::select(-User,-SavedName,-actualScore,-armySubfaction,-Faction) %>%
+          mutate(Name = gsub("_"," ",Name)) %>%
+          replace_na(list(`Psychogenics & Rituals` = "None",`Upgrades & Bio-Gens` = "None")) %>%
+          mutate(`Psychogenics & Rituals` = case_when(
+            `Psychogenics & Rituals` == "" ~ "None",
+            TRUE ~ `Psychogenics & Rituals`
+          ),
+          `Upgrades & Bio-Gens` = case_when(
+            `Upgrades & Bio-Gens` == "" ~ "None",
+            TRUE ~ `Upgrades & Bio-Gens`
+          ))
+        
+        
+        tempArmy <<- formattingArmy
+        
+        mainArmy <- selectedArmy %>%
+          pull(Faction) %>%
+          unique()
+        
+        armySplash <- switch(mainArmy,
+                             "Kukulkani" = "k3_back.jpg","Brood" = "brood_back.jpg",
+                             "C.O.R.E" = "core_back.jpg","Forsaken" = "forsaken_back.jpg",
+                             "Skarrd" = "skarrd_back.jpg","Outcasts" = "outcast_back.jpg",
+                             "Dragryi" = "drag_back.jpg"
+        )
+        
+        subArmy <- selectedArmy %>%
+          pull(armySubfaction) %>%
+          unique()
+
+        droppedSub <- subArmy[!str_detect(subArmy,"Unaligned|Bounty Hunter|/")]
+        
+        if (length(droppedSub) == 0) {
+          
+          armyIcon <- switch(mainArmy,
+                               "Kukulkani" = "faction_icons/K3.jpg","Brood" = "faction_icons/Brood.jpg",
+                               "C.O.R.E" = "faction_icons/core.jpg","Forsaken" = "faction_icons/forsaken_unaligned.jpg",
+                               "Skarrd" = "faction_icons/skarrd_general.jpg","Outcasts" = "faction_icons/outcast_general.jpg",
+                               "Dragryi" = "faction_icons/Dragyri-Generic.png"
+          )
+          
+        } else {
+          armyIcon <- switch(droppedSub,
+                             "Air" = "faction_icons/drag_air.jpg","Earth" = "faction_icons/drag_earth.jpg",
+                             "Fire" = "faction_icons/drag_fire.jpg","Ice" = "faction_icons/drag_ice.jpg",
+                             "Shadow" = "faction_icons/drag_shadow.jpg","Broodmere Spawn" = "faction_icons/broodspawn_front.png",
+                             "Progeny" = "faction_icons/progeny_front.png","Blood" = "faction_icons/skarrd_blood.jpg",
+                             "Decay" = "faction_icons/skarrd_decay.jpg","Metamorphosis" = "faction_icons/skarrd_meta.jpg",
+                             "Toxic" = "faction_icons/skarrd_toxic.jpg","Mary" = "faction_icons/forsaken_mary.jpg",
+                             "Isaac" = "faction_icons/forsaken_isaac.jpg",
+                             "Luke" = "faction_icons/forsaken_luke.jpg",
+                             "Joan" = "faction_icons/forsaken_joan.jpg",
+                             "Heretic" = "faction_icons/forsaken_heretic.jpg",
+                             "John" = "faction_icons/forsaken_john.jpg",
+                             "Mark" = "faction_icons/forsaken_mark.jpg", "Prevailer" = "faction_icons/forsaken_prevailer.jpg",
+                             "Scavengers" = "faction_icons/outcast_general.jpg","Court of Freeton" = "faction_icons/outcast_general.jpg",
+                             "Barrow Slavers" = "faction_icons/outcast/slaver.jpg","Salt Nomads" = "faction_icons/outcast_salt.jpg",
+                             "Delta Broodfolk" = "faction_icons/delta_front.png"
+          )
+        }
+        
+        widgetUserBox(
+          title = unlist(x),
+          subtitle = paste0(sum(selectedArmy$actualScore)," point ",mainArmy," army"),
+          width = 12,
+          type = 2,
+          src = armyIcon,
+          color = "gray",
+          div(style = "width:100%;overflow-y:scroll;",
+              DT::datatable(
+            cbind(' ' = 'Add-Ons &oplus;', formattingArmy
+            ), escape = -2,
+            options = list(
+              dom = 't',
+              columnDefs = list(
+                list(visible = FALSE, targets = c(0, 7, 8)),
+                list(orderable = FALSE, className = 'details-control', targets = 1)
+              )
+            ),
+            width = "100%",
+            height = "200px",
+            callback = JS("
+  table.column(1).nodes().to$().css({cursor: 'pointer'});
+  var format = function(d) {
+    return '<div style=\"background-color:#eee; padding: .5em;\"> <strong>Upgrades/BioGens:</strong> ' +
+            d[7] + '</br><strong>Psychogenics/Rituals:</strong> ' + d[8] + '</div>';
+  };
+  table.on('click', 'td.details-control', function() {
+    var td = $(this), row = table.row(td.closest('tr'));
+    if (row.child.isShown()) {
+      row.child.hide();
+      td.html('Add-Ons &oplus;');
+    } else {
+      row.child(format(row.data())).show();
+      td.html('Add-Ons &CircleMinus;');
+    }
+  });"
+            ))),
+          footer = HTML(paste0('<button id="',unlist(x),'" type="button" class="btn btn-default action-button" onclick="Shiny.onInputChange(&quot;removeArmy&quot;,  this.id + &quot;_&quot; + Math.random())">Remove Army</button>')),
+          background = T,
+          backgroundUrl = armySplash
+        )
+        })
+    )
+  })
+  
+  observeEvent(input$removeArmy,{
+    armyName <- strsplit(input$removeArmy, "_")[[1]][1]
+    
+    confirmSweetAlert(
+    session = session,
+    inputId = "confirmRemove",
+    type = "warning",
+    title = "Confirm Delete?",
+    html = T,
+    btn_labels = c("Cancel",
+                   "Delete"),
+    text = paste0("Do you really want to delete army: ",armyName,"?"),
+    danger_mode = TRUE
+    )
+    
+  })
+  
+  observeEvent(input$confirmRemove,{
+    armyName <- strsplit(input$removeArmy, "_")[[1]][1]
+    if (input$confirmRemove) {
+      
+      db.SAB$remove(paste0('{"SavedName" : "',armyName,'"}'))
+      
+      mongoTrigger$trigger()
+    
+    
+    sendSweetAlert(
+      session,
+      title = "Successful Deletion",
+      text = paste0("Successfully deleted army: ",armyName),
+      type = 'success'
+    )
+    }
+  })
+  
+  
   output$user_out <- DT::renderDT({
     datatable(
-      signed_in_user_df(),
+      currentArmies(),
       rownames = FALSE,
       options = list(
         dom = "tp",

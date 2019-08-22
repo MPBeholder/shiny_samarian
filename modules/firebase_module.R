@@ -25,7 +25,7 @@ firebaseHead <- function(id,apiKey = "",authDomain = "",projectId = "") {
   width: 350px;
   max-width: 100%;
   margin: 0 auto;
-  margin-top: 75px;
+  margin-top: 5px;
   border: 2px solid #eee;
   border-radius: 25px;
   padding: 30px;

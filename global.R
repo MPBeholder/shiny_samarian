@@ -34,6 +34,7 @@ suppressWarnings(suppressMessages({
   faction.Rules <- read_csv("misc/factionRules.csv")
 }))
 
+# armyMongo <- mongo(collection = "SAB",db = "appFirebase")
 
 jsCode <- "shinyjs.pushAnalytic = function(params){
 var defaultParams = {
@@ -52,3 +53,16 @@ var defaultParams = {
 
   gtag('event', params.action, gtagObject)
 }"
+
+makeReactiveTrigger <- function() {
+  rv <- reactiveValues(a = 0)
+  list(
+    depend = function() {
+      rv$a
+      invisible()
+    },
+    trigger = function() {
+      rv$a <- isolate(rv$a + 1)
+    }
+  )
+}

@@ -63,7 +63,8 @@ function(request){
     extendShinyjs(text = jsCode),
     useSweetAlert(),
     use_waiter(),
-    show_waiter_on_load(spin_fading_circles(),logo = "DA_Logo3.png"),
+    show_waiter_on_load(tagList(#HTML('<span class = "loadingText">Loading Samarian Army Builder...</span>'),
+                                spin_fading_circles()),logo = "DA_Logo3.png"),
     tabItems(
       tabItem(tabName = "home",
               fluidRow(
@@ -118,17 +119,11 @@ function(request){
               #   column(width = 8, uiOutput("Notesbox")))
       ),
       tabItem(tabName = 'army_login',
-              # tags$button(
-              #   id = "submit_sign_out",
-              #   type = "button",
-              #   "Sign Out",
-              #   class = "btn-danger pull-right",
-              #   style = "color: white;"
-              # ),
-              source("modules/firebaseSignIn.R", local = TRUE)$value,
-              source("modules/firebaseRegister.R", local = TRUE)$value,
-              source("modules/firebaseVerify.R", local = TRUE)$value,
-              DT::DTOutput("user_out")),
+              div(id = "armyBoxes", style = "overflow-y:auto;height:500px;",
+                uiOutput("savedArmies")
+              )
+              #DT::DTOutput("user_out")
+              ),
       tabItem(tabName = "build_tourney")
     )
               )
@@ -165,8 +160,10 @@ function(request){
               right = T,
               circle = FALSE,
               tagList(
+                source("modules/firebaseSignIn.R", local = TRUE)$value,
+                source("modules/firebaseRegister.R", local = TRUE)$value,
+                source("modules/firebaseVerify.R", local = TRUE)$value,
                 HTML('<center>'),
-                actionButton('submitSignIn','Sign In'),
                 actionButton('submit_sign_out','Sign Out'),
                 HTML('</center>')
               )
@@ -190,7 +187,7 @@ function(request){
       icon = "info-circle",
       title = "General Info",
       active = FALSE,
-      HTML("Samarian Army Builder v0.2</br>All logos and cards copyright CMON.</br>Code developed by MPBeholder.")
+      HTML("Samarian Army Builder v0.5</br>All logos and cards copyright CMON.</br>Code developed by MPBeholder.")
     ))
   
   # Title ---------------------------------
