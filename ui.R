@@ -68,6 +68,8 @@ function(request){
                               "))),
     useShinyjs(),
     extendShinyjs(text = jsCode),
+    extendShinyjs(text = jsCodeToggle1),
+    extendShinyjs(text = jsCodeToggle2),
     useSweetAlert(),
     use_waiter(),
     show_waiter_on_load(tagList(#HTML('<span class = "loadingText">Loading Samarian Army Builder...</span>'),

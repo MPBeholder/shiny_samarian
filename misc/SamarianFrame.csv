@@ -25,7 +25,8 @@ Outcasts,Bounty Hunter,Blades (Bounty Hunter),100,C,,,,
 Forsaken/Outcasts/Skarrd,Bounty Hunter,Gristle,100,C,,,,
 Brood/Outcasts,Bounty Hunter,Irinya,100,C,,,Brood,1
 Outcasts,Bounty Hunter,Phadras & Maximo,125,C,,,,
-Outcasts/Skarrd,Bounty Hunter,Suzy Belle & Wroth,200,C,,,,
+Outcasts/Skarrd,Bounty Hunter,Suzy Belle,100,C,,,,
+Outcasts/Skarrd,Bounty Hunter,Wroth,100,C,,,,
 Forsaken/Outcasts/Skarrd,Bounty Hunter,Cesspool,75,C,,,,
 Outcasts,Bounty Hunter,Dedlock,75,C,,,,
 Outcasts,Bounty Hunter,John 'Clank' Carter,75,C,,,,
@@ -274,13 +275,16 @@ Forsaken,Isaac,Centipede,75,4,,,,
 Forsaken,Isaac,Controller,50,6,,,,
 Forsaken,Heretic,The Scorpius,200,C,,,,
 Forsaken,Heretic,Saint Johann,150,C,,,,
-Forsaken,Heretic,Jon Woe,150,C,,,,
-Forsaken,Heretic,ANG-IE,100,C,,,,
-Forsaken,Heretic,Quietus,100,C,,,,
-Forsaken,Heretic,Dexus,75,C,,,,
-Forsaken,Heretic,Dominique,75,C,,,,
+Forsaken,Heretic,Jon Woe (Heretic),150,C,,,,
+Forsaken,Heretic,ANG-IE (Heretic),100,C,,,,
+Forsaken,Heretic,Quietus (Heretic),100,C,,,,
+Forsaken,Heretic,Dexus (Heretic),75,C,,,,
+Forsaken,Heretic,Dominique (Heretic),75,C,,,,
 Forsaken,Heretic,Harboya,75,C,,,,
-Forsaken,Heretic,Worm Shepherd,75,1,,,Psychogenic Backlash,1
+Forsaken,Heretic,Worm Shepherd (Heretic),75,1,,,Psychogenic Backlash,1
+Forsaken,Heretic,Drillhead,75,3,,,,
+Forsaken,Heretic,Buzzblade,25,6,,,,
+Forsaken,Heretic,Harpy,50,6,,,,
 Forsaken,Joan,Saint Joan,200,C,,,Joan/Pyrokinetic,3
 Forsaken,Joan,The Grey Lady,175,C,,,,
 Forsaken,Joan,Saint Joan (Inquisitor),150,C,,,Joan,3
@@ -359,7 +363,7 @@ Outcasts,Salt Nomads,Kane,125,C
 Outcasts,Salt Nomads,Lynette,100,C
 Outcasts,Salt Nomads,Ideo,0,*
 Outcasts,Salt Nomads,Vox,0,*
-Outcasts,Salt Nomads,Berserker,100,1
+Outcasts,Salt Nomads,Berserker (Salt),100,1
 Outcasts,Salt Nomads,Caravan Keeper,100,1
 Outcasts,Salt Nomads,Hand of War,75,4
 Outcasts,Salt Nomads,Moloki,75,4

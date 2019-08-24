@@ -92,14 +92,15 @@ server <- function(input, output, session){
       session = session,
       html = TRUE,
       title = HTML(paste0("Stat Cards for: ",displayedCard)),
-      text = fluidRow(
+      text = div(style = "height:260px;overflow-y:scroll;",
+                 fluidRow(
         column(width = 6,
                (imageOutput("stat1",height = '250px')#HTML(paste0('<img class = "custom" src = "stat_cards/',gsub(" ","_",tolower(displayedCard)),'_0.png">'))
         )),
         column(width = 6,
                (imageOutput("stat2",height = '250px')#HTML(paste0('<img class = "custom" src = "stat_cards/',gsub(" ","_",tolower(displayedCard)),'_1.png">'))
         ))
-      ),
+      )),
       type = "info"
     )
     
@@ -129,8 +130,8 @@ server <- function(input, output, session){
         TRUE ~ (as.integer(Amount) * ifelse(as.numeric(input$army_value) / 500 < 1, 1, floor(as.numeric(input$army_value) / 500)))
       )) %>%
       group_by(Name,Subfaction) %>%
-      mutate(Number = paste0('<select id = "',Name,'" class="armyCount">',
-                             paste0('<option value="',seq(0,Allotment),'">',seq(0,Allotment),'</option>',collapse = ""),' </select>')) %>%
+      mutate(Number = paste0('<div id = ',str_replace_all(Name, "[[:punct:]]| ", ""),'><select id = "',Name,'" class="armyCount">',
+                             paste0('<option value="',seq(0,Allotment),'">',seq(0,Allotment),'</option>',collapse = ""),' </select></div>')) %>%
       ungroup() %>%
       group_by(Faction) %>%
       mutate(Amount = factor(Amount, levels = c("C","1","2","3","4","5","6","*"))) %>%
@@ -1301,4 +1302,222 @@ server <- function(input, output, session){
       )
     )
   })
+  
+  observe({
+    #X'Cess Animosity
+    
+    req(input$army_value != 0)
+    if (input$army_selection == "Outcasts") {
+      if (input$subfaction_selection == "Court of Freeton" && !is.null(input[["Judge Brooks"]])) {
+        if (as.numeric(input[["Judge Brooks"]]) == 1) {
+          #updateSelectInput(session, inputId = "Brute",choices = c(0,1,2,3,4,5,6))
+          #updateSelectInput(session, inputId = "Brute Anchor",choices = c(0,1,2))
+          #updateSelectInput(session, inputId = "Brute Pusher",choices = c(0,1,2))
+          print('test1')
+        } else {
+          print('test2')
+        }
+      }
+      
+      if (input$subfaction_selection == "Salt Nomads") {
+        if (!is.null(input[["Lynette"]])) {
+          if (as.numeric(input[["Lynette"]]) == 1) {
+            shinyjs::enable(selector = paste0("#Ideo > select"))
+            shinyjs::enable(selector = paste0("#Vox > select"))
+          } else {
+            updateSelectInput(session, inputId = "Ideo", selected = "0")
+            updateSelectInput(session, inputId = "Vox", selected = "0")
+            shinyjs::disable(selector = paste0("#Ideo > select"))
+            shinyjs::disable(selector = paste0("#Vox > select"))
+          }
+        }
+      }
+      
+    }
+    
+    
+    if (input$army_selection == "Brood") {
+      if (!is.null(input[["Pud Thrower"]])) {
+        if (as.numeric(input[["Pud Thrower"]]) > 0 ||
+            as.numeric(input[["Numbskull"]]) > 0 ||
+            as.numeric(input[["Mandible"]]) > 0 ||
+            as.numeric(input[["Pud Swarm"]]) > 0 ||
+            as.numeric(input[["Pod"]]) > 0) {
+          shinyjs::enable(selector = paste0("#PudRoamer > select"))
+          updateSelectInput(session, inputId = "Pud Roamer",selected = "1")
+        } else {
+          shinyjs::disable(selector = paste0("#PudRoamer > select"))
+          updateSelectInput(session, inputId = "Pud Roamer",selected = "0")
+        }
+      }
+    }
+    if (input$army_selection == "Skarrd") {
+      if (!is.null(input[["Sister of Charity"]])) {
+        if (as.numeric(input[["Sister of Charity"]]) > 0) {
+          shinyjs::enable(selector = paste0("#CharitysMight > select"))
+          shinyjs::enable(selector = paste0("#CharitysZeal > select"))
+        } else {
+          shinyjs::disable(selector = paste0("#CharitysMight > select"))
+          shinyjs::disable(selector = paste0("#CharitysZeal > select"))
+        }
+      }
+      
+      if (!is.null(input[["Dominique"]])) {
+        if (as.numeric(input[["Dominique"]]) == 1) {
+          shinyjs::enable(selector = paste0("#DominiquesChalica > select"))
+        } else {
+          shinyjs::disable(selector = paste0("#DominiquesChalica > select"))
+        }
+      }
+    }
+    
+    if (input$army_selection == "Forsaken"){
+      if (input$subfaction_selection == "Mark" && !is.null(input[["Saint Mark"]])) {
+        if (as.numeric(input[["X'Cess"]]) == 1) {
+          shinyjs::toggleState(selector = paste0("#SaintMarkDragon > select"))
+          shinyjs::toggleState(selector = paste0("#SaintMark > select"))
+        } else if (as.numeric(input[["Saint Mark"]]) == 1) {
+          shinyjs::toggleState(selector = paste0("#XCess > select"))
+          shinyjs::toggleState(selector = paste0("#SaintMarkDragon > select"))
+        } else if (as.numeric(input[["Saint Mark (Dragon)"]]) == 1) {
+          shinyjs::toggleState(selector = paste0("#XCess > select"))
+          shinyjs::toggleState(selector = paste0("#SaintMark > select"))
+        } else {
+          shinyjs::enable(selector = paste0("#XCess > select"))
+          shinyjs::enable(selector = paste0("#SaintMark > select"))
+          shinyjs::enable(selector = paste0("#SaintMarkDragon > select"))
+        }
+      }
+      
+      if (input$subfaction_selection == "Isaac" && !is.null(input[["Saint Isaac"]])) {
+        if (as.numeric(input[["Saint Isaac"]]) == 1) {
+          shinyjs::toggleState(selector = paste0("#SaintIsaacAJAX > select"))
+        } else if (as.numeric(input[["Saint Isaac (AJAX)"]]) == 1) {
+          shinyjs::toggleState(selector = paste0("#SaintIsaac > select"))
+        } else {
+          shinyjs::enable(selector = paste0("#SaintIsaacAJAX > select"))
+          shinyjs::enable(selector = paste0("#SaintIsaac > select"))
+        }
+      }
+      
+      if (input$subfaction_selection == "Mary" && !is.null(input[["Saint Mary"]])) {
+        if (as.numeric(input[["Saint Mary"]]) == 1) {
+          shinyjs::toggleState(selector = paste0("#SaintMaryUnicorn > select"))
+        } else if (as.numeric(input[["Saint Mary (Unicorn)"]]) == 1) {
+          shinyjs::toggleState(selector = paste0("#SaintMary > select"))
+        } else {
+          shinyjs::enable(selector = paste0("#SaintMaryUnicorn > select"))
+          shinyjs::enable(selector = paste0("#SaintMary > select"))
+        }
+      }
+      
+      if (input$subfaction_selection == "Joan" && !is.null(input[["Saint Joan"]])) {
+        if (as.numeric(input[["Saint Joan"]]) == 1) {
+          shinyjs::toggleState(selector = paste0("#SaintJoanInquisitor > select"))
+        } else if (as.numeric(input[["Saint Joan (Inquisitor)"]]) == 1) {
+          shinyjs::toggleState(selector = paste0("#SaintJoan > select"))
+        } else {
+          shinyjs::enable(selector = paste0("#SaintJoanInquisitor > select"))
+          shinyjs::enable(selector = paste0("#SaintJoan > select"))
+        }
+      }
+      
+      if (input$subfaction_selection == "John" && !is.null(input[["Saint John"]])) {
+        if (as.numeric(input[["Saint John"]]) == 1) {
+          shinyjs::toggleState(selector = paste0("#SaintJohnGriffon > select"))
+        } else if (as.numeric(input[["Saint John (Griffon)"]]) == 1) {
+          shinyjs::toggleState(selector = paste0("#SaintJohn > select"))
+        } else {
+          shinyjs::enable(selector = paste0("#SaintJohnGriffon > select"))
+          shinyjs::enable(selector = paste0("#SaintJohn > select"))
+        }
+      }
+      
+      # if (input$subfaction_selection == "John") {
+      #   if (as.numeric(input[["Saint John"]]) == 1) {
+      #     shinyjs::toggleState(selector = paste0("#SaintJohnGriffon > select"))
+      #   } else if (as.numeric(input[["Saint John (Griffon)"]]) == 1) {
+      #     shinyjs::toggleState(selector = paste0("#SaintJohn > select"))
+      #   } else {
+      #     shinyjs::enable(selector = paste0("#SaintJohnGriffon > select"))
+      #     shinyjs::enable(selector = paste0("#SaintJohn > select"))
+      #   }
+      # }
+      
+      if (input$subfaction_selection == "Prevailer" && !is.null(input[["Esh"]])) {
+        if (as.numeric(input[["Esh"]]) == 1) {
+          shinyjs::enable(selector = paste0("#Zephon > select"))
+        } else if (as.numeric(input[["Grand Templar Marius"]]) == 1) {
+          shinyjs::enable(selector = paste0("#Nabu > select"))
+          shinyjs::enable(selector = paste0("#Yael > select"))
+        } else {
+          shinyjs::disable(selector = paste0("#Nabu > select"))
+          shinyjs::disable(selector = paste0("#Yael > select"))
+          shinyjs::disable(selector = paste0("#Zephon > select"))
+        }
+      }
+      
+      if (input$subfaction_selection == "Heretic" && !is.null(input[["Saint Johann"]])) {
+        if (as.numeric(input[["Dominique (Heretic)"]]) == 1) {
+          shinyjs::enable(selector = paste0("#Buzzblade > select"))
+        } else if (as.numeric(input[["Worm Shepherd (Heretic)"]]) > 1) {
+          shinyjs::enable(selector = paste0("#Drillhead > select"))
+        } else if (as.numeric(input[["Harboya"]]) == 1) {
+          shinyjs::enable(selector = paste0("#Harpy > select"))
+        }else {
+          shinyjs::disable(selector = paste0("#Harpy > select"))
+          shinyjs::disable(selector = paste0("#Drillhead > select"))
+          shinyjs::disable(selector = paste0("#Buzzblade > select"))
+        }
+      }
+      
+      if (input$subfaction_selection == "Luke" && !is.null(input[["Saint Luke (Bull)"]])) {
+        if (as.numeric(input[["Saint Luke (Bull)"]]) == 1) {
+          shinyjs::toggleState(selector = paste0("#SaintLukeSpear > select"))
+          shinyjs::toggleState(selector = paste0("#SaintLukeShotgun > select"))
+        } else if (as.numeric(input[["Saint Luke (Spear)"]]) == 1) {
+          shinyjs::toggleState(selector = paste0("#SaintLukeBull > select"))
+          shinyjs::toggleState(selector = paste0("#SaintLukeShotgun > select"))
+        } else if (as.numeric(input[["Saint Luke (Shotgun)"]]) == 1) {
+          shinyjs::toggleState(selector = paste0("#SaintLukeBull > select"))
+          shinyjs::toggleState(selector = paste0("#SaintLukeSpear > select"))
+        }else {
+          shinyjs::enable(selector = paste0("#SaintLukeBull > select"))
+          shinyjs::enable(selector = paste0("#SaintLukeSpear > select"))
+          shinyjs::enable(selector = paste0("#SaintLukeShotgun > select"))
+        }
+      }
+    }
+    
+    if (!is.null(input[["Aren"]])) {
+      if (as.numeric(input[["Aren"]]) == 1) {
+        shinyjs::enable(selector = paste0("#COREHound > select"))
+      } else {
+        shinyjs::disable(selector = paste0("#COREHound > select"))
+      }
+    }
+    
+    if (!is.null(input[["Suzy Belle"]])) {
+      if (as.numeric(input[["Suzy Belle"]]) == 1) {
+        shinyjs::enable(selector = paste0("#Wroth > select"))
+        shinyjs::disable(selector = paste0("#JohnClankCarter > select"))
+        shinyjs::disable(selector = paste0("#CaptainFlay > select"))
+      } else {
+        updateSelectInput(session, inputId = "Wroth", selected = "0")
+        shinyjs::disable(selector = paste0("#Wroth > select"))
+        shinyjs::enable(selector = paste0("#JohnClankCarter > select"))
+        shinyjs::enable(selector = paste0("#CaptainFlay > select"))
+      }
+    }
+    
+    if (!is.null(input[["Captain Flay"]]) || !is.null(input[["John 'Clank' Carter"]])) {
+      if (as.numeric(input[["Captain Flay"]]) == 1 || as.numeric(input[["John 'Clank' Carter"]]) == 1) {
+        shinyjs::disable(selector = paste0("#SuzyBelle > select"))
+      } else {
+        shinyjs::enable(selector = paste0("#SuzyBelle > select"))
+      }
+    }
+    
+  })
+  
 }

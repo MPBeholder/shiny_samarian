@@ -35,7 +35,17 @@ suppressWarnings(suppressMessages({
 }))
 
 # armyMongo <- mongo(collection = "SAB",db = "appFirebase")
-
+jsCodeToggle1 <- "shinyjs.advEnable = function(params){
+  var $idToggle = $(\"id=['\"+params+\"']\");
+  console.log(params);
+  $idToggle.prop('disabled', 'false');
+}"
+jsCodeToggle2 <- "shinyjs.advDisable = function(params){
+  var $idToggle = $(\"id=['\"+params+\"']\");
+  console.log(params);
+  $idToggle.prop('disabled', 'true');
+}"
+#  $idToggle.prop('disabled', function(i, v) { return !v; });
 jsCode <- "shinyjs.pushAnalytic = function(params){
 var defaultParams = {
     action: 'general',
