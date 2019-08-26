@@ -130,7 +130,7 @@ server <- function(input, output, session){
         TRUE ~ (as.integer(Amount) * ifelse(as.numeric(input$army_value) / 500 < 1, 1, floor(as.numeric(input$army_value) / 500)))
       )) %>%
       group_by(Name,Subfaction) %>%
-      mutate(Number = paste0('<div id = ',str_replace_all(Name, "[[:punct:]]| ", ""),'><select id = "',Name,'" class="armyCount">',
+      mutate(Number = paste0('<div id = ',str_replace_all(Name, "[[:punct:]]| ", ""),'><select id = "',gsub(" ","",Name),'" class="armyCount">',
                              paste0('<option value="',seq(0,Allotment),'">',seq(0,Allotment),'</option>',collapse = ""),' </select></div>')) %>%
       ungroup() %>%
       group_by(Faction) %>%
@@ -190,7 +190,7 @@ server <- function(input, output, session){
     # Calculate amount of points selected
     for (name in selectedArmy()[["Name"]]){
       
-      val <- val + as.numeric(input[[name]]) * as.numeric(selectedArmy()$Cost[which(selectedArmy()[["Name"]] == name)])
+      val <- val + as.numeric(input[[gsub(" ","",name)]]) * as.numeric(selectedArmy()$Cost[which(selectedArmy()[["Name"]] == name)])
     
     }
 
@@ -344,8 +344,8 @@ server <- function(input, output, session){
       
       for (name in selectedArmy()[["Name"]]){
         
-        tempVal <- tempVal + as.numeric(input[[name]]) * as.numeric(selectedArmy()$Cost[which(selectedArmy()[["Name"]] == name)])
-        if (as.numeric(input[[name]]) >= 1){
+        tempVal <- tempVal + as.numeric(input[[gsub(" ","",name)]]) * as.numeric(selectedArmy()$Cost[which(selectedArmy()[["Name"]] == name)])
+        if (as.numeric(input[[gsub(" ","",name)]]) >= 1){
           stat_name[step] <- paste(gsub(" ","_",(name)),"png",sep = ".")
           normalizedPaths[step] <- normalizePath(paste0("www/stat_cards/",paste(gsub(" ","_",(name)),"png",sep = ".")))
           sel_name <- which(selectedArmy()[["Name"]] == name)
@@ -356,7 +356,7 @@ server <- function(input, output, session){
                                    TRUE ~ "Unit"
                                  ),
                                  Value = as.character(selectedArmy()$Cost[sel_name]),
-                                 Amount = as.character(input[[name]]))
+                                 Amount = as.character(input[[gsub(" ","",name)]]))
           outputArmy[step,] <- characterRow
           step <- step + 1
         }
@@ -518,9 +518,9 @@ server <- function(input, output, session){
     
     for (name in selectedArmy()[["Name"]]){
       
-      tempVal <- tempVal + as.numeric(input[[name]]) * as.numeric(selectedArmy()$Cost[which(selectedArmy()[["Name"]] == name)])
+      tempVal <- tempVal + as.numeric(input[[gsub(" ","",name)]]) * as.numeric(selectedArmy()$Cost[which(selectedArmy()[["Name"]] == name)])
       
-      if (as.numeric(input[[name]]) >= 1){
+      if (as.numeric(input[[gsub(" ","",name)]]) >= 1){
         sel_name <- which(selectedArmy()[["Name"]] == name)
         characterRow <- tibble(Subfaction = as.character(selectedArmy()$Subfaction[sel_name]),
                                Name = name,
@@ -529,7 +529,7 @@ server <- function(input, output, session){
                                  TRUE ~ "Unit"
                                ),
                                Value = as.character(selectedArmy()$Cost[sel_name]),
-                               Amount = as.character(input[[name]]))
+                               Amount = as.character(input[[gsub(" ","",name)]]))
         outputArmy[step,] <- characterRow
         step <- step + 1
       }
@@ -638,9 +638,9 @@ server <- function(input, output, session){
     
     for (name in selectedArmy()[["Name"]]){
       
-      tempVal <- tempVal + as.numeric(input[[name]]) * as.numeric(selectedArmy()$Cost[which(selectedArmy()[["Name"]] == name)])
+      tempVal <- tempVal + as.numeric(input[[gsub(" ","",name)]]) * as.numeric(selectedArmy()$Cost[which(selectedArmy()[["Name"]] == name)])
       
-      if (as.numeric(input[[name]]) >= 1){
+      if (as.numeric(input[[gsub(" ","",name)]]) >= 1){
         sel_name <- which(selectedArmy()[["Name"]] == name)
         characterRow <- tibble(Subfaction = as.character(selectedArmy()$Subfaction[sel_name]),
                                Name = name,
@@ -649,7 +649,7 @@ server <- function(input, output, session){
                                  TRUE ~ "Unit"
                                ),
                                Value = as.character(selectedArmy()$Cost[sel_name]),
-                               Amount = as.character(input[[name]]))
+                               Amount = as.character(input[[gsub(" ","",name)]]))
         outputArmy[step,] <- characterRow
         step <- step + 1
       }
@@ -980,8 +980,8 @@ server <- function(input, output, session){
     
     for (name in selectedArmy()[["Name"]]){
       sel_name <- which(selectedArmy()[["Name"]] == name)
-      tempVal <- tempVal + as.numeric(input[[name]]) * as.numeric(selectedArmy()$Cost[which(selectedArmy()[["Name"]] == name)])
-      if (as.numeric(input[[name]]) >= 1){
+      tempVal <- tempVal + as.numeric(input[[gsub(" ","",name)]]) * as.numeric(selectedArmy()$Cost[which(selectedArmy()[["Name"]] == name)])
+      if (as.numeric(input[[gsub(" ","",name)]]) >= 1){
         characterRow <- tibble(User = as.character(signed_in_user_uid()),
                                SavedName = as.character(input$saveName),
                                Faction = as.character(input$army_selection),
@@ -993,7 +993,7 @@ server <- function(input, output, session){
                                  TRUE ~ "Unit"
                                ),
                                Value = as.character(selectedArmy()$Cost[sel_name]),
-                               Amount = as.character(input[[name]]))
+                               Amount = as.character(input[[gsub(" ","",name)]]))
         outputArmy[step,] <- characterRow
         step <- step + 1
       }
@@ -1368,18 +1368,26 @@ server <- function(input, output, session){
   })
   
   observe({
-    #X'Cess Animosity
+    #Observational JS effects
+    #Animosity
+    #Availability
+    #*Tied* models
     
     req(input$army_value != 0)
     if (input$army_selection == "Outcasts") {
-      if (input$subfaction_selection == "Court of Freeton" && !is.null(input[["Judge Brooks"]])) {
-        if (as.numeric(input[["Judge Brooks"]]) == 1) {
-          #updateSelectInput(session, inputId = "Brute",choices = c(0,1,2,3,4,5,6))
-          #updateSelectInput(session, inputId = "Brute Anchor",choices = c(0,1,2))
-          #updateSelectInput(session, inputId = "Brute Pusher",choices = c(0,1,2))
-          print('test1')
+      if (input$subfaction_selection == "Court of Freeton" && !is.null(input[["JudgeBrooks"]])) {
+        if (as.numeric(input[["JudgeBrooks"]]) == 1) {
+          bruteAva <- as.integer(6) * ifelse(as.numeric(input$army_value) / 500 < 1, 1, floor(as.numeric(input$army_value) / 500))
+          bruteOthAva <- as.integer(2) * ifelse(as.numeric(input$army_value) / 500 < 1, 1, floor(as.numeric(input$army_value) / 500))
+          updateSelectInput(session, inputId = "Brute",choices = as.character(seq(0,bruteAva)))
+          updateSelectInput(session, inputId = "BruteAnchor",choices = as.character(seq(0,bruteOthAva)))
+          updateSelectInput(session, inputId = "BrutePusher",choices = as.character(seq(0,bruteOthAva)))
         } else {
-          print('test2')
+          bruteAva <- as.integer(3) * ifelse(as.numeric(input$army_value) / 500 < 1, 1, floor(as.numeric(input$army_value) / 500))
+          bruteOthAva <- as.integer(1) * ifelse(as.numeric(input$army_value) / 500 < 1, 1, floor(as.numeric(input$army_value) / 500))
+          updateSelectInput(session, inputId = "Brute",choices = as.character(seq(0,bruteAva)),selected = "0")
+          updateSelectInput(session, inputId = "BruteAnchor",choices = as.character(seq(0,bruteOthAva)),selected = "0")
+          updateSelectInput(session, inputId = "BrutePusher",choices = as.character(seq(0,bruteOthAva)),selected = "0")
         }
       }
       
@@ -1399,31 +1407,123 @@ server <- function(input, output, session){
       
     }
     
-    
-    if (input$army_selection == "Brood") {
-      if (!is.null(input[["Pud Thrower"]])) {
-        if (as.numeric(input[["Pud Thrower"]]) > 0 ||
-            as.numeric(input[["Numbskull"]]) > 0 ||
-            as.numeric(input[["Mandible"]]) > 0 ||
-            as.numeric(input[["Pud Swarm"]]) > 0 ||
-            as.numeric(input[["Pod"]]) > 0) {
-          shinyjs::enable(selector = paste0("#PudRoamer > select"))
-          updateSelectInput(session, inputId = "Pud Roamer",selected = "1")
+    if (input$army_selection == "Dragyri") {
+      if (input$subfaction_selection == "Ice" && !is.null(input[["SoulWarden(Ice)"]])) {
+        if (as.numeric(input[["SoulWarden(Ice)"]]) == 1) {
+          elemental <- as.integer(2) * ifelse(as.numeric(input$army_value) / 500 < 1, 1, floor(as.numeric(input$army_value) / 500))
+          subElemental <- as.integer(6) * ifelse(as.numeric(input$army_value) / 500 < 1, 1, floor(as.numeric(input$army_value) / 500))
+          updateSelectInput(session, inputId = "IceElemental",choices = as.character(seq(0,elemental)))
+          updateSelectInput(session, inputId = "HailKin",choices = as.character(seq(0,subElemental)))
         } else {
-          shinyjs::disable(selector = paste0("#PudRoamer > select"))
-          updateSelectInput(session, inputId = "Pud Roamer",selected = "0")
+          elemental <- as.integer(1) * ifelse(as.numeric(input$army_value) / 500 < 1, 1, floor(as.numeric(input$army_value) / 500))
+          subElemental <- as.integer(3) * ifelse(as.numeric(input$army_value) / 500 < 1, 1, floor(as.numeric(input$army_value) / 500))
+          updateSelectInput(session, inputId = "IceElemental",choices = as.character(seq(0,elemental)),selected = "0")
+          updateSelectInput(session, inputId = "HailKin",choices = as.character(seq(0,subElemental)),selected = "0")
+        }
+      }
+      if (input$subfaction_selection == "Earth" && !is.null(input[["SoulWarden(Earth)"]])) {
+        if (as.numeric(input[["SoulWarden(Earth)"]]) == 1) {
+          elemental <- as.integer(2) * ifelse(as.numeric(input$army_value) / 500 < 1, 1, floor(as.numeric(input$army_value) / 500))
+          subElemental <- as.integer(4) * ifelse(as.numeric(input$army_value) / 500 < 1, 1, floor(as.numeric(input$army_value) / 500))
+          updateSelectInput(session, inputId = "GreaterAvalanceElemental",choices = as.character(seq(0,elemental)))
+          updateSelectInput(session, inputId = "BedrockSentry",choices = as.character(seq(0,subElemental)))
+        } else {
+          elemental <- as.integer(1) * ifelse(as.numeric(input$army_value) / 500 < 1, 1, floor(as.numeric(input$army_value) / 500))
+          subElemental <- as.integer(2) * ifelse(as.numeric(input$army_value) / 500 < 1, 1, floor(as.numeric(input$army_value) / 500))
+          updateSelectInput(session, inputId = "GreaterAvalanceElemental",choices = as.character(seq(0,elemental)),selected = "0")
+          updateSelectInput(session, inputId = "BedrockSentry",choices = as.character(seq(0,subElemental)),selected = "0")
+        }
+      }
+      if (input$subfaction_selection == "Shadow" && !is.null(input[["SoulWarden(Shadow)"]])) {
+        if (as.numeric(input[["Huntress"]]) == 1) {
+          elemental <- as.integer(4) * ifelse(as.numeric(input$army_value) / 500 < 1, 1, floor(as.numeric(input$army_value) / 500))
+          subElemental <- as.integer(6) * ifelse(as.numeric(input$army_value) / 500 < 1, 1, floor(as.numeric(input$army_value) / 500))
+          updateSelectInput(session, inputId = "GreaterSpiderling",choices = as.character(seq(0,elemental)))
+          updateSelectInput(session, inputId = "LesserSpiderling",choices = as.character(seq(0,subElemental)))
+        } else {
+          elemental <- as.integer(2) * ifelse(as.numeric(input$army_value) / 500 < 1, 1, floor(as.numeric(input$army_value) / 500))
+          subElemental <- as.integer(3) * ifelse(as.numeric(input$army_value) / 500 < 1, 1, floor(as.numeric(input$army_value) / 500))
+          updateSelectInput(session, inputId = "GreaterSpiderling",choices = as.character(seq(0,elemental)),selected = "0")
+          updateSelectInput(session, inputId = "LesserSpiderling",choices = as.character(seq(0,subElemental)),selected = "0")
+        }
+        if (as.numeric(input[["SoulWarden(Shadow)"]]) == 1) {
+          elemental <- as.integer(2) * ifelse(as.numeric(input$army_value) / 500 < 1, 1, floor(as.numeric(input$army_value) / 500))
+          #subElemental <- as.integer(4) * ifelse(as.numeric(input$army_value) / 500 < 1, 1, floor(as.numeric(input$army_value) / 500))
+          updateSelectInput(session, inputId = "UmbraShadowElemental",choices = as.character(seq(0,elemental)))
+          #updateSelectInput(session, inputId = "BedrockSentry",choices = as.character(seq(0,subElemental)))
+        } else {
+          elemental <- as.integer(1) * ifelse(as.numeric(input$army_value) / 500 < 1, 1, floor(as.numeric(input$army_value) / 500))
+          #subElemental <- as.integer(2) * ifelse(as.numeric(input$army_value) / 500 < 1, 1, floor(as.numeric(input$army_value) / 500))
+          updateSelectInput(session, inputId = "UmbraShadowElemental",choices = as.character(seq(0,elemental)),selected = "0")
+          #updateSelectInput(session, inputId = "BedrockSentry",choices = as.character(seq(0,subElemental)),selected = "0")
+        }
+      }
+      if (input$subfaction_selection == "Fire" && !is.null(input[["SoulWarden(Fire)"]])) {
+        if (as.numeric(input[["SoulWarden(Fire)"]]) == 1) {
+          elemental <- as.integer(2) * ifelse(as.numeric(input$army_value) / 500 < 1, 1, floor(as.numeric(input$army_value) / 500))
+          #subElemental <- as.integer(6) * ifelse(as.numeric(input$army_value) / 500 < 1, 1, floor(as.numeric(input$army_value) / 500))
+          updateSelectInput(session, inputId = "FireElemental",choices = as.character(seq(0,elemental)))
+          #updateSelectInput(session, inputId = "HailKin",choices = as.character(seq(0,subElemental)))
+        } else {
+          elemental <- as.integer(1) * ifelse(as.numeric(input$army_value) / 500 < 1, 1, floor(as.numeric(input$army_value) / 500))
+          #subElemental <- as.integer(3) * ifelse(as.numeric(input$army_value) / 500 < 1, 1, floor(as.numeric(input$army_value) / 500))
+          updateSelectInput(session, inputId = "FireElemental",choices = as.character(seq(0,elemental)),selected = "0")
+          #updateSelectInput(session, inputId = "HailKin",choices = as.character(seq(0,subElemental)),selected = "0")
+        }
+      }
+      
+      if (input$subfaction_selection == "Air" && !is.null(input[["SoulWarden(Air)"]])) {
+        if (as.numeric(input[["SoulWarden(Air)"]]) == 1) {
+          elemental <- as.integer(2) * ifelse(as.numeric(input$army_value) / 500 < 1, 1, floor(as.numeric(input$army_value) / 500))
+          subElemental <- as.integer(6) * ifelse(as.numeric(input$army_value) / 500 < 1, 1, floor(as.numeric(input$army_value) / 500))
+          updateSelectInput(session, inputId = "StormElemental",choices = as.character(seq(0,elemental)))
+          updateSelectInput(session, inputId = "Squall",choices = as.character(seq(0,subElemental)))
+          updateSelectInput(session, inputId = "Zephyr",choices = as.character(seq(0,subElemental)))
+        } else {
+          elemental <- as.integer(1) * ifelse(as.numeric(input$army_value) / 500 < 1, 1, floor(as.numeric(input$army_value) / 500))
+          subElemental <- as.integer(3) * ifelse(as.numeric(input$army_value) / 500 < 1, 1, floor(as.numeric(input$army_value) / 500))
+          updateSelectInput(session, inputId = "StormElemental",choices = as.character(seq(0,elemental)),selected = "0")
+          updateSelectInput(session, inputId = "Squall",choices = as.character(seq(0,subElemental)),selected = "0")
+          updateSelectInput(session, inputId = "Zephyr",choices = as.character(seq(0,subElemental)),selected = "0")
         }
       }
     }
+    
+    if (input$army_selection == "Brood") {
+      if (!is.null(input[["PudThrower"]])) {
+        if (as.numeric(input[["PudThrower"]]) > 0 ||
+            as.numeric(input[["Numbskull"]]) > 0 ||
+            as.numeric(input[["Mandible"]]) > 0 ||
+            as.numeric(input[["PudSwarm"]]) > 0 ||
+            as.numeric(input[["Pod"]]) > 0) {
+          shinyjs::enable(selector = paste0("#PudRoamer > select"))
+          updateSelectInput(session, inputId = "PudRoamer",selected = "1")
+        } else {
+          shinyjs::disable(selector = paste0("#PudRoamer > select"))
+          updateSelectInput(session, inputId = "PudRoamer",selected = "0")
+        }
+      }
+    }
+    
     if (input$army_selection == "Skarrd") {
-      if (!is.null(input[["Sister of Charity"]])) {
-        if (as.numeric(input[["Sister of Charity"]]) > 0) {
+      
+      if (!is.null(input[["SisterofCharity"]])) {
+        if (as.numeric(input[["SisterofCharity"]]) > 0) {
           shinyjs::enable(selector = paste0("#CharitysMight > select"))
           shinyjs::enable(selector = paste0("#CharitysZeal > select"))
         } else {
           shinyjs::disable(selector = paste0("#CharitysMight > select"))
           shinyjs::disable(selector = paste0("#CharitysZeal > select"))
         }
+      } else {
+        shinyjs::disable(selector = paste0("#CharitysMight > select"))
+        shinyjs::disable(selector = paste0("#CharitysZeal > select"))
+      }
+      
+      if (input$subfaction_selection == "Decay" && !is.null(input[["SisterofCharity"]])) {
+        shinyjs::disable(selector = paste0("#Blazon > select"))
+      } else {
+        shinyjs::enable(selector = paste0("#Blazon > select"))
       }
       
       if (!is.null(input[["Dominique"]])) {
@@ -1432,18 +1532,20 @@ server <- function(input, output, session){
         } else {
           shinyjs::disable(selector = paste0("#DominiquesChalica > select"))
         }
+      } else {
+        shinyjs::disable(selector = paste0("#DominiquesChalica > select"))
       }
     }
     
     if (input$army_selection == "Forsaken"){
-      if (input$subfaction_selection == "Mark" && !is.null(input[["Saint Mark"]])) {
+      if (input$subfaction_selection == "Mark" && !is.null(input[["SaintMark"]])) {
         if (as.numeric(input[["X'Cess"]]) == 1) {
           shinyjs::toggleState(selector = paste0("#SaintMarkDragon > select"))
           shinyjs::toggleState(selector = paste0("#SaintMark > select"))
-        } else if (as.numeric(input[["Saint Mark"]]) == 1) {
+        } else if (as.numeric(input[["SaintMark"]]) == 1) {
           shinyjs::toggleState(selector = paste0("#XCess > select"))
           shinyjs::toggleState(selector = paste0("#SaintMarkDragon > select"))
-        } else if (as.numeric(input[["Saint Mark (Dragon)"]]) == 1) {
+        } else if (as.numeric(input[["SaintMark(Dragon)"]]) == 1) {
           shinyjs::toggleState(selector = paste0("#XCess > select"))
           shinyjs::toggleState(selector = paste0("#SaintMark > select"))
         } else {
@@ -1453,10 +1555,10 @@ server <- function(input, output, session){
         }
       }
       
-      if (input$subfaction_selection == "Isaac" && !is.null(input[["Saint Isaac"]])) {
-        if (as.numeric(input[["Saint Isaac"]]) == 1) {
+      if (input$subfaction_selection == "Isaac" && !is.null(input[["SaintIsaac"]])) {
+        if (as.numeric(input[["SaintIsaac"]]) == 1) {
           shinyjs::toggleState(selector = paste0("#SaintIsaacAJAX > select"))
-        } else if (as.numeric(input[["Saint Isaac (AJAX)"]]) == 1) {
+        } else if (as.numeric(input[["SaintIsaac(AJAX)"]]) == 1) {
           shinyjs::toggleState(selector = paste0("#SaintIsaac > select"))
         } else {
           shinyjs::enable(selector = paste0("#SaintIsaacAJAX > select"))
@@ -1464,10 +1566,10 @@ server <- function(input, output, session){
         }
       }
       
-      if (input$subfaction_selection == "Mary" && !is.null(input[["Saint Mary"]])) {
-        if (as.numeric(input[["Saint Mary"]]) == 1) {
+      if (input$subfaction_selection == "Mary" && !is.null(input[["SaintMary"]])) {
+        if (as.numeric(input[["SaintMary"]]) == 1) {
           shinyjs::toggleState(selector = paste0("#SaintMaryUnicorn > select"))
-        } else if (as.numeric(input[["Saint Mary (Unicorn)"]]) == 1) {
+        } else if (as.numeric(input[["SaintMary(Unicorn)"]]) == 1) {
           shinyjs::toggleState(selector = paste0("#SaintMary > select"))
         } else {
           shinyjs::enable(selector = paste0("#SaintMaryUnicorn > select"))
@@ -1475,10 +1577,10 @@ server <- function(input, output, session){
         }
       }
       
-      if (input$subfaction_selection == "Joan" && !is.null(input[["Saint Joan"]])) {
-        if (as.numeric(input[["Saint Joan"]]) == 1) {
+      if (input$subfaction_selection == "Joan" && !is.null(input[["SaintJoan"]])) {
+        if (as.numeric(input[["SaintJoan"]]) == 1) {
           shinyjs::toggleState(selector = paste0("#SaintJoanInquisitor > select"))
-        } else if (as.numeric(input[["Saint Joan (Inquisitor)"]]) == 1) {
+        } else if (as.numeric(input[["SaintJoan(Inquisitor)"]]) == 1) {
           shinyjs::toggleState(selector = paste0("#SaintJoan > select"))
         } else {
           shinyjs::enable(selector = paste0("#SaintJoanInquisitor > select"))
@@ -1486,10 +1588,10 @@ server <- function(input, output, session){
         }
       }
       
-      if (input$subfaction_selection == "John" && !is.null(input[["Saint John"]])) {
-        if (as.numeric(input[["Saint John"]]) == 1) {
+      if (input$subfaction_selection == "John" && !is.null(input[["SaintJohn"]])) {
+        if (as.numeric(input[["SaintJohn"]]) == 1) {
           shinyjs::toggleState(selector = paste0("#SaintJohnGriffon > select"))
-        } else if (as.numeric(input[["Saint John (Griffon)"]]) == 1) {
+        } else if (as.numeric(input[["SaintJohn(Griffon)"]]) == 1) {
           shinyjs::toggleState(selector = paste0("#SaintJohn > select"))
         } else {
           shinyjs::enable(selector = paste0("#SaintJohnGriffon > select"))
@@ -1497,21 +1599,10 @@ server <- function(input, output, session){
         }
       }
       
-      # if (input$subfaction_selection == "John") {
-      #   if (as.numeric(input[["Saint John"]]) == 1) {
-      #     shinyjs::toggleState(selector = paste0("#SaintJohnGriffon > select"))
-      #   } else if (as.numeric(input[["Saint John (Griffon)"]]) == 1) {
-      #     shinyjs::toggleState(selector = paste0("#SaintJohn > select"))
-      #   } else {
-      #     shinyjs::enable(selector = paste0("#SaintJohnGriffon > select"))
-      #     shinyjs::enable(selector = paste0("#SaintJohn > select"))
-      #   }
-      # }
-      
       if (input$subfaction_selection == "Prevailer" && !is.null(input[["Esh"]])) {
         if (as.numeric(input[["Esh"]]) == 1) {
           shinyjs::enable(selector = paste0("#Zephon > select"))
-        } else if (as.numeric(input[["Grand Templar Marius"]]) == 1) {
+        } else if (as.numeric(input[["GrandTemplarMarius"]]) == 1) {
           shinyjs::enable(selector = paste0("#Nabu > select"))
           shinyjs::enable(selector = paste0("#Yael > select"))
         } else {
@@ -1519,12 +1610,16 @@ server <- function(input, output, session){
           shinyjs::disable(selector = paste0("#Yael > select"))
           shinyjs::disable(selector = paste0("#Zephon > select"))
         }
+      } else {
+        shinyjs::disable(selector = paste0("#Nabu > select"))
+        shinyjs::disable(selector = paste0("#Yael > select"))
+        shinyjs::disable(selector = paste0("#Zephon > select"))
       }
       
-      if (input$subfaction_selection == "Heretic" && !is.null(input[["Saint Johann"]])) {
-        if (as.numeric(input[["Dominique (Heretic)"]]) == 1) {
+      if (input$subfaction_selection == "Heretic" && !is.null(input[["SaintJohann"]])) {
+        if (as.numeric(input[["Dominique(Heretic)"]]) == 1) {
           shinyjs::enable(selector = paste0("#Buzzblade > select"))
-        } else if (as.numeric(input[["Worm Shepherd (Heretic)"]]) > 1) {
+        } else if (as.numeric(input[["WormShepherd(Heretic)"]]) > 1) {
           shinyjs::enable(selector = paste0("#Drillhead > select"))
         } else if (as.numeric(input[["Harboya"]]) == 1) {
           shinyjs::enable(selector = paste0("#Harpy > select"))
@@ -1533,16 +1628,20 @@ server <- function(input, output, session){
           shinyjs::disable(selector = paste0("#Drillhead > select"))
           shinyjs::disable(selector = paste0("#Buzzblade > select"))
         }
+      } else {
+        shinyjs::disable(selector = paste0("#Harpy > select"))
+        shinyjs::disable(selector = paste0("#Drillhead > select"))
+        shinyjs::disable(selector = paste0("#Buzzblade > select"))
       }
       
-      if (input$subfaction_selection == "Luke" && !is.null(input[["Saint Luke (Bull)"]])) {
-        if (as.numeric(input[["Saint Luke (Bull)"]]) == 1) {
+      if (input$subfaction_selection == "Luke" && !is.null(input[["SaintLuke(Bull)"]])) {
+        if (as.numeric(input[["SaintLuke(Bull)"]]) == 1) {
           shinyjs::toggleState(selector = paste0("#SaintLukeSpear > select"))
           shinyjs::toggleState(selector = paste0("#SaintLukeShotgun > select"))
-        } else if (as.numeric(input[["Saint Luke (Spear)"]]) == 1) {
+        } else if (as.numeric(input[["SaintLuke(Spear)"]]) == 1) {
           shinyjs::toggleState(selector = paste0("#SaintLukeBull > select"))
           shinyjs::toggleState(selector = paste0("#SaintLukeShotgun > select"))
-        } else if (as.numeric(input[["Saint Luke (Shotgun)"]]) == 1) {
+        } else if (as.numeric(input[["SaintLuke(Shotgun)"]]) == 1) {
           shinyjs::toggleState(selector = paste0("#SaintLukeBull > select"))
           shinyjs::toggleState(selector = paste0("#SaintLukeSpear > select"))
         }else {
@@ -1556,13 +1655,17 @@ server <- function(input, output, session){
     if (!is.null(input[["Aren"]])) {
       if (as.numeric(input[["Aren"]]) == 1) {
         shinyjs::enable(selector = paste0("#COREHound > select"))
+        updateSelectInput(session,"C.O.R.EHound",choices = c("2"), selected = "2")
       } else {
         shinyjs::disable(selector = paste0("#COREHound > select"))
+        updateSelectInput(session,"C.O.R.EHound",choices = c("0","1"), selected = "0")
       }
+    } else {
+      shinyjs::disable(selector = paste0("#COREHound > select"))
     }
     
-    if (!is.null(input[["Suzy Belle"]])) {
-      if (as.numeric(input[["Suzy Belle"]]) == 1) {
+    if (!is.null(input[["SuzyBelle"]])) {
+      if (as.numeric(input[["SuzyBelle"]]) == 1) {
         shinyjs::enable(selector = paste0("#Wroth > select"))
         shinyjs::disable(selector = paste0("#JohnClankCarter > select"))
         shinyjs::disable(selector = paste0("#CaptainFlay > select"))
@@ -1574,8 +1677,8 @@ server <- function(input, output, session){
       }
     }
     
-    if (!is.null(input[["Captain Flay"]]) || !is.null(input[["John 'Clank' Carter"]])) {
-      if (as.numeric(input[["Captain Flay"]]) == 1 || as.numeric(input[["John 'Clank' Carter"]]) == 1) {
+    if (!is.null(input[["CaptainFlay"]]) || !is.null(input[["John'Clank'Carter"]])) {
+      if (as.numeric(input[["CaptainFlay"]]) == 1 || as.numeric(input[["John'Clank'Carter"]]) == 1) {
         shinyjs::disable(selector = paste0("#SuzyBelle > select"))
       } else {
         shinyjs::enable(selector = paste0("#SuzyBelle > select"))
