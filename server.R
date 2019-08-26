@@ -394,8 +394,12 @@ server <- function(input, output, session){
       tmpNormalized <<- normalizedPaths
       tmpStats <<- stat_name
       
-      #outputArmy$Name <- gsub("_"," ",outputArmy$Name)
-        
+      outputArmy <- outputArmy %>%
+        mutate(Amount = as.character(Amount)) %>%
+        mutate(Amount = case_when(
+          Name %in% c("Charity's_Zeal","Charity's_Might","Dominique's_Chalica","Pud_Roamer") ~ "Special",
+          TRUE ~ Amount
+        ))
       
       upPsychoArmy <- outputArmy %>% 
         dplyr::select(Name) %>%
@@ -413,9 +417,13 @@ server <- function(input, output, session){
       
       for (upgrade in normalizedUpgrades) {
         if (upgrade == "") {break}
+        print("UPGRADE")
         name <- gsub(" ","_",tolower(upgrade))
+        print(name)
         fullName <- paste0(name,".png")
+        print(fullName)
         upgradePath <- normalizePath(paste0("www/stat_cards/",paste(name,"png",sep = ".")))
+        print(upgradePath)
         normalizedAddons <- bind_rows(normalizedAddons,tibble(destination = fullName,current = upgradePath))
       }
       
