@@ -33,7 +33,7 @@ faction.Data <- list(
     "pros" = "<ul><li>Able to take damage to gain abilities</li><li>Powerful thematic abilities</li></ul>",
     "cons" = "<ul><li>Fragile</li><li>Very limited ranged attacks</li></ul>",
     "header.Img" = "skarrd_back.jpg",
-    "back.Img" = "faction_icons/logo_skaard.png",
+    "back.Img" = "faction_icons/logo_skarrd.png",
     "sub.Faction" = c("Unaligned","Blood","Decay","Toxic","Metamorphosis")
   ),
   "Dragyri" = list(
