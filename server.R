@@ -1396,6 +1396,8 @@ server <- function(input, output, session){
     #*Tied* models
     
     req(input$army_value != 0)
+    req(input$army_selection)
+    req(input$subfaction_selection)
     
     if (input$army_selection == "Outcasts") {
       if (input$subfaction_selection == "Court of Freeton" && !is.null(input[["JudgeBrooks"]])) {
