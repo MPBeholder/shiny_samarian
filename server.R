@@ -14,6 +14,7 @@ server <- function(input, output, session){
       text = "Cannot connect to database! Try again later",
       type = "error"
     )
+      stopApp
   })
   
   # Close session specific connection to mongo
@@ -238,8 +239,21 @@ server <- function(input, output, session){
       
     )
     
-    # downloadButton("downloadArmy","Download Army List")
-    actionButton("generateArmy","Finalize and Generate Army", icon = icon("download"))
+    if (input$army_selection == "Dragyri") {
+      downloadUI <- fluidRow(column(width = 12,
+                                    actionButton("generateArmy","Finalize and Generate Army", icon = icon("download"))),
+                             column(width = 12,
+                                    actionButton("selArbiter","Arbiter Commands", icon = icon("download"))))
+    } else {
+      downloadUI <- fluidRow(column(width = 12,
+                                    actionButton("generateArmy","Finalize and Generate Army", icon = icon("download")))#,
+                             # column(width = 12,
+                             #        actionButton("test2","Finalize and Generate Army", icon = icon("download")))
+                             )
+    }
+    
+    downloadUI
+    #actionButton("generateArmy","Finalize and Generate Army", icon = icon("download"))
     
   }
   )
@@ -1185,28 +1199,28 @@ server <- function(input, output, session){
         if (length(droppedSub) == 0) {
           
           armyIcon <- switch(mainArmy,
-                               "Kukulkani" = "faction_icons/K3.jpg","Brood" = "faction_icons/Brood.jpg",
-                               "C.O.R.E" = "faction_icons/core.jpg","Forsaken" = "faction_icons/forsaken_unaligned.jpg",
-                               "Skarrd" = "faction_icons/skarrd_general.jpg","Outcasts" = "faction_icons/outcast_general.jpg",
-                               "Dragryi" = "faction_icons/Dragyri-Generic.png"
+                               "Kukulkani" = "faction_icons/logo_kukulkani.png","Brood" = "faction_icons/logo_brood_0.png",
+                               "C.O.R.E" = "faction_icons/logo_core.png","Forsaken" = "faction_icons/logo_forsaken.png",
+                               "Skarrd" = "faction_icons/logo_skaard.png","Outcasts" = "faction_icons/logo_outcasts.png",
+                               "Dragryi" = "faction_icons/logo_dragyri.png"
           )
           
         } else {
           armyIcon <- switch(droppedSub,
-                             "Air" = "faction_icons/drag_air.jpg","Earth" = "faction_icons/drag_earth.jpg",
-                             "Fire" = "faction_icons/drag_fire.jpg","Ice" = "faction_icons/drag_ice.jpg",
-                             "Shadow" = "faction_icons/drag_shadow.jpg","Broodmere Spawn" = "faction_icons/broodspawn_front.png",
-                             "Progeny" = "faction_icons/progeny_front.png","Blood" = "faction_icons/skarrd_blood.jpg",
-                             "Decay" = "faction_icons/skarrd_decay.jpg","Metamorphosis" = "faction_icons/skarrd_meta.jpg",
-                             "Toxic" = "faction_icons/skarrd_toxic.jpg","Mary" = "faction_icons/forsaken_mary.jpg",
-                             "Isaac" = "faction_icons/forsaken_isaac.jpg",
-                             "Luke" = "faction_icons/forsaken_luke.jpg",
-                             "Joan" = "faction_icons/forsaken_joan.jpg",
-                             "Heretic" = "faction_icons/forsaken_heretic.jpg",
-                             "John" = "faction_icons/forsaken_john.jpg",
-                             "Mark" = "faction_icons/forsaken_mark.jpg", "Prevailer" = "faction_icons/forsaken_prevailer.jpg",
-                             "Scavengers" = "faction_icons/outcast_general.jpg","Court of Freeton" = "faction_icons/outcast_general.jpg",
-                             "Barrow Slavers" = "faction_icons/outcast_slaver.jpg","Saltflat Nomads" = "faction_icons/outcast_salt.jpg",
+                             "Air" = "faction_icons/logo_dragyri_air.png","Earth" = "faction_icons/logo_dragyri_earth.png",
+                             "Fire" = "faction_icons/logo_dragyri_fire.png","Ice" = "faction_icons/logo_dragyri_ice.png",
+                             "Shadow" = "faction_icons/logo_dragyri_shadow.png","Broodmere Spawn" = "faction_icons/broodspawn_front.png",
+                             "Progeny" = "faction_icons/progeny_front.png","Blood" = "faction_icons/logo_skaard_blood.png",
+                             "Decay" = "faction_icons/logo_skaard_decay.png","Metamorphosis" = "faction_icons/logo_skaard_metamorphosis.png",
+                             "Toxic" = "faction_icons/logo_skaard_toxic.png","Mary" = "faction_icons/logo_forsaken_saint_mary.png",
+                             "Isaac" = "faction_icons/logo_forsaken_saint_isaac.png",
+                             "Luke" = "faction_icons/logo_forsaken_saint_luke.png",
+                             "Joan" = "faction_icons/logo_forsaken_saint_joan.png",
+                             "Heretic" = "faction_icons/logo_forsaken_saint_johann.png",
+                             "John" = "faction_icons/logo_forsaken_saint_john.png",
+                             "Mark" = "faction_icons/forsaken_mark.jpg", "Prevailer" = "faction_icons/logo_forsaken_prevailers.png",
+                             "Scavengers" = "faction_icons/logo_outcasts.png","Court of Freeton" = "faction_icons/logo_outcasts.png",
+                             "Barrow Slavers" = "faction_icons/logo_outcasts_slavers.png","Saltflat Nomads" = "faction_icons/logo_outcasts_salt_flats_nomads.png",
                              "Delta Broodfolk" = "faction_icons/delta_front.png"
           )
         }
@@ -1299,21 +1313,21 @@ server <- function(input, output, session){
                                           "Court of Freeton","Saltflat Nomads","Scavengers","Barrow Slavers")) {
       
       armyIcon <- switch(input$subfaction_selection,
-                         "Air" = "faction_icons/drag_air.jpg","Earth" = "faction_icons/drag_earth.jpg",
-                         "Fire" = "faction_icons/drag_fire.jpg","Ice" = "faction_icons/drag_ice.jpg",
-                         "Shadow" = "faction_icons/drag_shadow.jpg","Broodmere Spawn" = "faction_icons/broodspawn_front.png",
-                         "Progeny" = "faction_icons/progeny_front.png","Blood" = "faction_icons/skarrd_blood.jpg",
-                         "Decay" = "faction_icons/skarrd_decay.jpg","Metamorphosis" = "faction_icons/skarrd_meta.jpg",
-                         "Toxic" = "faction_icons/skarrd_toxic.jpg","Mary" = "faction_icons/forsaken_mary.jpg",
-                         "Isaac" = "faction_icons/forsaken_isaac.jpg",
-                         "Luke" = "faction_icons/forsaken_luke.jpg",
-                         "Joan" = "faction_icons/forsaken_joan.jpg",
-                         "Heretic" = "faction_icons/forsaken_heretic.jpg",
-                         "John" = "faction_icons/forsaken_john.jpg",
-                         "Mark" = "faction_icons/forsaken_mark.jpg", "Prevailer" = "faction_icons/forsaken_prevailer.jpg",
-                         "Scavengers" = "faction_icons/outcast_general.jpg","Court of Freeton" = "faction_icons/outcast_general.jpg",
-                         "Barrow Slavers" = "faction_icons/outcast_slaver.jpg",
-                         "Saltflat Nomads" = "faction_icons/outcast_salt.jpg",
+                         "Air" = "faction_icons/logo_dragyri_air.png","Earth" = "faction_icons/logo_dragyri_earth.png",
+                         "Fire" = "faction_icons/logo_dragyri_fire.png","Ice" = "faction_icons/logo_dragyri_ice.png",
+                         "Shadow" = "faction_icons/logo_dragyri_shadow.png","Broodmere Spawn" = "faction_icons/broodspawn_front.png",
+                         "Progeny" = "faction_icons/progeny_front.png","Blood" = "faction_icons/logo_skaard_blood.png",
+                         "Decay" = "faction_icons/logo_skaard_decay.png","Metamorphosis" = "faction_icons/logo_skaard_metamorphosis.png",
+                         "Toxic" = "faction_icons/logo_skaard_toxic.png","Mary" = "faction_icons/logo_forsaken_saint_mary.png",
+                         "Isaac" = "faction_icons/logo_forsaken_saint_isaac.png",
+                         "Luke" = "faction_icons/logo_forsaken_saint_luke.png",
+                         "Joan" = "faction_icons/logo_forsaken_saint_joan.png",
+                         "Heretic" = "faction_icons/logo_forsaken_saint_johann.png",
+                         "John" = "faction_icons/logo_forsaken_saint_john.png",
+                         "Mark" = "faction_icons/forsaken_mark.jpg", "Prevailer" = "faction_icons/logo_forsaken_prevailers.png",
+                         "Scavengers" = "faction_icons/logo_outcasts.png","Court of Freeton" = "faction_icons/logo_outcasts.png",
+                         "Barrow Slavers" = "faction_icons/logo_outcasts_slavers.png",
+                         "Saltflat Nomads" = "faction_icons/logo_outcasts_salt_flats_nomads.png",
                          "Delta Broodfolk" = "faction_icons/delta_front.png"
       )
       
@@ -1374,6 +1388,7 @@ server <- function(input, output, session){
     #*Tied* models
     
     req(input$army_value != 0)
+    
     if (input$army_selection == "Outcasts") {
       if (input$subfaction_selection == "Court of Freeton" && !is.null(input[["JudgeBrooks"]])) {
         if (as.numeric(input[["JudgeBrooks"]]) == 1) {
@@ -1409,7 +1424,7 @@ server <- function(input, output, session){
     
     if (input$army_selection == "Dragyri") {
       if (input$subfaction_selection == "Ice" && !is.null(input[["SoulWarden(Ice)"]])) {
-        if (as.numeric(input[["SoulWarden(Ice)"]]) == 1) {
+        if (as.numeric(input[["SoulWarden(Ice)"]]) > 0 ) {
           elemental <- as.integer(2) * ifelse(as.numeric(input$army_value) / 500 < 1, 1, floor(as.numeric(input$army_value) / 500))
           subElemental <- as.integer(6) * ifelse(as.numeric(input$army_value) / 500 < 1, 1, floor(as.numeric(input$army_value) / 500))
           updateSelectInput(session, inputId = "IceElemental",choices = as.character(seq(0,elemental)))
@@ -1422,7 +1437,7 @@ server <- function(input, output, session){
         }
       }
       if (input$subfaction_selection == "Earth" && !is.null(input[["SoulWarden(Earth)"]])) {
-        if (as.numeric(input[["SoulWarden(Earth)"]]) == 1) {
+        if (as.numeric(input[["SoulWarden(Earth)"]])  > 0 ) {
           elemental <- as.integer(2) * ifelse(as.numeric(input$army_value) / 500 < 1, 1, floor(as.numeric(input$army_value) / 500))
           subElemental <- as.integer(4) * ifelse(as.numeric(input$army_value) / 500 < 1, 1, floor(as.numeric(input$army_value) / 500))
           updateSelectInput(session, inputId = "GreaterAvalanceElemental",choices = as.character(seq(0,elemental)))
@@ -1446,7 +1461,7 @@ server <- function(input, output, session){
           updateSelectInput(session, inputId = "GreaterSpiderling",choices = as.character(seq(0,elemental)),selected = "0")
           updateSelectInput(session, inputId = "LesserSpiderling",choices = as.character(seq(0,subElemental)),selected = "0")
         }
-        if (as.numeric(input[["SoulWarden(Shadow)"]]) == 1) {
+        if (as.numeric(input[["SoulWarden(Shadow)"]])  > 0 ) {
           elemental <- as.integer(2) * ifelse(as.numeric(input$army_value) / 500 < 1, 1, floor(as.numeric(input$army_value) / 500))
           #subElemental <- as.integer(4) * ifelse(as.numeric(input$army_value) / 500 < 1, 1, floor(as.numeric(input$army_value) / 500))
           updateSelectInput(session, inputId = "UmbraShadowElemental",choices = as.character(seq(0,elemental)))
@@ -1459,7 +1474,7 @@ server <- function(input, output, session){
         }
       }
       if (input$subfaction_selection == "Fire" && !is.null(input[["SoulWarden(Fire)"]])) {
-        if (as.numeric(input[["SoulWarden(Fire)"]]) == 1) {
+        if (as.numeric(input[["SoulWarden(Fire)"]])  > 0 ) {
           elemental <- as.integer(2) * ifelse(as.numeric(input$army_value) / 500 < 1, 1, floor(as.numeric(input$army_value) / 500))
           #subElemental <- as.integer(6) * ifelse(as.numeric(input$army_value) / 500 < 1, 1, floor(as.numeric(input$army_value) / 500))
           updateSelectInput(session, inputId = "FireElemental",choices = as.character(seq(0,elemental)))
@@ -1473,7 +1488,7 @@ server <- function(input, output, session){
       }
       
       if (input$subfaction_selection == "Air" && !is.null(input[["SoulWarden(Air)"]])) {
-        if (as.numeric(input[["SoulWarden(Air)"]]) == 1) {
+        if (as.numeric(input[["SoulWarden(Air)"]])  > 0 ) {
           elemental <- as.integer(2) * ifelse(as.numeric(input$army_value) / 500 < 1, 1, floor(as.numeric(input$army_value) / 500))
           subElemental <- as.integer(6) * ifelse(as.numeric(input$army_value) / 500 < 1, 1, floor(as.numeric(input$army_value) / 500))
           updateSelectInput(session, inputId = "StormElemental",choices = as.character(seq(0,elemental)))
