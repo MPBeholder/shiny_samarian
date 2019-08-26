@@ -52,7 +52,7 @@ faction.Data <- list(
     "cons" = "<ul><li>-</li></ul>",
     "header.Img" = "outcast_back.jpg",
     "back.Img" = "faction_icons/outcast_general.jpg",
-    "sub.Faction" = c("Unaligned","Scavengers","Court of Freeton","Barrow Slavers","Salt Nomads")
+    "sub.Faction" = c("Unaligned","Scavengers","Court of Freeton","Barrow Slavers","Saltflat Nomads")
   ),
   "Forsaken" = list(
     "front.Blurb" = "Residents of the city of New Ashkelon, the Forsaken follow holy scripture to escape the purgatory that is Samaria.",

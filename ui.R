@@ -59,6 +59,11 @@ function(request){
                                 padding-bottom:80px;
                               }
                               
+                              .swal-icon--custom {
+                               max-width:88px;
+                               min-width:88px;
+                              }
+                              
                               .vertAlign {
                                 position: relative;
                                 top: 50%;

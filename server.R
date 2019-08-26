@@ -1206,7 +1206,7 @@ server <- function(input, output, session){
                              "John" = "faction_icons/forsaken_john.jpg",
                              "Mark" = "faction_icons/forsaken_mark.jpg", "Prevailer" = "faction_icons/forsaken_prevailer.jpg",
                              "Scavengers" = "faction_icons/outcast_general.jpg","Court of Freeton" = "faction_icons/outcast_general.jpg",
-                             "Barrow Slavers" = "faction_icons/outcast/slaver.jpg","Salt Nomads" = "faction_icons/outcast_salt.jpg",
+                             "Barrow Slavers" = "faction_icons/outcast_slaver.jpg","Saltflat Nomads" = "faction_icons/outcast_salt.jpg",
                              "Delta Broodfolk" = "faction_icons/delta_front.png"
           )
         }
@@ -1291,6 +1291,70 @@ server <- function(input, output, session){
     }
   })
   
+  observeEvent(input$subfaction_selection,{
+    if (input$subfaction_selection %in% c("Blood","Metamorphosis","Toxic","Decay",
+                                          "Broodmere Spawn","Delta Broodfolk","Progeny",
+                                          "Ice","Fire","Earth","Shadow","Air",
+                                          "Isaac","Luke","John","Joan","Mark","Mary","Heretic","Prevailer",
+                                          "Court of Freeton","Saltflat Nomads","Scavengers","Barrow Slavers")) {
+      
+      armyIcon <- switch(input$subfaction_selection,
+                         "Air" = "faction_icons/drag_air.jpg","Earth" = "faction_icons/drag_earth.jpg",
+                         "Fire" = "faction_icons/drag_fire.jpg","Ice" = "faction_icons/drag_ice.jpg",
+                         "Shadow" = "faction_icons/drag_shadow.jpg","Broodmere Spawn" = "faction_icons/broodspawn_front.png",
+                         "Progeny" = "faction_icons/progeny_front.png","Blood" = "faction_icons/skarrd_blood.jpg",
+                         "Decay" = "faction_icons/skarrd_decay.jpg","Metamorphosis" = "faction_icons/skarrd_meta.jpg",
+                         "Toxic" = "faction_icons/skarrd_toxic.jpg","Mary" = "faction_icons/forsaken_mary.jpg",
+                         "Isaac" = "faction_icons/forsaken_isaac.jpg",
+                         "Luke" = "faction_icons/forsaken_luke.jpg",
+                         "Joan" = "faction_icons/forsaken_joan.jpg",
+                         "Heretic" = "faction_icons/forsaken_heretic.jpg",
+                         "John" = "faction_icons/forsaken_john.jpg",
+                         "Mark" = "faction_icons/forsaken_mark.jpg", "Prevailer" = "faction_icons/forsaken_prevailer.jpg",
+                         "Scavengers" = "faction_icons/outcast_general.jpg","Court of Freeton" = "faction_icons/outcast_general.jpg",
+                         "Barrow Slavers" = "faction_icons/outcast_slaver.jpg",
+                         "Saltflat Nomads" = "faction_icons/outcast_salt.jpg",
+                         "Delta Broodfolk" = "faction_icons/delta_front.png"
+      )
+      
+      armyText <- switch(input$subfaction_selection,
+                         "Air" = "As quick and ephemeral as their namesake, the Air Clan dodges their opponent's attacks while slicing into their foes like the wind from a hurricane.",
+                         "Earth" = "As steady as the ground we stand upon, the Earth Clan is adept at controlling the field of battle itself.",
+                         "Fire" = "Filled with rage, the Fire Clan can set their foes aflame with their blows.",
+                         "Ice" = "The Ice Clan is an inexorable force on the battlefield, relying on their high HP and armor to outlast their opponents.",
+                         "Shadow" = "With a slew of debuff and trickery abilities, the Shadow Clan disables their enemies before moving in for the kill.",
+                         "Broodmere Spawn" = "Brood controlled by the Broodmere itself, the Spawn are the pinnacle of the Broodmere's evolutionary capabilities.",
+                         "Progeny" = "Bio-Organic weaponry from the interior of Captain Jack Flay's starship, the Progeny are an especially destructive subset of the Brood.",
+                         "Delta Broodfolk" = "Examples of the Broodmere's ability to warp any living being, the Delta Broodfolk are the first of many Brood Human hybrids.",
+                         "Blood" = "Obsessed with sanguine vitae, the Blood Cult are empowered by spilling blood - be it their foe's or theirs.",
+                         "Decay" = "Feeding on death, the Decay cult seek to kill everything on Samaria.",
+                         "Metamorphosis" = "Extreme examples of the self-mutilation common in the Skarrd, the Metamorphosis cult fuse themselves with machinery to become more than human.",
+                         "Toxic" = "Toxins and poisons fill the bodies of the Toxic Cult, and they share their pestilent gift with their foes.",
+                         "Mary" = "Mary",
+                         "Isaac" = "A capable hacker, Saint Isaac has resurrected a cache of ancient NorTec technology. Forces led by Isaac are able to field robots, drones, and other technological marvels.",
+                         "Luke" = "Luke",
+                         "Joan" = "Joan is the newest Saint, riding on a wave of inquisition.",
+                         "Heretic" = "Forces of the Heretic Saint are composed of an unholy mixture of Forsaken and Skarrd units.",
+                         "John" = "John",
+                         "Mark" = "Mark",
+                         "Prevailer" = "The Prevailer Council is the force behind the city of New Ashkelon - equipped with ancient technology, they are one of the pre-eminent technological forces on Samaria.",
+                         "Scavengers" = "Scrounging for survival, Scavengers are able to make the most out of any wreckage on Samaria.",
+                         "Court of Freeton" = "A free settlement of Brutes, the Court of Freeton are pound for pound the most dangerous humans on Samaria.",
+                         "Barrow Slavers" = "A force of slave taking Outcasts, the Barrow Slavers are capable of inciting panic in their foes - regardless of who or what they are.",
+                         "Saltflat Nomads" = "Nomadic and honor-bound, the Saltflat Nomads will take their vengeance on any who slay one of them."
+      )
+      
+      sendSweetAlert(session,
+                     title = paste0(input$army_selection,
+                                    " : ",
+                                    input$subfaction_selection),
+                     text = armyText,
+                     type = armyIcon,
+                     html = T,
+                     btn_labels = "Build")
+      
+    }
+  })
   
   output$user_out <- DT::renderDT({
     datatable(
@@ -1319,7 +1383,7 @@ server <- function(input, output, session){
         }
       }
       
-      if (input$subfaction_selection == "Salt Nomads") {
+      if (input$subfaction_selection == "Saltflat Nomads") {
         if (!is.null(input[["Lynette"]])) {
           if (as.numeric(input[["Lynette"]]) == 1) {
             shinyjs::enable(selector = paste0("#Ideo > select"))
