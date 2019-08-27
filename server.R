@@ -121,10 +121,22 @@ server <- function(input, output, session){
     session$sendCustomMessage('unbind-DT', 'ArmyTable') #TAG UNBIND
     
     # Generate army data frame
-    suppressWarnings(
+    suppressWarnings({
     currentArmy <- faction.Df %>%
       dplyr::filter(grepl(input$army_selection, Faction) | grepl(input$subfaction_selection, Faction)) %>%
-      dplyr::filter(grepl(paste0("Unaligned|Bounty Hunter|",input$subfaction_selection), Subfaction))  %>%
+      dplyr::filter(grepl(paste0("Unaligned|Bounty Hunter|",input$subfaction_selection), Subfaction))
+    
+    if (input$army_selection == "Dragyri") {
+      trueBorns <- c('')
+      
+      dragTrueborn <- faction.Df  %>%
+        dplyr::filter(grepl('Dragyri', Faction)) %>%
+        dplyr::filter(Subfaction != input$subfaction_selection)
+      
+
+    }
+    
+    currentArmy <- currentArmy %>%
       mutate(Allotment = case_when(
         Amount == "C" ~ 1,
         Amount == "*" ~ 1,
@@ -141,6 +153,7 @@ server <- function(input, output, session){
       group_by(Name) %>%
       mutate(Display = (HTML('<button id="',Name,'" type="button" class="btn btn-default action-button" onclick="Shiny.onInputChange(&quot;display_card&quot;,  this.id + &quot;_&quot; + Math.random())">Show Card</button>'))) %>%
       dplyr::select(Faction,Subfaction,Name,Display,Cost,Amount,Allotment,Number)
+    }
     )
     return(currentArmy)
   })
@@ -417,13 +430,13 @@ server <- function(input, output, session){
       
       for (upgrade in normalizedUpgrades) {
         if (upgrade == "") {break}
-        print("UPGRADE")
+        #print("UPGRADE")
         name <- gsub(" ","_",tolower(upgrade))
-        print(name)
+        #print(name)
         fullName <- paste0(name,".png")
-        print(fullName)
+        #print(fullName)
         upgradePath <- normalizePath(paste0("www/stat_cards/",paste(name,"png",sep = ".")))
-        print(upgradePath)
+        #print(upgradePath)
         normalizedAddons <- bind_rows(normalizedAddons,tibble(destination = fullName,current = upgradePath))
       }
       
@@ -434,6 +447,8 @@ server <- function(input, output, session){
         psychoPath <- normalizePath(paste0("www/stat_cards/",paste(name,"png",sep = ".")))
         normalizedAddons <- bind_rows(normalizedAddons,tibble(destination = fullName,current = psychoPath))
       }
+      
+      normalizedStats <- normalizePath("www/stat_cards")
       
       owd <- setwd(tempdir())
       on.exit(setwd(owd))
@@ -446,6 +461,7 @@ server <- function(input, output, session){
       
       # Copy all selected stat cards
       
+        #file.copy(normalizedStats,"stat_cards/",recursive = T,overwrite = T)
       for (i in (i = 1:step-1)){
         file.copy(normalizedPaths[i], stat_name[i], overwrite = TRUE)
       }
@@ -1137,7 +1153,7 @@ server <- function(input, output, session){
     
     out <- session$userData$current_user()
     out <- unlist(out)
-    current_userDat <<- out
+    # current_userDat <<- out
     data.frame(
       name = names(out),
       value = unname(out)
@@ -1151,7 +1167,6 @@ server <- function(input, output, session){
     
     userQuery <- paste0('{"User":"',signed_in_user_uid(),'"}')
     
-    print(userQuery)
     db.SAB$find(userQuery)
   })
   
@@ -1185,24 +1200,41 @@ server <- function(input, output, session){
             TRUE ~ `Upgrades & Bio-Gens`
           ))
         
-        tempArmy <<- formattingArmy
+        # tempArmy <<- formattingArmy
         
         mainArmy <- selectedArmy %>%
           pull(Faction) %>%
           unique()
         
-        armySplash <- switch(mainArmy,
-                             "Kukulkani" = "k3_back.jpg","Brood" = "brood_back.jpg",
-                             "C.O.R.E" = "core_back.jpg","Forsaken" = "forsaken_back.jpg",
-                             "Skarrd" = "skarrd_back.jpg","Outcasts" = "outcast_back.jpg",
-                             "Dragryi" = "drag_back.jpg"
-        )
-        
         subArmy <- selectedArmy %>%
           pull(armySubfaction) %>%
           unique()
-
+        
         droppedSub <- subArmy[!str_detect(subArmy,"Unaligned|Bounty Hunter|/")]
+        
+        if (subArmy %in% c("Ice","Fire","Air","Shadow","Luke","Mark","Marky","Prevailers","John","Joan","Blood","Metamorphosis","Toxic")) {
+          armySplash <- switch(subArmy,
+                               "Ice" = "dragyri_ice_splash.jpg",
+                               "Fire" = "dragyri_fire_splash.jpg",
+                               "Air" = "dragyri_air_splash.jpg",
+                               "Earth" = "",
+                               "Shadow" = "drag_back.jpg",
+                               "Luke" = "forsaken_luke_splash.jpg",
+                               "Mary" = "forsaken_mary_splash.jpg",
+                               "Mark" = "forsaken_mark_splash.jpg",
+                               "John" = "forsaken_john_splash.jpg",
+                               "Joan" = "forsaken_joan_splash.jpg",
+                               "Prevailer" = "forsaken_prevailer_splash.jpg"
+                               
+          )
+        } else {
+          armySplash <- switch(mainArmy,
+                               "Kukulkani" = "kukulkani_splash.jpg","Brood" = "brood_splash.jpg",
+                               "C.O.R.E" = "core_splash.jpg","Forsaken" = "forsaken_splash.jpg",
+                               "Skarrd" = "skarrd_splash.jpg","Outcasts" = "outcast_splash.jpg",
+                               "Dragyri" = "dragyri_splash.jpg"
+          )
+        }
         
         if (length(droppedSub) == 0) {
           
@@ -1430,6 +1462,11 @@ server <- function(input, output, session){
         }
       }
       
+      if (input$subfaction_selection == "Barrow Slavers") {
+        shinyjs::disable(selector = paste0("#Blades(BountyHunter) > select"))
+      } else {
+        shinyjs::enable(selector = paste0("#Blades(BountyHunter) > select"))
+      }
     }
     
     if (input$army_selection == "Dragyri") {

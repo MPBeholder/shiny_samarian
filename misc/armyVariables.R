@@ -41,7 +41,7 @@ faction.Data <- list(
     "back.Blurb" = "Flanked by their lowborn slaves, Dragyri Trueborns are incredibly powerful elites and compose the majority of a Dragyri force.",
     "pros" = "<ul><li>Different elements have different strengths</li><li>Regeneration</li></ul>",
     "cons" = "<ul><li>High cost units</li><li>Elements have different weaknesses</li></ul>",
-    "header.Img" = "drag_back.jpg",
+    "header.Img" = "dragyri_backshot.png",
     "back.Img" = "faction_icons/logo_dragyri.png",
     "sub.Faction" = c("Ice","Fire","Air","Earth","Shadow")
   ),
