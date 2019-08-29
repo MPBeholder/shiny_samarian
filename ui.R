@@ -81,6 +81,7 @@ function(request){
                                 spin_fading_circles()),logo = "DA_Logo3.png"),
     tabItems(
       tabItem(tabName = "home",
+              div(style = "overflow-y:auto;height:500px;",
               fluidRow(
                 samarianInfo('K3', box.Id = 1, faction = "Kukulkani"),
                 HTML('<br class="rwd-break">'),
@@ -101,7 +102,7 @@ function(request){
               HTML('<br class="rwd-break">'),
               fluidRow(
                 samarianInfo('DG', box.Id = 7, faction = "Dragyri")
-              )
+              ))
       ),
       tabItem(tabName = "build_army",
               fluidRow(
@@ -128,9 +129,6 @@ function(request){
                        div(class = "vertAlign",
                            uiOutput("Downloader")))),
               DT::dataTableOutput("ArmyTable")#,
-              # fluidRow(
-              #   column(width = 4, uiOutput("Helper")),
-              #   column(width = 8, uiOutput("Notesbox")))
       ),
       tabItem(tabName = 'army_login',
               div(id = "armyBoxes", style = "overflow-y:auto;height:500px;",
@@ -201,7 +199,7 @@ function(request){
       icon = "info-circle",
       title = "General Info",
       active = FALSE,
-      HTML("Samarian Army Builder v0.5</br>All logos and cards copyright CMON.</br>Code developed by MPBeholder.")
+      HTML("Samarian Army Builder v0.8</br>All logos and cards copyright CMON.</br>Code developed by MPBeholder.")
     ))
   
   # Title ---------------------------------
